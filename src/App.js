@@ -1,9 +1,9 @@
-// App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Inicio from './components/Inicio'; 
 import VentanaPrincipal from './components/VentanaPrincipal';
 import VentanaSecundaria from './components/VentanaSecundaria';
-import VentanaTres from './components/VentanaTres'; // Importar los componentes de las nuevas ventanas
+import VentanaTres from './components/VentanaTres'; 
 import VentanaCuatro from './components/VentanaCuatro';
 import VentanaCinco from './components/VentanaCinco';
 import VentanaSeis from './components/VentanaSeis';
@@ -19,7 +19,10 @@ function App() {
         <nav>
           <ul>
             <li>
-              <Link to="/">Ventana Principal</Link>
+              <Link to="/">Inicio</Link>
+            </li>
+            <li>
+              <Link to="/ventana1">Ventana Principal</Link>
             </li>
             <li>
               <Link to="/ventana2">Ventana Secundaria</Link>
@@ -51,7 +54,8 @@ function App() {
           </ul>
         </nav>
         <Routes>
-          <Route path="/" element={<VentanaPrincipal />} />
+          <Route path="/" element={<Inicio />} /> {/* Ruta para la ventana de inicio */}
+          <Route path="/ventana1" element={<VentanaPrincipal />} />
           <Route path="/ventana2" element={<VentanaSecundaria />} />
           <Route path="/ventana3" element={<VentanaTres />} />
           <Route path="/ventana4" element={<VentanaCuatro />} />
