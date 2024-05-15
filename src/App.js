@@ -1,5 +1,6 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+// App.js
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Inicio from './components/Inicio'; 
 import VentanaPrincipal from './components/VentanaPrincipal';
 import VentanaSecundaria from './components/VentanaSecundaria';
@@ -13,60 +14,51 @@ import VentanaNueve from './components/VentanaNueve';
 import VentanaDiez from './components/VentanaDiez';
 
 function App() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleUsernameChange = (event) => {
+    setUsername(event.target.value);
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+
+  const handleLogin = () => {
+    console.log('Iniciar sesión con:', username, password);
+    // Redirigir al usuario a VentanaPrincipal después de iniciar sesión
+    window.location.href = '/ventana1'; // Cambia '/ventana1' a la ruta de tu VentanaPrincipal
+  };
+
   return (
     <Router>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Inicio</Link>
-            </li>
-            <li>
-              <Link to="/ventana1">Ventana Principal</Link>
-            </li>
-            <li>
-              <Link to="/ventana2">Ventana Secundaria</Link>
-            </li>
-            <li>
-              <Link to="/ventana3">Ventana Tres</Link>
-            </li>
-            <li>
-              <Link to="/ventana4">Ventana Cuatro</Link>
-            </li>
-            <li>
-              <Link to="/ventana5">Ventana Cinco</Link>
-            </li>
-            <li>
-              <Link to="/ventana6">Ventana Seis</Link>
-            </li>
-            <li>
-              <Link to="/ventana7">Ventana Siete</Link>
-            </li>
-            <li>
-              <Link to="/ventana8">Ventana Ocho</Link>
-            </li>
-            <li>
-              <Link to="/ventana9">Ventana Nueve</Link>
-            </li>
-            <li>
-              <Link to="/ventana10">Ventana Diez</Link>
-            </li>
-          </ul>
-        </nav>
-        <Routes>
-          <Route path="/" element={<Inicio />} /> {/* Ruta para la ventana de inicio */}
-          <Route path="/ventana1" element={<VentanaPrincipal />} />
-          <Route path="/ventana2" element={<VentanaSecundaria />} />
-          <Route path="/ventana3" element={<VentanaTres />} />
-          <Route path="/ventana4" element={<VentanaCuatro />} />
-          <Route path="/ventana5" element={<VentanaCinco />} />
-          <Route path="/ventana6" element={<VentanaSeis />} />
-          <Route path="/ventana7" element={<VentanaSiete />} />
-          <Route path="/ventana8" element={<VentanaOcho />} />
-          <Route path="/ventana9" element={<VentanaNueve />} />
-          <Route path="/ventana10" element={<VentanaDiez />} />
-        </Routes>
-      </div>
+      <Routes>
+        <Route path="/" element={
+          <div>
+            <h2>Inicio de Sesión</h2>
+            <div>
+              <label>Nombre de Usuario:</label>
+              <input type="text" value={username} onChange={handleUsernameChange} />
+            </div>
+            <div>
+              <label>Contraseña:</label>
+              <input type="password" value={password} onChange={handlePasswordChange} />
+            </div>
+            <button onClick={handleLogin}>Iniciar Sesión</button>
+          </div>
+        } />
+        <Route path="/ventana1" element={<VentanaPrincipal />} />
+        <Route path="/ventana2" element={<VentanaSecundaria />} />
+        <Route path="/ventana3" element={<VentanaTres />} />
+        <Route path="/ventana4" element={<VentanaCuatro />} />
+        <Route path="/ventana5" element={<VentanaCinco />} />
+        <Route path="/ventana6" element={<VentanaSeis />} />
+        <Route path="/ventana7" element={<VentanaSiete />} />
+        <Route path="/ventana8" element={<VentanaOcho />} />
+        <Route path="/ventana9" element={<VentanaNueve />} />
+        <Route path="/ventana10" element={<VentanaDiez />} />
+      </Routes>
     </Router>
   );
 }

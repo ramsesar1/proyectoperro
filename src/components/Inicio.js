@@ -1,6 +1,7 @@
-// inicio.js
+// Inicio.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+
 
 function Inicio() {
   const [username, setUsername] = useState('');
@@ -17,6 +18,8 @@ function Inicio() {
   const handleLogin = () => {
     // Aquí puedes agregar la lógica de inicio de sesión
     console.log('Iniciar sesión con:', username, password);
+    // Redirigir al usuario a VentanaPrincipal después de iniciar sesión
+    window.location.href = '/components/VentanaPrincipal'; // Cambia '/ventana1' a la ruta de tu VentanaPrincipal
   };
 
   return (

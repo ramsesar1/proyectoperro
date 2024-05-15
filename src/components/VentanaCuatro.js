@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function VentanaTres() {
+function VentanaCuatro() {
   return (
     <div>
       <h2>Ventana Cuatro</h2>
@@ -22,4 +22,4 @@ function VentanaTres() {
   );
 }
 
-export default VentanaTres;
+export default VentanaCuatro;
