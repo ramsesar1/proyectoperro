@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+
 function RegistroUsuario() {
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
@@ -9,20 +10,25 @@ function RegistroUsuario() {
   const [telefono, setTelefono] = useState('');
   const [fechaNacimiento, setFechaNacimiento] = useState('');
   const [genero, setGenero] = useState('');
-  const [fotoPerfil, setFotoPerfil] = useState('');
+  const [fotoPerfil, setFotoPerfil] = useState(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const formData = new FormData();
+    formData.append('nombre', nombre);
+    formData.append('apellido', apellido);
+    formData.append('email', email);
+    formData.append('contraseña', contraseña);
+    formData.append('telefono', telefono);
+    formData.append('fecha_nacimiento', fechaNacimiento);
+    formData.append('genero', genero);
+    formData.append('foto_perfil', fotoPerfil);
+
     try {
-      const response = await axios.post('/api/usuarios', {
-        nombre,
-        apellido,
-        email,
-        contraseña,
-        telefono,
-        fecha_nacimiento: fechaNacimiento,
-        genero,
-        foto_perfil: fotoPerfil,
+      const response = await axios.post('/api/usuarios', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       });
       console.log('Usuario registrado:', response.data);
       // Limpia los campos después del registro
@@ -33,10 +39,14 @@ function RegistroUsuario() {
       setTelefono('');
       setFechaNacimiento('');
       setGenero('');
-      setFotoPerfil('');
+      setFotoPerfil(null);
     } catch (error) {
       console.error('Error registrando usuario:', error);
     }
+  };
+
+  const handleFileChange = (event) => {
+    setFotoPerfil(event.target.files[0]);
   };
 
   return (
@@ -103,11 +113,10 @@ function RegistroUsuario() {
         </select>
       </div>
       <div>
-        <label>Foto de Perfil (URL):</label>
+        <label>Foto de Perfil:</label>
         <input
-          type="text"
-          value={fotoPerfil}
-          onChange={(e) => setFotoPerfil(e.target.value)}
+          type="file"
+          onChange={handleFileChange}
         />
       </div>
       <button type="submit">Registrarse</button>
