@@ -1,6 +1,5 @@
-// App.js
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Inicio from './components/Inicio'; 
 import VentanaPrincipal from './components/VentanaPrincipal';
 import VentanaSecundaria from './components/VentanaSecundaria';
@@ -12,6 +11,7 @@ import VentanaSiete from './components/VentanaSiete';
 import VentanaOcho from './components/VentanaOcho';
 import VentanaNueve from './components/VentanaNueve';
 import VentanaDiez from './components/VentanaDiez';
+import RegistroUsuario from './components/RegistroUsuario';
 
 function App() {
   const [username, setUsername] = useState('');
@@ -46,6 +46,9 @@ function App() {
               <input type="password" value={password} onChange={handlePasswordChange} />
             </div>
             <button onClick={handleLogin}>Iniciar Sesión</button>
+            <div>
+              <Link to="/registro">Registrar Usuario</Link>
+            </div>
           </div>
         } />
         <Route path="/ventana1" element={<VentanaPrincipal />} />
@@ -58,6 +61,7 @@ function App() {
         <Route path="/ventana8" element={<VentanaOcho />} />
         <Route path="/ventana9" element={<VentanaNueve />} />
         <Route path="/ventana10" element={<VentanaDiez />} />
+        <Route path="/registro" element={<RegistroUsuario />} />
       </Routes>
     </Router>
   );
