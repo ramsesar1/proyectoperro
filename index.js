@@ -1,13 +1,21 @@
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+
+const connection = require('./db');
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const db = require('../src/db'); 
-require('dotenv').config();
+const db = require('./db'); // Asegúrate de que db.js está en la misma carpeta
+require('dotenv').config(); // Cargar variables de entorno desde .env
 
 const app = express();
 app.use(express.json());
 
-// Configuracion de multer para la carga de archivos
+
+// Configuración de multer para la carga de archivos
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/');
@@ -51,3 +59,27 @@ app.get('/api/test-connection', (req, res) => {
 app.listen(3001, () => {
   console.log('Servidor corriendo en el puerto 3001');
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();

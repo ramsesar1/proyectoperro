@@ -27,8 +27,7 @@ function App() {
 
   const handleLogin = () => {
     console.log('Iniciar sesión con:', username, password);
-    // Redirigir al usuario a VentanaPrincipal después de iniciar sesión
-    window.location.href = '/ventana1'; // Cambia '/ventana1' a la ruta de tu VentanaPrincipal
+    window.location.href = '/ventana1'; 
   };
 
   return (
