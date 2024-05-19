@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import Inicio from './components/Inicio'; 
+import LoginComponent from './components/LoginComponent';
 import VentanaPrincipal from './components/VentanaPrincipal';
 import VentanaSecundaria from './components/VentanaSecundaria';
 import VentanaTres from './components/VentanaTres'; 
@@ -12,44 +12,13 @@ import VentanaOcho from './components/VentanaOcho';
 import VentanaNueve from './components/VentanaNueve';
 import VentanaDiez from './components/VentanaDiez';
 import RegistroUsuario from './components/RegistroUsuario';
+// ... (importar otros componentes)
 
 function App() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const handleLogin = () => {
-    console.log('Iniciar sesión con:', username, password);
-    window.location.href = '/ventana1'; 
-  };
-
   return (
     <Router>
       <Routes>
-        <Route path="/" element={
-          <div>
-            <h2>Inicio de Sesión</h2>
-            <div>
-              <label>Nombre de Usuario:</label>
-              <input type="text" value={username} onChange={handleUsernameChange} />
-            </div>
-            <div>
-              <label>Contraseña:</label>
-              <input type="password" value={password} onChange={handlePasswordChange} />
-            </div>
-            <button onClick={handleLogin}>Iniciar Sesión</button>
-            <div>
-              <Link to="/registro">Registrar Usuario</Link>
-            </div>
-          </div>
-        } />
+        <Route path="/" element={<LoginComponent />} />
         <Route path="/ventana1" element={<VentanaPrincipal />} />
         <Route path="/ventana2" element={<VentanaSecundaria />} />
         <Route path="/ventana3" element={<VentanaTres />} />
