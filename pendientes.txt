@@ -1,0 +1,6 @@
+-hacer login
+-registrar usuarios
+--validacion para no permitir usuarios ya creados
+-registrar animales
+--validacion para no permitir animales ya creados
+-subida de imagenes en ambos

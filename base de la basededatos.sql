@@ -31,4 +31,10 @@ select * from usuarios;
 select * from animales;
 
 
+INSERT INTO usuarios (nombre, apellido, email, contraseña, nivel_access, telefono, fecha_nacimiento, genero) 
+VALUES 
+('Juan', 'Pérez', '123@123.com', '123', 1, '555-1234', '1980-01-01', 'Masculino');
+
+
+
 drop table usuarios;

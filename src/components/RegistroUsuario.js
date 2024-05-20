@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-
 function RegistroUsuario() {
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
   const [email, setEmail] = useState('');
-  const [contraseña, setContraseña] = useState('');
+  const [contrasena, setContrasena] = useState('');
   const [telefono, setTelefono] = useState('');
   const [fechaNacimiento, setFechaNacimiento] = useState('');
   const [genero, setGenero] = useState('');
@@ -14,28 +13,36 @@ function RegistroUsuario() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Validar que la contraseña no esté vacía
+    if (!contrasena) {
+      alert('Por favor, ingresa una contraseña');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('nombre', nombre);
     formData.append('apellido', apellido);
     formData.append('email', email);
-    formData.append('contraseña', contraseña);
+    formData.append('contrasena', contrasena);
     formData.append('telefono', telefono);
-    formData.append('fecha_nacimiento', fechaNacimiento);
+    formData.append('fechaNacimiento', fechaNacimiento);
     formData.append('genero', genero);
-    formData.append('foto_perfil', fotoPerfil);
+    if (fotoPerfil) {
+      formData.append('fotoPerfil', fotoPerfil);
+    }
 
     try {
-      const response = await axios.post('/api/usuarios', formData, {
+      const response = await axios.post('http://localhost:3001/api/registro_usuario', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
       console.log('Usuario registrado:', response.data);
-      // Limpia los campos después del registro
       setNombre('');
       setApellido('');
       setEmail('');
-      setContraseña('');
+      setContrasena('');
       setTelefono('');
       setFechaNacimiento('');
       setGenero('');
@@ -82,8 +89,8 @@ function RegistroUsuario() {
         <label>Contraseña:</label>
         <input
           type="password"
-          value={contraseña}
-          onChange={(e) => setContraseña(e.target.value)}
+          value={contrasena}
+          onChange={(e) => setContrasena(e.target.value)}
           required
         />
       </div>

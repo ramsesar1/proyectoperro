@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 const LoginComponent = () => {
@@ -9,7 +10,6 @@ const LoginComponent = () => {
 
   const handleLogin = async () => {
     try {
-      // Utilizar una URL absoluta para la solicitud de inicio de sesión
       const response = await axios.post('http://localhost:3001/api/login', { username, password });
       if (response.data.success) {
         navigate('/ventana1');
@@ -33,6 +33,9 @@ const LoginComponent = () => {
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
       </div>
       <button onClick={handleLogin}>Iniciar Sesión</button>
+      <div>
+      <Link to="/registro">Registrar Usuario</Link>
+     </div>
     </div>
   );
 };
