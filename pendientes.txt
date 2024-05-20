@@ -4,3 +4,13 @@
 -registrar animales
 --validacion para no permitir animales ya creados
 -subida de imagenes en ambos
+-ventana usuario con los animales del usuario
+--revisar cartilla de los animales
+--editar animal
+--editar usuario
+-reportar animal
+-Paginaprincipañ
+-Contacto
+-Ayuda
+-Menu de usuario
+--Menu de admin

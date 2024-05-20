@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 const LoginComponent = () => {
   const [username, setUsername] = useState('');
@@ -12,6 +12,7 @@ const LoginComponent = () => {
     try {
       const response = await axios.post('http://localhost:3001/api/login', { username, password });
       if (response.data.success) {
+        localStorage.setItem('userId', response.data.userId);
         navigate('/ventana1');
       } else {
         alert('Nombre de usuario o contraseña incorrectos');
@@ -34,8 +35,8 @@ const LoginComponent = () => {
       </div>
       <button onClick={handleLogin}>Iniciar Sesión</button>
       <div>
-      <Link to="/registro">Registrar Usuario</Link>
-     </div>
+        <Link to="/registro">Registrar Usuario</Link>
+      </div>
     </div>
   );
 };

@@ -24,8 +24,14 @@ CREATE TABLE animales (
     peso DECIMAL(5,2),
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     foto LONGBLOB,
+    cartillafoto LONGBLOB,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
+
+drop table animales;
+
+
+ALTER TABLE usuarios MODIFY COLUMN contraseña VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL;
 
 select * from usuarios;
 select * from animales;

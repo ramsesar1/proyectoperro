@@ -42,12 +42,32 @@ app.post('/api/registro_usuario', upload.single('fotoPerfil'), (req, res) => {
   });
 });
 
+// Registro de animal
+app.post('/api/registro_animal', upload.fields([{ name: 'foto' }, { name: 'cartillaFoto' }]), (req, res) => {
+  const { usuario_id, nombre, especie, raza, edad, peso } = req.body;
+  const foto = req.files['foto'] ? req.files['foto'][0].buffer : null;
+  const cartillaFoto = req.files['cartillaFoto'] ? req.files['cartillaFoto'][0].buffer : null;
+
+  const query = 'INSERT INTO animales (usuario_id, nombre, especie, raza, edad, peso, foto, cartillafoto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+  const values = [usuario_id, nombre, especie, raza, edad, peso, foto, cartillaFoto];
+
+  db.query(query, values, (err, result) => {
+    if (err) {
+      console.error('Error al registrar el animal:', err);
+      res.status(500).send({ success: false, error: 'Error al registrar el animal' });
+    } else {
+      res.status(200).send({ success: true });
+    }
+  });
+});
+
+
 // Inicio de sesión
 app.post('/api/login', (req, res) => {
   console.log('Solicitud de inicio de sesión recibida:', req.body);
   const { username, password } = req.body;
 
-  const query = 'SELECT * FROM usuarios WHERE nombre = ? AND contraseña = ?';
+  const query = 'SELECT id FROM usuarios WHERE nombre = ? AND contraseña = ?';
   const values = [username, password];
 
   db.query(query, values, (err, results) => {
@@ -56,13 +76,15 @@ app.post('/api/login', (req, res) => {
       res.status(500).send({ success: false, error: 'Error en el servidor' });
     } else {
       if (results.length > 0) {
-        res.status(200).send({ success: true });
+        const userId = results[0].id;
+        res.status(200).send({ success: true, userId });
       } else {
-        res.status(401).send({ success: false, error: 'Nombre de usuario o contrasena incorrectos' });
+        res.status(401).send({ success: false, error: 'Nombre de usuario o contraseña incorrectos' });
       }
     }
   });
 });
+
 
 app.get('/api/test-connection', (req, res) => {
   db.query('SELECT 1', (err, results) => {
