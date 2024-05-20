@@ -1,6 +1,5 @@
 const express = require('express');
 const multer = require('multer');
-const path = require('path');
 const db = require('./src/db');
 require('dotenv').config();
 
@@ -14,15 +13,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/');
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  },
-});
-
+const storage = multer.memoryStorage(); 
 const upload = multer({ storage: storage });
 
 // Registro de usuario
@@ -30,13 +21,13 @@ app.post('/api/registro_usuario', upload.single('fotoPerfil'), (req, res) => {
   const nombre = req.body.nombre;
   const apellido = req.body.apellido;
   const email = req.body.email;
-  const contrasena = req.body.contrasena; 
+  const contrasena = req.body.contrasena;
   console.log(req.body);
 
   const telefono = req.body.telefono;
   const fechaNacimiento = req.body.fechaNacimiento;
   const genero = req.body.genero;
-  const fotoPerfil = req.file ? req.file.path : null;
+  const fotoPerfil = req.file ? req.file.buffer : null; // Obtener el buffer de la imagen
 
   const query = 'INSERT INTO usuarios (nombre, apellido, email, contraseña, nivel_access, telefono, fecha_nacimiento, genero, foto_perfil) VALUES (?, ?, ?, ?, 1, ?, ?, ?, ?)';
   const values = [nombre, apellido, email, contrasena, telefono, fechaNacimiento, genero, fotoPerfil];
