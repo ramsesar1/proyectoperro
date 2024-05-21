@@ -43,22 +43,23 @@ app.post('/api/registro_usuario', upload.single('fotoPerfil'), (req, res) => {
 });
 
 
-// Editar usuario
+// Actualizar usuario
 app.post('/api/actualizar_usuario', upload.single('fotoPerfil'), (req, res) => {
-  const { userId, nombre, apellido, email, telefono, fechaNacimiento, genero, contrasenaActual, nuevaContrasena } = req.body;
+  const { userId, nombre, apellido, email, telefono, fechaNacimiento, genero, contrasena } = req.body;
   const fotoPerfil = req.file ? req.file.buffer : null;
 
-  // verifica la contraseña actual
+  // Primero, verifica la contraseña
   const queryVerifyPassword = 'SELECT contraseña FROM usuarios WHERE id = ?';
   db.query(queryVerifyPassword, [userId], (err, results) => {
     if (err) {
       console.error('Error al verificar la contraseña:', err);
       return res.status(500).send({ success: false, error: 'Error en el servidor' });
     }
-    if (results.length === 0 || results[0].contraseña !== contrasenaActual) {
-      return res.status(401).send({ success: false, error: 'Contraseña actual incorrecta' });
+    if (results.length === 0 || results[0].contraseña !== contrasena) {
+      return res.status(401).send({ success: false, error: 'Contraseña incorrecta' });
     }
 
+    // Construye la consulta de actualización dinámicamente
     let queryUpdate = 'UPDATE usuarios SET ';
     const values = [];
     if (nombre) {
@@ -72,9 +73,6 @@ app.post('/api/actualizar_usuario', upload.single('fotoPerfil'), (req, res) => {
     if (email) {
       queryUpdate += 'email = ?, ';
       values.push(email);
-    }
-    if (telefono) {
-      queryUpdate += 'telefono = ?, ';
     }
     if (telefono) {
       queryUpdate += 'telefono = ?, ';
@@ -92,18 +90,12 @@ app.post('/api/actualizar_usuario', upload.single('fotoPerfil'), (req, res) => {
       queryUpdate += 'foto_perfil = ?, ';
       values.push(fotoPerfil);
     }
-    if (nuevaContrasena) {
-      queryUpdate += 'contraseña = ?, ';
-      values.push(nuevaContrasena);
-    }
-    
+
     // Elimina la última coma y espacio
     queryUpdate = queryUpdate.slice(0, -2);
-
     queryUpdate += ' WHERE id = ?';
     values.push(userId);
 
-    // Ejecuta la consulta de actualización
     db.query(queryUpdate, values, (err, result) => {
       if (err) {
         console.error('Error al actualizar el usuario:', err);

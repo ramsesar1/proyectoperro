@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const EditarUsuario = () => {
+const VentanaEdiUsu = () => {
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
   const [email, setEmail] = useState('');
@@ -108,4 +108,4 @@ const EditarUsuario = () => {
   );
 };
 
-export default EditarUsuario;
+export default VentanaEdiUsu;
