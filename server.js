@@ -27,7 +27,7 @@ app.post('/api/registro_usuario', upload.single('fotoPerfil'), (req, res) => {
   const telefono = req.body.telefono;
   const fechaNacimiento = req.body.fechaNacimiento;
   const genero = req.body.genero;
-  const fotoPerfil = req.file ? req.file.buffer : null; // Obtener el buffer de la imagen
+  const fotoPerfil = req.file ? req.file.buffer : null; 
 
   const query = 'INSERT INTO usuarios (nombre, apellido, email, contraseña, nivel_access, telefono, fecha_nacimiento, genero, foto_perfil) VALUES (?, ?, ?, ?, 1, ?, ?, ?, ?)';
   const values = [nombre, apellido, email, contrasena, telefono, fechaNacimiento, genero, fotoPerfil];
@@ -41,6 +41,80 @@ app.post('/api/registro_usuario', upload.single('fotoPerfil'), (req, res) => {
     }
   });
 });
+
+
+// Editar usuario
+app.post('/api/actualizar_usuario', upload.single('fotoPerfil'), (req, res) => {
+  const { userId, nombre, apellido, email, telefono, fechaNacimiento, genero, contrasenaActual, nuevaContrasena } = req.body;
+  const fotoPerfil = req.file ? req.file.buffer : null;
+
+  // verifica la contraseña actual
+  const queryVerifyPassword = 'SELECT contraseña FROM usuarios WHERE id = ?';
+  db.query(queryVerifyPassword, [userId], (err, results) => {
+    if (err) {
+      console.error('Error al verificar la contraseña:', err);
+      return res.status(500).send({ success: false, error: 'Error en el servidor' });
+    }
+    if (results.length === 0 || results[0].contraseña !== contrasenaActual) {
+      return res.status(401).send({ success: false, error: 'Contraseña actual incorrecta' });
+    }
+
+    let queryUpdate = 'UPDATE usuarios SET ';
+    const values = [];
+    if (nombre) {
+      queryUpdate += 'nombre = ?, ';
+      values.push(nombre);
+    }
+    if (apellido) {
+      queryUpdate += 'apellido = ?, ';
+      values.push(apellido);
+    }
+    if (email) {
+      queryUpdate += 'email = ?, ';
+      values.push(email);
+    }
+    if (telefono) {
+      queryUpdate += 'telefono = ?, ';
+    }
+    if (telefono) {
+      queryUpdate += 'telefono = ?, ';
+      values.push(telefono);
+    }
+    if (fechaNacimiento) {
+      queryUpdate += 'fecha_nacimiento = ?, ';
+      values.push(fechaNacimiento);
+    }
+    if (genero) {
+      queryUpdate += 'genero = ?, ';
+      values.push(genero);
+    }
+    if (fotoPerfil) {
+      queryUpdate += 'foto_perfil = ?, ';
+      values.push(fotoPerfil);
+    }
+    if (nuevaContrasena) {
+      queryUpdate += 'contraseña = ?, ';
+      values.push(nuevaContrasena);
+    }
+    
+    // Elimina la última coma y espacio
+    queryUpdate = queryUpdate.slice(0, -2);
+
+    queryUpdate += ' WHERE id = ?';
+    values.push(userId);
+
+    // Ejecuta la consulta de actualización
+    db.query(queryUpdate, values, (err, result) => {
+      if (err) {
+        console.error('Error al actualizar el usuario:', err);
+        return res.status(500).send({ success: false, error: 'Error al actualizar el usuario' });
+      }
+      res.status(200).send({ success: true });
+    });
+  });
+});
+
+
 
 // Registro de animal
 app.post('/api/registro_animal', upload.fields([{ name: 'foto' }, { name: 'cartillaFoto' }]), (req, res) => {
@@ -56,6 +130,13 @@ app.post('/api/registro_animal', upload.fields([{ name: 'foto' }, { name: 'carti
       console.error('Error al registrar el animal:', err);
       res.status(500).send({ success: false, error: 'Error al registrar el animal' });
     } else {
+      console.log('Animal registrado exitosamente:');
+      console.log(`Usuario ID: ${usuario_id}`);
+      console.log(`Nombre: ${nombre}`);
+      console.log(`Especie: ${especie}`);
+      console.log(`Raza: ${raza}`);
+      console.log(`Edad: ${edad}`);
+      console.log(`Peso: ${peso}`);
       res.status(200).send({ success: true });
     }
   });

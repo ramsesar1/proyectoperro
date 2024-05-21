@@ -5,17 +5,14 @@ import { Link } from 'react-router-dom';
 function VentanaCinco() {
   return (
     <div>
-      <h2>Ventana Cinco</h2>
+      <h2>Ventana EditarAnimal </h2>
       <nav>
         <ul>
           <li>
-            <Link to="/ventana1">Ir a Ventana Principal</Link>
+            <Link to="/">Ir a Ventana Principal</Link>
           </li>
           <li>
-            <Link to="/ventanaEdiUsu">Ir a Ventana Editar Usuario</Link>
-          </li>
-          <li>
-            <Link to="/ventanaEdiAni">Ir a Ventana Editar Animal</Link>
+            <Link to="/ventanaEdiUsu">xdxdxd</Link>
           </li>
           {/* Agrega aquí más enlaces si es necesario */}
         </ul>
