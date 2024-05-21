@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const VentanaEdiUsu = () => {
+const EditarUsuario = () => {
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
   const [email, setEmail] = useState('');
@@ -10,8 +10,7 @@ const VentanaEdiUsu = () => {
   const [fechaNacimiento, setFechaNacimiento] = useState('');
   const [genero, setGenero] = useState('');
   const [fotoPerfil, setFotoPerfil] = useState(null);
-  const [contrasenaActual, setContrasenaActual] = useState('');
-  const [nuevaContrasena, setNuevaContrasena] = useState('');
+  const [contrasena, setContrasena] = useState('');
 
   const handleUpdateUser = async () => {
     const userId = localStorage.getItem('userId');
@@ -20,8 +19,8 @@ const VentanaEdiUsu = () => {
       return;
     }
 
-    if (!contrasenaActual) {
-      alert('Por favor, ingresa tu contraseña actual');
+    if (!contrasena) {
+      alert('Por favor, ingresa tu contraseña para confirmar los cambios');
       return;
     }
 
@@ -34,8 +33,7 @@ const VentanaEdiUsu = () => {
     if (fechaNacimiento) formData.append('fechaNacimiento', fechaNacimiento);
     if (genero) formData.append('genero', genero);
     if (fotoPerfil) formData.append('fotoPerfil', fotoPerfil);
-    if (nuevaContrasena) formData.append('nuevaContrasena', nuevaContrasena);
-    formData.append('contrasenaActual', contrasenaActual);
+    formData.append('contrasena', contrasena);
 
     try {
       const response = await axios.post('http://localhost:3001/api/actualizar_usuario', formData, {
@@ -52,8 +50,7 @@ const VentanaEdiUsu = () => {
         setFechaNacimiento('');
         setGenero('');
         setFotoPerfil(null);
-        setContrasenaActual('');
-        setNuevaContrasena('');
+        setContrasena('');
       } else {
         alert('Error al actualizar el usuario');
       }
@@ -103,16 +100,12 @@ const VentanaEdiUsu = () => {
         <input type="file" onChange={handleFileChange} />
       </div>
       <div>
-        <label>Contraseña Actual:</label>
-        <input type="password" value={contrasenaActual} onChange={(e) => setContrasenaActual(e.target.value)} required />
-      </div>
-      <div>
-        <label>Nueva Contraseña (opcional):</label>
-        <input type="password" value={nuevaContrasena} onChange={(e) => setNuevaContrasena(e.target.value)} />
+        <label>Contraseña (Para confirmar cambios):</label>
+        <input type="password" value={contrasena} onChange={(e) => setContrasena(e.target.value)} required />
       </div>
       <button onClick={handleUpdateUser}>Actualizar Usuario</button>
     </div>
   );
 };
 
-export default VentanaEdiUsu;
+export default EditarUsuario;
