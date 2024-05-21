@@ -132,6 +132,83 @@ app.post('/api/registro_animal', upload.fields([{ name: 'foto' }, { name: 'carti
   });
 });
 
+//Editar animal
+app.get('/api/obtener_animales/:userId', (req, res) => {
+  const { userId } = req.params;
+  const query = 'SELECT * FROM animales WHERE usuario_id = ?';
+  db.query(query, [userId], (err, results) => {
+    if (err) {
+      console.error('Error al obtener los animales:', err);
+      return res.status(500).send({ success: false, error: 'Error en el servidor' });
+    }
+    res.status(200).send(results);
+  });
+});
+
+// Actualizar animal
+app.post('/api/actualizar_animal', upload.fields([{ name: 'foto' }, { name: 'cartillafoto' }]), (req, res) => {
+  const { animalId, nombre, especie, raza, edad, peso } = req.body;
+  const foto = req.files['foto'] ? req.files['foto'][0].buffer : null;
+  const cartillafoto = req.files['cartillafoto'] ? req.files['cartillafoto'][0].buffer : null;
+
+  let queryUpdate = 'UPDATE animales SET ';
+  const values = [];
+  if (nombre) {
+    queryUpdate += 'nombre = ?, ';
+    values.push(nombre);
+  }
+  if (especie) {
+    queryUpdate += 'especie = ?, ';
+    values.push(especie);
+  }
+  if (raza) {
+    queryUpdate += 'raza = ?, ';
+    values.push(raza);
+  }
+  if (edad) {
+    queryUpdate += 'edad = ?, ';
+    values.push(edad);
+  }
+  if (peso) {
+    queryUpdate += 'peso = ?, ';
+    values.push(peso);
+  }
+  if (foto) {
+    queryUpdate += 'foto = ?, ';
+    values.push(foto);
+  }
+  if (cartillafoto) {
+    queryUpdate += 'cartillafoto = ?, ';
+    values.push(cartillafoto);
+  }
+
+  queryUpdate = queryUpdate.slice(0, -2);
+  queryUpdate += ' WHERE id = ?';
+  values.push(animalId);
+
+  db.query(queryUpdate, values, (err, result) => {
+    if (err) {
+      console.error('Error al actualizar el animal:', err);
+      return res.status(500).send({ success: false, error: 'Error al actualizar el animal' });
+    }
+    res.status(200).send({ success: true });
+  });
+});
+
+// Eliminar animal
+app.post('/api/eliminar_animal', (req, res) => {
+  const { animalId } = req.body;
+  const query = 'DELETE FROM animales WHERE id = ?';
+  db.query(query, [animalId], (err, result) => {
+    if (err) {
+      console.error('Error al eliminar el animal:', err);
+      return res.status(500).send({ success: false, error: 'Error al eliminar el animal' });
+    }
+    res.status(200).send({ success: true });
+  });
+});
+
+
 
 // Inicio de sesión
 app.post('/api/login', (req, res) => {
