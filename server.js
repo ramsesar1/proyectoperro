@@ -43,12 +43,11 @@ app.post('/api/registro_usuario', upload.single('fotoPerfil'), (req, res) => {
 });
 
 
-// Actualizar usuario
+// Editar usuario
 app.post('/api/actualizar_usuario', upload.single('fotoPerfil'), (req, res) => {
   const { userId, nombre, apellido, email, telefono, fechaNacimiento, genero, contrasena } = req.body;
   const fotoPerfil = req.file ? req.file.buffer : null;
 
-  // Primero, verifica la contraseña
   const queryVerifyPassword = 'SELECT contraseña FROM usuarios WHERE id = ?';
   db.query(queryVerifyPassword, [userId], (err, results) => {
     if (err) {
@@ -59,7 +58,6 @@ app.post('/api/actualizar_usuario', upload.single('fotoPerfil'), (req, res) => {
       return res.status(401).send({ success: false, error: 'Contraseña incorrecta' });
     }
 
-    // Construye la consulta de actualización dinámicamente
     let queryUpdate = 'UPDATE usuarios SET ';
     const values = [];
     if (nombre) {
