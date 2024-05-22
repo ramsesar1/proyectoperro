@@ -209,6 +209,62 @@ app.post('/api/eliminar_animal', (req, res) => {
 });
 
 
+//Reportar animales
+app.post('/api/reporte_animal', upload.array('imagenes', 5), (req, res) => {
+  const {
+    tipoReporte,
+    nombre,
+    correo,
+    telefono,
+    direccionReportero,
+    tipoAnimal,
+    edad,
+    genero,
+    tamano,
+    raza,
+    direccionAnimal,
+    ciudad,
+    estado,
+    codigoPostal,
+    fechaAvistamiento,
+    descripcionEstado,
+    circunstancias,
+    usuario_id 
+  } = req.body;
+
+  const imagenes = req.files ? req.files.map(file => file.buffer) : [];
+
+  const query = ` 
+    INSERT INTO reportes_animales (
+      tipo_reporte, nombre_reportador, correo_reportador, telefono_reportador, direccion_reportador, 
+      tipo_animal, edad, genero, tamano, raza, 
+      direccion_animal, ciudad, estado_provincia, codigo_postal, 
+      fecha_avistamiento, descripcion_estado, circunstancias, usuario_id
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+  const values = [
+    tipoReporte, nombre, correo, telefono, direccionReportero, 
+    tipoAnimal, edad, genero, tamano, raza, 
+    direccionAnimal, ciudad, estado, codigoPostal, 
+    fechaAvistamiento, descripcionEstado, circunstancias, usuario_id
+  ];
+
+  db.query(query, values, (err, result) => {
+    if (err) {
+      console.error('Error al insertar el reporte de animal:', err);
+      res.status(500).send({ success: false, error: 'Error al insertar el reporte de animal' });
+    } else {
+      console.log('Reporte de animal insertado exitosamente:');
+      res.status(200).send({ success: true });
+    }
+  });
+
+  //  Logica para subir fotos (aun no)
+});
+
+
+
 
 // Inicio de sesión
 app.post('/api/login', (req, res) => {

@@ -27,7 +27,7 @@ function VentanaPrincipal() {
             <Link to="/ventana7">Ventana Siete</Link>
           </li>
           <li>
-            <Link to="/ventana8">Ventana Ocho</Link>
+            <Link to="/ventana8">Ventana Reportar</Link>
           </li>
           <li>
             <Link to="/ventana9">Ventana Nueve</Link>
