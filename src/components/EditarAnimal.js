@@ -14,6 +14,18 @@ const VentanaEdiAnimal = () => {
   const [cartillafoto, setCartillafoto] = useState(null);
 
   useEffect(() => {
+    const selectedAnimalData = animales.find(animal => animal.id === parseInt(selectedAnimal));
+    if (selectedAnimalData) {
+      setNombre(selectedAnimalData.nombre);
+      setEspecie(selectedAnimalData.especie);
+      setRaza(selectedAnimalData.raza);
+      setEdad(selectedAnimalData.edad.toString());
+      setPeso(selectedAnimalData.peso.toString());
+      // Proxima funcion de cargar fotos
+    }
+  }, [selectedAnimal, animales]);
+  
+  useEffect(() => {
     const fetchAnimales = async () => {
       const userId = localStorage.getItem('userId');
       const response = await axios.get(`http://localhost:3001/api/obtener_animales/${userId}`);

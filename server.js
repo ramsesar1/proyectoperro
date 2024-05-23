@@ -22,6 +22,7 @@ app.post('/api/registro_usuario', upload.single('fotoPerfil'), (req, res) => {
   const fotoPerfil = req.file ? req.file.buffer : null;
 
   const query = 'INSERT INTO usuarios (nombre, apellido, email, contraseña, nivel_access, telefono, fecha_nacimiento, genero, foto_perfil) VALUES (?, ?, ?, ?, 1, ?, ?, ?, ?)';
+  console.log(query);
   const values = [nombre, apellido, email, contrasena, telefono, fechaNacimiento, genero, fotoPerfil];
 
   db.query(query, values, (err, result) => {
