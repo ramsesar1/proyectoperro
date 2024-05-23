@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const VentanaEdiUsu = () => {
@@ -12,6 +12,38 @@ const VentanaEdiUsu = () => {
   const [contrasena, setContrasena] = useState('');
   const [nuevaContrasena, setNuevaContrasena] = useState('');
   const [confirmarNuevaContrasena, setConfirmarNuevaContrasena] = useState('');
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const userId = localStorage.getItem('userId');
+      if (!userId) {
+        alert('Usuario no autenticado');
+        return;
+      }
+
+      try {
+        const response = await axios.get(`http://localhost:3001/api/obtener_usuario/${userId}`);
+        if (response.data.success) {
+          const userData = response.data.data;
+          setNombre(userData.nombre);
+          setApellido(userData.apellido);
+          setEmail(userData.email);
+          setTelefono(userData.telefono);
+
+          const formattedDate = userData.fecha_nacimiento ? userData.fecha_nacimiento.split('T')[0] : '';
+          setFechaNacimiento(formattedDate);
+          
+          setGenero(userData.genero);
+        } else {
+          alert('Error al obtener la información del usuario');
+        }
+      } catch (error) {
+        console.error('Error al obtener la información del usuario:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const handleUpdateUser = async () => {
     const userId = localStorage.getItem('userId');
@@ -34,7 +66,7 @@ const VentanaEdiUsu = () => {
     formData.append('userId', userId);
     if (nombre) formData.append('nombre', nombre);
     if (apellido) formData.append('apellido', apellido);
-    if (email) formData.append('email', email);
+    if (email !== '') formData.append('email', email);
     if (telefono) formData.append('telefono', telefono);
     if (fechaNacimiento) formData.append('fechaNacimiento', fechaNacimiento);
     if (genero) formData.append('genero', genero);
@@ -108,7 +140,6 @@ const VentanaEdiUsu = () => {
         <label>Foto de Perfil:</label>
         <input type="file" onChange={handleFileChange} />
       </div>
-     
       <div>
         <label>Modificar Contraseña:</label>
         <input type="password" value={nuevaContrasena} onChange={(e) => setNuevaContrasena(e.target.value)} />

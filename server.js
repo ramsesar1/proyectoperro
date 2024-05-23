@@ -18,16 +18,8 @@ const upload = multer({ storage: storage });
 
 // Registro de usuario
 app.post('/api/registro_usuario', upload.single('fotoPerfil'), (req, res) => {
-  const nombre = req.body.nombre;
-  const apellido = req.body.apellido;
-  const email = req.body.email;
-  const contrasena = req.body.contrasena;
-  console.log(req.body);
-
-  const telefono = req.body.telefono;
-  const fechaNacimiento = req.body.fechaNacimiento;
-  const genero = req.body.genero;
-  const fotoPerfil = req.file ? req.file.buffer : null; 
+  const { nombre, apellido, email, contrasena, telefono, fechaNacimiento, genero } = req.body;
+  const fotoPerfil = req.file ? req.file.buffer : null;
 
   const query = 'INSERT INTO usuarios (nombre, apellido, email, contraseña, nivel_access, telefono, fecha_nacimiento, genero, foto_perfil) VALUES (?, ?, ?, ?, 1, ?, ?, ?, ?)';
   const values = [nombre, apellido, email, contrasena, telefono, fechaNacimiento, genero, fotoPerfil];
@@ -41,6 +33,23 @@ app.post('/api/registro_usuario', upload.single('fotoPerfil'), (req, res) => {
     }
   });
 });
+
+// Obtener información del usuario
+app.get('/api/obtener_usuario/:id', (req, res) => {
+  const userId = req.params.id;
+  const query = 'SELECT nombre, apellido, email, telefono, fecha_nacimiento, genero, foto_perfil FROM usuarios WHERE id = ?';
+  db.query(query, [userId], (err, results) => {
+    if (err) {
+      console.error('Error al obtener la información del usuario:', err);
+      return res.status(500).send({ success: false, error: 'Error en el servidor' });
+    }
+    if (results.length === 0) {
+      return res.status(404).send({ success: false, error: 'Usuario no encontrado' });
+    }
+    res.status(200).send({ success: true, data: results[0] });
+  });
+});
+
 
 
 // Editar usuario
@@ -93,7 +102,6 @@ app.post('/api/actualizar_usuario', upload.single('fotoPerfil'), (req, res) => {
       values.push(nuevaContrasena);
     }
 
-    // Elimina la última coma y espacio
     queryUpdate = queryUpdate.slice(0, -2);
     queryUpdate += ' WHERE id = ?';
     values.push(userId);
@@ -137,7 +145,7 @@ app.post('/api/registro_animal', upload.fields([{ name: 'foto' }, { name: 'carti
   });
 });
 
-//Editar animal
+// Obtener animales por usuario
 app.get('/api/obtener_animales/:userId', (req, res) => {
   const { userId } = req.params;
   const query = 'SELECT * FROM animales WHERE usuario_id = ?';
@@ -213,8 +221,7 @@ app.post('/api/eliminar_animal', (req, res) => {
   });
 });
 
-
-//Reportar animales
+// Reportar animales
 app.post('/api/reporte_animal', upload.array('imagenes', 5), (req, res) => {
   const {
     tipoReporte,
@@ -268,9 +275,6 @@ app.post('/api/reporte_animal', upload.array('imagenes', 5), (req, res) => {
   //  Logica para subir fotos (aun no)
 });
 
-
-
-
 // Inicio de sesión
 app.post('/api/login', (req, res) => {
   console.log('Solicitud de inicio de sesión recibida:', req.body);
@@ -293,7 +297,6 @@ app.post('/api/login', (req, res) => {
     }
   });
 });
-
 
 app.get('/api/test-connection', (req, res) => {
   db.query('SELECT 1', (err, results) => {
