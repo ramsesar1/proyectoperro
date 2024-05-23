@@ -45,7 +45,7 @@ app.post('/api/registro_usuario', upload.single('fotoPerfil'), (req, res) => {
 
 // Editar usuario
 app.post('/api/actualizar_usuario', upload.single('fotoPerfil'), (req, res) => {
-  const { userId, nombre, apellido, email, telefono, fechaNacimiento, genero, contrasena } = req.body;
+  const { userId, nombre, apellido, email, telefono, fechaNacimiento, genero, contrasena, nuevaContrasena } = req.body;
   const fotoPerfil = req.file ? req.file.buffer : null;
 
   const queryVerifyPassword = 'SELECT contraseña FROM usuarios WHERE id = ?';
@@ -88,6 +88,10 @@ app.post('/api/actualizar_usuario', upload.single('fotoPerfil'), (req, res) => {
       queryUpdate += 'foto_perfil = ?, ';
       values.push(fotoPerfil);
     }
+    if (nuevaContrasena) {
+      queryUpdate += 'contraseña = ?, ';
+      values.push(nuevaContrasena);
+    }
 
     // Elimina la última coma y espacio
     queryUpdate = queryUpdate.slice(0, -2);
@@ -103,6 +107,7 @@ app.post('/api/actualizar_usuario', upload.single('fotoPerfil'), (req, res) => {
     });
   });
 });
+
 
 
 

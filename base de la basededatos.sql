@@ -47,22 +47,19 @@ CREATE TABLE reportes_animales (
     fecha_avistamiento DATETIME,
     descripcion_estado TEXT,
     circunstancias TEXT,
+    usuario_id VARCHAR(255),
     fecha_reporte TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    
 );
 
 
-
-
-
-
-
-
-
 drop table animales;
+drop table reportes_animales;
 
 
 ALTER TABLE usuarios MODIFY COLUMN contraseña VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL;
 
+select * from reportes_animales;
 select * from usuarios;
 select * from animales;
 

@@ -1,4 +1,3 @@
-// VentanaEdiUsu.js
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -11,6 +10,8 @@ const VentanaEdiUsu = () => {
   const [genero, setGenero] = useState('');
   const [fotoPerfil, setFotoPerfil] = useState(null);
   const [contrasena, setContrasena] = useState('');
+  const [nuevaContrasena, setNuevaContrasena] = useState('');
+  const [confirmarNuevaContrasena, setConfirmarNuevaContrasena] = useState('');
 
   const handleUpdateUser = async () => {
     const userId = localStorage.getItem('userId');
@@ -20,7 +21,12 @@ const VentanaEdiUsu = () => {
     }
 
     if (!contrasena) {
-      alert('Por favor, ingresa tu contraseña para confirmar los cambios');
+      alert('Por favor, ingresa tu contraseña actual para confirmar los cambios');
+      return;
+    }
+
+    if (nuevaContrasena && nuevaContrasena !== confirmarNuevaContrasena) {
+      alert('Las nuevas contraseñas no coinciden');
       return;
     }
 
@@ -34,6 +40,7 @@ const VentanaEdiUsu = () => {
     if (genero) formData.append('genero', genero);
     if (fotoPerfil) formData.append('fotoPerfil', fotoPerfil);
     formData.append('contrasena', contrasena);
+    if (nuevaContrasena) formData.append('nuevaContrasena', nuevaContrasena);
 
     try {
       const response = await axios.post('http://localhost:3001/api/actualizar_usuario', formData, {
@@ -51,6 +58,8 @@ const VentanaEdiUsu = () => {
         setGenero('');
         setFotoPerfil(null);
         setContrasena('');
+        setNuevaContrasena('');
+        setConfirmarNuevaContrasena('');
       } else {
         alert('Error al actualizar el usuario');
       }
@@ -98,6 +107,15 @@ const VentanaEdiUsu = () => {
       <div>
         <label>Foto de Perfil:</label>
         <input type="file" onChange={handleFileChange} />
+      </div>
+     
+      <div>
+        <label>Modificar Contraseña:</label>
+        <input type="password" value={nuevaContrasena} onChange={(e) => setNuevaContrasena(e.target.value)} />
+      </div>
+      <div>
+        <label>Confirmar Nueva Contraseña:</label>
+        <input type="password" value={confirmarNuevaContrasena} onChange={(e) => setConfirmarNuevaContrasena(e.target.value)} />
       </div>
       <div>
         <label>Contraseña (Para confirmar cambios):</label>
