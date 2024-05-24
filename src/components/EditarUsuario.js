@@ -9,6 +9,7 @@ const VentanaEdiUsu = () => {
   const [fechaNacimiento, setFechaNacimiento] = useState('');
   const [genero, setGenero] = useState('');
   const [fotoPerfil, setFotoPerfil] = useState(null);
+  const [fotoPerfilUrl, setFotoPerfilUrl] = useState('');
   const [contrasena, setContrasena] = useState('');
   const [nuevaContrasena, setNuevaContrasena] = useState('');
   const [confirmarNuevaContrasena, setConfirmarNuevaContrasena] = useState('');
@@ -34,6 +35,10 @@ const VentanaEdiUsu = () => {
           setFechaNacimiento(formattedDate);
           
           setGenero(userData.genero);
+
+          if (userData.foto_perfil) {
+            setFotoPerfilUrl(`data:image/jpeg;base64,${userData.foto_perfil}`);
+          }
         } else {
           alert('Error al obtener la información del usuario');
         }
@@ -92,6 +97,7 @@ const VentanaEdiUsu = () => {
         setContrasena('');
         setNuevaContrasena('');
         setConfirmarNuevaContrasena('');
+        setFotoPerfilUrl('');  
       } else {
         alert('Error al actualizar el usuario');
       }
@@ -101,7 +107,11 @@ const VentanaEdiUsu = () => {
   };
 
   const handleFileChange = (event) => {
-    setFotoPerfil(event.target.files[0]);
+    const file = event.target.files[0];
+    setFotoPerfil(file);
+
+    const fileUrl = URL.createObjectURL(file);
+    setFotoPerfilUrl(fileUrl);
   };
 
   return (
@@ -139,6 +149,7 @@ const VentanaEdiUsu = () => {
       <div>
         <label>Foto de Perfil:</label>
         <input type="file" onChange={handleFileChange} />
+        {fotoPerfilUrl && <img src={fotoPerfilUrl} alt="Foto de Perfil" style={{ maxWidth: '200px', marginTop: '10px' }} />}
       </div>
       <div>
         <label>Modificar Contraseña:</label>

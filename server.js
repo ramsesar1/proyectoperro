@@ -35,6 +35,7 @@ app.post('/api/registro_usuario', upload.single('fotoPerfil'), (req, res) => {
   });
 });
 
+
 // Obtener información del usuario
 app.get('/api/obtener_usuario/:id', (req, res) => {
   const userId = req.params.id;
@@ -46,6 +47,11 @@ app.get('/api/obtener_usuario/:id', (req, res) => {
     }
     if (results.length === 0) {
       return res.status(404).send({ success: false, error: 'Usuario no encontrado' });
+    }
+    const user = results[0];
+    // Convert the image buffer to base64
+    if (user.foto_perfil) {
+      user.foto_perfil = user.foto_perfil.toString('base64');
     }
     res.status(200).send({ success: true, data: results[0] });
   });

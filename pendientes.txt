@@ -1,19 +1,18 @@
--hacer login
--registrar usuarios
---validacion para no permitir usuarios ya creados
--registrar animales
---validacion para no permitir animales ya creados
--subida de imagenes en ambos
--ventana usuario con los animales del usuario
---revisar cartilla de los animales
---editar animal
---editar usuario
--reportar animal
--Paginaprincipañ
--Contacto
--Ayuda
--Menu de usuario
---Menu de admin
+-hacer login  YA
+-registrar usuarios YA
+--validacion para no permitir usuarios ya creados  YA
+-registrar animales  YA
+-subida de imagenes en ambos aun no 
+-ventana usuario con los animales del usuario aun no 
+--revisar cartilla de los animales aun no
+--editar animal  YA
+--editar usuario  YA
+-reportar animal  YA
+-Paginaprincipañ  YA 
+-Contacto  aun no
+-Ayuda  aun no
+-Menu de usuario aun no 
+--Menu de admin  aun no
 
 
 -
