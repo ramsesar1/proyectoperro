@@ -155,15 +155,26 @@ app.post('/api/registro_animal', upload.fields([{ name: 'foto' }, { name: 'carti
 // Obtener animales por usuario
 app.get('/api/obtener_animales/:userId', (req, res) => {
   const { userId } = req.params;
-  const query = 'SELECT * FROM animales WHERE usuario_id = ?';
+  const query = 'SELECT id, nombre, especie, raza, edad, peso, foto, cartillafoto FROM animales WHERE usuario_id = ?';
   db.query(query, [userId], (err, results) => {
     if (err) {
       console.error('Error al obtener los animales:', err);
       return res.status(500).send({ success: false, error: 'Error en el servidor' });
     }
+
+    results.forEach(animal => {
+      if (animal.foto) {
+        animal.foto = animal.foto.toString('base64');
+      }
+      if (animal.cartillafoto) {
+        animal.cartillafoto = animal.cartillafoto.toString('base64');
+      }
+    });
+
     res.status(200).send(results);
   });
 });
+
 
 // Actualizar animal
 app.post('/api/actualizar_animal', upload.fields([{ name: 'foto' }, { name: 'cartillafoto' }]), (req, res) => {
@@ -214,6 +225,7 @@ app.post('/api/actualizar_animal', upload.fields([{ name: 'foto' }, { name: 'car
     res.status(200).send({ success: true });
   });
 });
+
 
 // Eliminar animal
 app.post('/api/eliminar_animal', (req, res) => {
