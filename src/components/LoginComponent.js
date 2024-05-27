@@ -14,6 +14,7 @@ const LoginComponent = () => {
       const response = await axios.post('http://localhost:3001/api/login', { username, password });
       if (response.data.success) {
         localStorage.setItem('userId', response.data.userId);
+        localStorage.setItem('nivelAccess', response.data.nivelAccess);
         navigate('/ventana1');
       } else {
         alert('Nombre de usuario o contraseña incorrectos');

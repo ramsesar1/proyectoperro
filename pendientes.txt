@@ -2,17 +2,21 @@
 -registrar usuarios YA
 --validacion para no permitir usuarios ya creados  YA
 -registrar animales  YA
--subida de imagenes en ambos aun no 
--ventana usuario con los animales del usuario aun no 
---revisar cartilla de los animales aun no
+-subida de imagenes en ambos YA
+-ventana usuario con los animales del usuario YA (solo falta un boton para permitir edicion, mismo que el de editar)
+--revisar cartilla de los animales YA
 --editar animal  YA
 --editar usuario  YA
+---Mostrar fotos de animal y usuario YA
 -reportar animal  YA
 -Paginaprincipañ  YA 
 -Contacto  aun no
 -Ayuda  aun no
--Menu de usuario aun no 
+-Menu de usuario  YA
 --Menu de admin  aun no
 
 
--
+-modo admin y dueno
+--programa al login revisa el levelaccess
+---si es 2, muestra todos los usuarios y animales, si es 3 ademas de eso, permite cambiar el nivel de acceso de usuarios existentes
+---similar al menu de editar animales con esas cuentas, pueden elegir al usuario a editar

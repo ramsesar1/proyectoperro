@@ -36,10 +36,11 @@ app.post('/api/registro_usuario', upload.single('fotoPerfil'), (req, res) => {
 });
 
 
+
 // Obtener información del usuario
 app.get('/api/obtener_usuario/:id', (req, res) => {
   const userId = req.params.id;
-  const query = 'SELECT nombre, apellido, email, telefono, fecha_nacimiento, genero, foto_perfil FROM usuarios WHERE id = ?';
+  const query = 'SELECT nombre, apellido, email, telefono, fecha_nacimiento, genero, foto_perfil, nivel_access FROM usuarios WHERE id = ?';
   db.query(query, [userId], (err, results) => {
     if (err) {
       console.error('Error al obtener la información del usuario:', err);
@@ -49,79 +50,185 @@ app.get('/api/obtener_usuario/:id', (req, res) => {
       return res.status(404).send({ success: false, error: 'Usuario no encontrado' });
     }
     const user = results[0];
-    // Convert the image buffer to base64
     if (user.foto_perfil) {
+      // Convertir la imagen a base64 si existe
       user.foto_perfil = user.foto_perfil.toString('base64');
     }
-    res.status(200).send({ success: true, data: results[0] });
+    if (user.nivel_access === 1) {
+      res.status(200).send({ success: true, data: user });
+    } else if (user.nivel_access === 2 || user.nivel_access === 3) {
+      const queryUsers = 'SELECT id, nombre, apellido FROM usuarios';
+      db.query(queryUsers, (err, users) => {
+        if (err) {
+          console.error('Error al obtener la lista de usuarios:', err);
+          return res.status(500).send({ success: false, error: 'Error en el servidor' });
+        }
+        res.status(200).send({ success: true, data: user, usuarios: users });
+      });
+    } else {
+      // Otros casos de nivel de acceso
+      res.status(200).send({ success: true, data: user });
+    }
   });
 });
+
 
 
 
 // Editar usuario
 app.post('/api/actualizar_usuario', upload.single('fotoPerfil'), (req, res) => {
-  const { userId, nombre, apellido, email, telefono, fechaNacimiento, genero, contrasena, nuevaContrasena } = req.body;
+  const { userId, selectedUserId, nombre, apellido, email, telefono, fechaNacimiento, genero, contrasena, nuevaContrasena } = req.body;
   const fotoPerfil = req.file ? req.file.buffer : null;
 
-  const queryVerifyPassword = 'SELECT contraseña FROM usuarios WHERE id = ?';
-  db.query(queryVerifyPassword, [userId], (err, results) => {
+  const queryGetAuthUserData = 'SELECT contraseña, nivel_access FROM usuarios WHERE id = ?';
+  db.query(queryGetAuthUserData, [userId], (err, authUserResults) => {
     if (err) {
-      console.error('Error al verificar la contraseña:', err);
+      console.error('Error al obtener la información del usuario autenticado:', err);
       return res.status(500).send({ success: false, error: 'Error en el servidor' });
     }
-    if (results.length === 0 || results[0].contraseña !== contrasena) {
-      return res.status(401).send({ success: false, error: 'Contraseña incorrecta' });
+
+    if (authUserResults.length === 0) {
+      return res.status(404).send({ success: false, error: 'Usuario autenticado no encontrado' });
     }
 
-    let queryUpdate = 'UPDATE usuarios SET ';
-    const values = [];
-    if (nombre) {
-      queryUpdate += 'nombre = ?, ';
-      values.push(nombre);
-    }
-    if (apellido) {
-      queryUpdate += 'apellido = ?, ';
-      values.push(apellido);
-    }
-    if (email) {
-      queryUpdate += 'email = ?, ';
-      values.push(email);
-    }
-    if (telefono) {
-      queryUpdate += 'telefono = ?, ';
-      values.push(telefono);
-    }
-    if (fechaNacimiento) {
-      queryUpdate += 'fecha_nacimiento = ?, ';
-      values.push(fechaNacimiento);
-    }
-    if (genero) {
-      queryUpdate += 'genero = ?, ';
-      values.push(genero);
-    }
-    if (fotoPerfil) {
-      queryUpdate += 'foto_perfil = ?, ';
-      values.push(fotoPerfil);
-    }
-    if (nuevaContrasena) {
-      queryUpdate += 'contraseña = ?, ';
-      values.push(nuevaContrasena);
+    const authUserData = authUserResults[0];
+    const authUserPassword = authUserData.contraseña;
+    const authUserAccessLevel = authUserData.nivel_access;
+
+    // Verificar la contraseña del usuario autenticado
+    if (authUserPassword !== contrasena) {
+      return res.status(401).send({ success: false, error: 'Contraseña incorrecta del usuario autenticado' });
     }
 
-    queryUpdate = queryUpdate.slice(0, -2);
-    queryUpdate += ' WHERE id = ?';
-    values.push(userId);
-
-    db.query(queryUpdate, values, (err, result) => {
-      if (err) {
-        console.error('Error al actualizar el usuario:', err);
-        return res.status(500).send({ success: false, error: 'Error al actualizar el usuario' });
+    // Si el usuario autenticado tiene nivel de acceso 1, permitimos la actualización de su propia información
+    if (authUserAccessLevel === 1) {
+      let queryUpdate = 'UPDATE usuarios SET ';
+      const values = [];
+      if (nombre) {
+        queryUpdate += 'nombre = ?, ';
+        values.push(nombre);
       }
-      res.status(200).send({ success: true });
-    });
+      if (apellido) {
+        queryUpdate += 'apellido = ?, ';
+        values.push(apellido);
+      }
+      if (email) {
+        queryUpdate += 'email = ?, ';
+        values.push(email);
+      }
+      if (telefono) {
+        queryUpdate += 'telefono = ?, ';
+        values.push(telefono);
+      }
+      if (fechaNacimiento) {
+        queryUpdate += 'fecha_nacimiento = ?, ';
+        values.push(fechaNacimiento);
+      }
+      if (genero) {
+        queryUpdate += 'genero = ?, ';
+        values.push(genero);
+      }
+      if (fotoPerfil) {
+        queryUpdate += 'foto_perfil = ?, ';
+        values.push(fotoPerfil);
+      }
+      if (nuevaContrasena) {
+        queryUpdate += 'contraseña = ?, ';
+        values.push(nuevaContrasena);
+      }
+
+      queryUpdate = queryUpdate.slice(0, -2);
+      queryUpdate += ' WHERE id = ?';
+      values.push(userId); // Actualizar el propio usuario
+
+      db.query(queryUpdate, values, (err, result) => {
+        if (err) {
+          console.error('Error al actualizar el usuario:', err);
+          return res.status(500).send({ success: false, error: 'Error al actualizar el usuario' });
+        }
+        res.status(200).send({ success: true });
+      });
+      return;
+    }
+
+    // Si el nivel de acceso es 2 o 3, proceder con la verificación y actualización del usuario seleccionado
+    if (authUserAccessLevel >= 2) {
+      if (!selectedUserId) {
+        return res.status(400).send({ success: false, error: 'ID del usuario seleccionado no proporcionado' });
+      }
+
+      const queryGetSelectedUserData = 'SELECT nivel_access FROM usuarios WHERE id = ?';
+      db.query(queryGetSelectedUserData, [selectedUserId], (err, selectedUserResults) => {
+        if (err) {
+          console.error('Error al obtener la información del usuario seleccionado:', err);
+          return res.status(500).send({ success: false, error: 'Error en el servidor' });
+        }
+
+        if (selectedUserResults.length === 0) {
+          return res.status(404).send({ success: false, error: 'Usuario seleccionado no encontrado' });
+        }
+
+        const selectedUserAccessLevel = selectedUserResults[0].nivel_access;
+
+        // Verificar si el usuario autenticado tiene nivel de acceso superior
+        if (authUserAccessLevel < selectedUserAccessLevel) {
+          return res.status(403).send({ success: false, error: 'No tienes permisos suficientes para modificar este usuario' });
+        }
+
+        // Proceder con la actualización del usuario seleccionado
+        let queryUpdate = 'UPDATE usuarios SET ';
+        const values = [];
+        if (nombre) {
+          queryUpdate += 'nombre = ?, ';
+          values.push(nombre);
+        }
+        if (apellido) {
+          queryUpdate += 'apellido = ?, ';
+          values.push(apellido);
+        }
+        if (email) {
+          queryUpdate += 'email = ?, ';
+          values.push(email);
+        }
+        if (telefono) {
+          queryUpdate += 'telefono = ?, ';
+          values.push(telefono);
+        }
+        if (fechaNacimiento) {
+          queryUpdate += 'fecha_nacimiento = ?, ';
+          values.push(fechaNacimiento);
+        }
+        if (genero) {
+          queryUpdate += 'genero = ?, ';
+          values.push(genero);
+        }
+        if (fotoPerfil) {
+          queryUpdate += 'foto_perfil = ?, ';
+          values.push(fotoPerfil);
+        }
+        if (nuevaContrasena) {
+          queryUpdate += 'contraseña = ?, ';
+          values.push(nuevaContrasena);
+        }
+
+        queryUpdate = queryUpdate.slice(0, -2);
+        queryUpdate += ' WHERE id = ?';
+        values.push(selectedUserId);
+
+        db.query(queryUpdate, values, (err, result) => {
+          if (err) {
+            console.error('Error al actualizar el usuario:', err);
+            return res.status(500).send({ success: false, error: 'Error al actualizar el usuario' });
+          }
+          res.status(200).send({ success: true });
+        });
+      });
+    }
   });
 });
+
+
+
 
 
 
@@ -299,7 +406,7 @@ app.post('/api/login', (req, res) => {
   console.log('Solicitud de inicio de sesión recibida:', req.body);
   const { username, password } = req.body;
 
-  const query = 'SELECT id FROM usuarios WHERE nombre = ? AND contraseña = ?';
+  const query = 'SELECT id, nivel_access FROM usuarios WHERE nombre = ? AND contraseña = ?';
   const values = [username, password];
 
   db.query(query, values, (err, results) => {
@@ -309,13 +416,15 @@ app.post('/api/login', (req, res) => {
     } else {
       if (results.length > 0) {
         const userId = results[0].id;
-        res.status(200).send({ success: true, userId });
+        const nivelAccess = results[0].nivel_access;
+        res.status(200).send({ success: true, userId, nivelAccess });
       } else {
         res.status(401).send({ success: false, error: 'Nombre de usuario o contraseña incorrectos' });
       }
     }
   });
 });
+
 
 app.get('/api/test-connection', (req, res) => {
   db.query('SELECT 1', (err, results) => {

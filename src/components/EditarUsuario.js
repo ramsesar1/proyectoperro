@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const VentanaEdiUsu = () => {
+const EditarUsuario = () => {
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
   const [email, setEmail] = useState('');
@@ -13,6 +13,10 @@ const VentanaEdiUsu = () => {
   const [contrasena, setContrasena] = useState('');
   const [nuevaContrasena, setNuevaContrasena] = useState('');
   const [confirmarNuevaContrasena, setConfirmarNuevaContrasena] = useState('');
+  const [nivelAccess, setNivelAccess] = useState(0);
+  const [usuarios, setUsuarios] = useState([]);
+  const [selectedUserId, setSelectedUserId] = useState('');
+  const [showComboBox, setShowComboBox] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -21,7 +25,7 @@ const VentanaEdiUsu = () => {
         alert('Usuario no autenticado');
         return;
       }
-
+  
       try {
         const response = await axios.get(`http://localhost:3001/api/obtener_usuario/${userId}`);
         if (response.data.success) {
@@ -30,14 +34,22 @@ const VentanaEdiUsu = () => {
           setApellido(userData.apellido);
           setEmail(userData.email);
           setTelefono(userData.telefono);
-
+  
           const formattedDate = userData.fecha_nacimiento ? userData.fecha_nacimiento.split('T')[0] : '';
           setFechaNacimiento(formattedDate);
           
           setGenero(userData.genero);
-
+  
           if (userData.foto_perfil) {
             setFotoPerfilUrl(`data:image/jpeg;base64,${userData.foto_perfil}`);
+          }
+  
+          setNivelAccess(userData.nivel_access);
+          setShowComboBox(userData.nivel_access === 2 || userData.nivel_access === 3);
+  
+          // Procesar la lista de usuarios si está disponible
+          if (response.data.usuarios) {
+            setUsuarios(response.data.usuarios);
           }
         } else {
           alert('Error al obtener la información del usuario');
@@ -46,29 +58,70 @@ const VentanaEdiUsu = () => {
         console.error('Error al obtener la información del usuario:', error);
       }
     };
-
+  
     fetchUserData();
   }, []);
-
+  
+  // Nuevo efecto para manejar el cambio en el usuario seleccionado
+  useEffect(() => {
+    const fetchSelectedUserData = async () => {
+      if (!selectedUserId) return;
+  
+      try {
+        const response = await axios.get(`http://localhost:3001/api/obtener_usuario/${selectedUserId}`);
+        if (response.data.success) {
+          const userData = response.data.data;
+          setNombre(userData.nombre);
+          setApellido(userData.apellido);
+          setEmail(userData.email);
+          setTelefono(userData.telefono);
+  
+          const formattedDate = userData.fecha_nacimiento ? userData.fecha_nacimiento.split('T')[0] : '';
+          setFechaNacimiento(formattedDate);
+          
+          setGenero(userData.genero);
+  
+          if (userData.foto_perfil) {
+            setFotoPerfilUrl(`data:image/jpeg;base64,${userData.foto_perfil}`);
+          }
+  
+          setNivelAccess(userData.nivel_access);
+        } else {
+          alert('Error al obtener la información del usuario seleccionado');
+        }
+      } catch (error) {
+        console.error('Error al obtener la información del usuario seleccionado:', error);
+      }
+    };
+  
+    fetchSelectedUserData();
+  }, [selectedUserId]);
+  
   const handleUpdateUser = async () => {
     const userId = localStorage.getItem('userId');
     if (!userId) {
       alert('Usuario no autenticado');
       return;
     }
-
+  
+    if (nivelAccess > 1 && !selectedUserId) {
+      alert('Por favor, selecciona un usuario');
+      return;
+    }
+  
     if (!contrasena) {
       alert('Por favor, ingresa tu contraseña actual para confirmar los cambios');
       return;
     }
-
+  
     if (nuevaContrasena && nuevaContrasena !== confirmarNuevaContrasena) {
       alert('Las nuevas contraseñas no coinciden');
       return;
     }
-
+  
     const formData = new FormData();
-    formData.append('userId', userId);
+    formData.append('userId', userId); // Usuario autenticado
+    formData.append('selectedUserId', selectedUserId || userId); // Usuario que se está modificando
     if (nombre) formData.append('nombre', nombre);
     if (apellido) formData.append('apellido', apellido);
     if (email !== '') formData.append('email', email);
@@ -78,7 +131,7 @@ const VentanaEdiUsu = () => {
     if (fotoPerfil) formData.append('fotoPerfil', fotoPerfil);
     formData.append('contrasena', contrasena);
     if (nuevaContrasena) formData.append('nuevaContrasena', nuevaContrasena);
-
+  
     try {
       const response = await axios.post('http://localhost:3001/api/actualizar_usuario', formData, {
         headers: {
@@ -105,6 +158,7 @@ const VentanaEdiUsu = () => {
       console.error('Error al actualizar el usuario:', error);
     }
   };
+  
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -112,6 +166,10 @@ const VentanaEdiUsu = () => {
 
     const fileUrl = URL.createObjectURL(file);
     setFotoPerfilUrl(fileUrl);
+  };
+
+  const handleUserChange = (event) => {
+    setSelectedUserId(event.target.value);
   };
 
   return (
@@ -163,9 +221,20 @@ const VentanaEdiUsu = () => {
         <label>Contraseña (Para confirmar cambios):</label>
         <input type="password" value={contrasena} onChange={(e) => setContrasena(e.target.value)} required />
       </div>
+      {showComboBox && ( // Show ComboBox only if showComboBox is true
+        <div>
+          <label>Seleccionar Usuario:</label>
+          <select value={selectedUserId} onChange={handleUserChange}>
+            <option value="">Seleccione un usuario</option>
+            {usuarios.map((user) => (
+              <option key={user.id} value={user.id}>{`${user.nombre} ${user.apellido}`}</option>
+            ))}
+          </select>
+        </div>
+      )}
       <button onClick={handleUpdateUser}>Actualizar Usuario</button>
     </div>
   );
 };
 
-export default VentanaEdiUsu;
+export default EditarUsuario;
