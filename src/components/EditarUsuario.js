@@ -17,6 +17,7 @@ const EditarUsuario = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState('');
   const [showComboBox, setShowComboBox] = useState(false);
+  const [passwordFieldsDisabled, setPasswordFieldsDisabled] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -86,6 +87,9 @@ const EditarUsuario = () => {
           }
   
           setNivelAccess(userData.nivel_access);
+          
+          // Bloquear los campos de contraseña si el usuario seleccionado no es el mismo
+          setPasswordFieldsDisabled(userData.id !== localStorage.getItem('userId'));
         } else {
           alert('Error al obtener la información del usuario seleccionado');
         }
@@ -211,17 +215,17 @@ const EditarUsuario = () => {
       </div>
       <div>
         <label>Modificar Contraseña:</label>
-        <input type="password" value={nuevaContrasena} onChange={(e) => setNuevaContrasena(e.target.value)} />
+        <input type="password" value={nuevaContrasena} onChange={(e) => setNuevaContrasena(e.target.value)} disabled={passwordFieldsDisabled} />
       </div>
       <div>
         <label>Confirmar Nueva Contraseña:</label>
-        <input type="password" value={confirmarNuevaContrasena} onChange={(e) => setConfirmarNuevaContrasena(e.target.value)} />
+        <input type="password" value={confirmarNuevaContrasena} onChange={(e) => setConfirmarNuevaContrasena(e.target.value)} disabled={passwordFieldsDisabled} />
       </div>
       <div>
         <label>Contraseña (Para confirmar cambios):</label>
         <input type="password" value={contrasena} onChange={(e) => setContrasena(e.target.value)} required />
       </div>
-      {showComboBox && ( // Show ComboBox only if showComboBox is true
+      {showComboBox && ( 
         <div>
           <label>Seleccionar Usuario:</label>
           <select value={selectedUserId} onChange={handleUserChange}>
