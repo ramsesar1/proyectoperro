@@ -122,8 +122,8 @@ const EditarUsuario = () => {
     }
   
     const formData = new FormData();
-    formData.append('userId', userId); // Usuario autenticado
-    formData.append('selectedUserId', selectedUserId || userId); // Usuario que se está modificando
+    formData.append('userId', userId); 
+    formData.append('selectedUserId', selectedUserId || userId); 
     if (nombre) formData.append('nombre', nombre);
     if (apellido) formData.append('apellido', apellido);
     if (email !== '') formData.append('email', email);
