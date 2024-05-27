@@ -48,7 +48,6 @@ const EditarUsuario = () => {
           setNivelAccess(userData.nivel_access);
           setShowComboBox(userData.nivel_access === 2 || userData.nivel_access === 3);
   
-          // Procesar la lista de usuarios si está disponible
           if (response.data.usuarios) {
             setUsuarios(response.data.usuarios);
           }
@@ -63,7 +62,6 @@ const EditarUsuario = () => {
     fetchUserData();
   }, []);
   
-  // Nuevo efecto para manejar el cambio en el usuario seleccionado
   useEffect(() => {
     const fetchSelectedUserData = async () => {
       if (!selectedUserId) return;
