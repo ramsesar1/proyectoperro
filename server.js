@@ -16,7 +16,7 @@ app.use(function(req, res, next) {
 const storage = multer.memoryStorage(); 
 const upload = multer({ storage: storage });
 
-// Registro de usuario
+// ---------------------Registro de usuario---------------------
 app.post('/api/registro_usuario', upload.single('fotoPerfil'), (req, res) => {
   const { nombre, apellido, email, contrasena, telefono, fechaNacimiento, genero } = req.body;
   const fotoPerfil = req.file ? req.file.buffer : null;
@@ -72,7 +72,7 @@ app.get('/api/obtener_usuario/:id', (req, res) => {
   });
 });
 
-// Editar usuario
+// ---------------Editar usuario---------------------
 app.post('/api/actualizar_usuario', upload.single('fotoPerfil'), (req, res) => {
   const { userId, selectedUserId, nombre, apellido, email, telefono, fechaNacimiento, genero, contrasena, nuevaContrasena, newAccessLevel } = req.body;
   const fotoPerfil = req.file ? req.file.buffer : null;
@@ -311,7 +311,7 @@ if (authUserAccessLevel === 3) {
 
 
 
-// Registro de animal
+// ---------------------Registro de animal---------------------
 app.post('/api/registro_animal', upload.fields([{ name: 'foto' }, { name: 'cartillaFoto' }]), (req, res) => {
   const { usuario_id, nombre, especie, raza, edad, peso } = req.body;
   const foto = req.files['foto'] ? req.files['foto'][0].buffer : null;
@@ -361,7 +361,7 @@ app.get('/api/obtener_animales/:userId', (req, res) => {
 });
 
 
-// Actualizar animal
+// ---------------------Actualizar animal---------------------
 app.post('/api/actualizar_animal', upload.fields([{ name: 'foto' }, { name: 'cartillafoto' }]), (req, res) => {
   const { animalId, nombre, especie, raza, edad, peso } = req.body;
   const foto = req.files['foto'] ? req.files['foto'][0].buffer : null;
@@ -425,7 +425,7 @@ app.post('/api/eliminar_animal', (req, res) => {
   });
 });
 
-// Reportar animales
+// ---------------------Reportar animales---------------------
 app.post('/api/reporte_animal', upload.array('imagenes', 5), (req, res) => {
   const {
     tipoReporte,
@@ -479,7 +479,7 @@ app.post('/api/reporte_animal', upload.array('imagenes', 5), (req, res) => {
   //  Logica para subir fotos (aun no)
 });
 
-// Inicio de sesión
+// ---------------------Inicio de sesión---------------------
 app.post('/api/login', (req, res) => {
   console.log('Solicitud de inicio de sesión recibida:', req.body);
   const { username, password } = req.body;
