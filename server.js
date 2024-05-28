@@ -340,8 +340,20 @@ app.post('/api/registro_animal', upload.fields([{ name: 'foto' }, { name: 'carti
 // Obtener animales por usuario
 app.get('/api/obtener_animales/:userId', (req, res) => {
   const { userId } = req.params;
-  const query = 'SELECT id, nombre, especie, raza, edad, peso, foto, cartillafoto FROM animales WHERE usuario_id = ?';
-  db.query(query, [userId], (err, results) => {
+  const nivelAccess = req.query.nivelAccess; // Nuevo
+
+  let query;
+  let values;
+
+  if (nivelAccess === '2' || nivelAccess === '3') {
+    query = 'SELECT id, nombre, especie, raza, edad, peso, foto, cartillafoto FROM animales';
+    values = [];
+  } else {
+    query = 'SELECT id, nombre, especie, raza, edad, peso, foto, cartillafoto FROM animales WHERE usuario_id = ?';
+    values = [userId];
+  }
+
+  db.query(query, values, (err, results) => {
     if (err) {
       console.error('Error al obtener los animales:', err);
       return res.status(500).send({ success: false, error: 'Error en el servidor' });
@@ -359,6 +371,7 @@ app.get('/api/obtener_animales/:userId', (req, res) => {
     res.status(200).send(results);
   });
 });
+
 
 
 // ---------------------Actualizar animal---------------------

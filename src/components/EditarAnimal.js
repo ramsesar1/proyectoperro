@@ -34,7 +34,8 @@ const VentanaEdiAnimal = () => {
   useEffect(() => {
     const fetchAnimales = async () => {
       const userId = localStorage.getItem('userId');
-      const response = await axios.get(`http://localhost:3001/api/obtener_animales/${userId}`);
+      const nivelAccess = localStorage.getItem('nivelAccess');
+      const response = await axios.get(`http://localhost:3001/api/obtener_animales/${userId}?nivelAccess=${nivelAccess}`); 
       setAnimales(response.data);
     };
     fetchAnimales();

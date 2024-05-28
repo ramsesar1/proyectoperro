@@ -13,11 +13,11 @@
 -Contacto  aun no
 -Ayuda  aun no
 -Menu de usuario  YA
---Menu de admin  aun no
+--Menu de admin YA
 
 
--modo admin y dueno / admin YA dUEÑO NO
+-modo admin y dueno / admin YA dUEÑO YA
 --programa al login revisa el levelaccess YA
 ---si es 2, muestra todos los usuarios y animales, si es 3 ademas de eso, permite cambiar el nivel de acceso de usuarios existentes YA
 ---similar al menu de editar animales con esas cuentas, pueden elegir al usuario a editar YA
----modo dueño permita asignar level access AUN NO
+---modo dueño permita asignar level access YA
