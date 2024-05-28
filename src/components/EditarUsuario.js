@@ -17,7 +17,10 @@ const EditarUsuario = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState('');
   const [showComboBox, setShowComboBox] = useState(false);
+  const [showAccessLevelComboBox, setShowAccessLevelComboBox] = useState(false); 
+  const [newAccessLevel, setNewAccessLevel] = useState(''); 
   const [passwordFieldsDisabled, setPasswordFieldsDisabled] = useState(false);
+
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -47,6 +50,7 @@ const EditarUsuario = () => {
   
           setNivelAccess(userData.nivel_access);
           setShowComboBox(userData.nivel_access === 2 || userData.nivel_access === 3);
+          setShowAccessLevelComboBox(userData.nivel_access === 3); // combobox de nivel_access si el nivel es 3
   
           if (response.data.usuarios) {
             setUsuarios(response.data.usuarios);
@@ -86,7 +90,7 @@ const EditarUsuario = () => {
   
           setNivelAccess(userData.nivel_access);
           
-          // Bloquear los campos de contraseña si el usuario seleccionado no es el mismo
+          // Bloquear los campos de contraseña 
           setPasswordFieldsDisabled(userData.id !== localStorage.getItem('userId'));
         } else {
           alert('Error al obtener la información del usuario seleccionado');
@@ -133,6 +137,7 @@ const EditarUsuario = () => {
     if (fotoPerfil) formData.append('fotoPerfil', fotoPerfil);
     formData.append('contrasena', contrasena);
     if (nuevaContrasena) formData.append('nuevaContrasena', nuevaContrasena);
+    formData.append('newAccessLevel', newAccessLevel); // Agregar newAccessLevel al formData
   
     try {
       const response = await axios.post('http://localhost:3001/api/actualizar_usuario', formData, {
@@ -173,6 +178,10 @@ const EditarUsuario = () => {
   const handleUserChange = (event) => {
     setSelectedUserId(event.target.value);
   };
+
+  const handleAccessLevelChange = (event) => {
+    setNewAccessLevel(event.target.value);
+  }; 
 
   return (
     <div>
@@ -231,6 +240,16 @@ const EditarUsuario = () => {
             {usuarios.map((user) => (
               <option key={user.id} value={user.id}>{`${user.nombre} ${user.apellido}`}</option>
             ))}
+          </select>
+        </div>
+      )}
+      {showAccessLevelComboBox && ( // combobox de nivel_access si el nivel es 3
+        <div>
+          <label>Nivel de Acceso:</label>
+          <select value={newAccessLevel} onChange={handleAccessLevelChange}>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
           </select>
         </div>
       )}

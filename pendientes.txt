@@ -16,7 +16,8 @@
 --Menu de admin  aun no
 
 
--modo admin y dueno
---programa al login revisa el levelaccess
----si es 2, muestra todos los usuarios y animales, si es 3 ademas de eso, permite cambiar el nivel de acceso de usuarios existentes
----similar al menu de editar animales con esas cuentas, pueden elegir al usuario a editar
+-modo admin y dueno / admin YA dUEÑO NO
+--programa al login revisa el levelaccess YA
+---si es 2, muestra todos los usuarios y animales, si es 3 ademas de eso, permite cambiar el nivel de acceso de usuarios existentes YA
+---similar al menu de editar animales con esas cuentas, pueden elegir al usuario a editar YA
+---modo dueño permita asignar level access AUN NO
