@@ -1,5 +1,6 @@
 const express = require('express');
 const multer = require('multer');
+const cors = require('cors');
 const db = require('./src/db');
 require('dotenv').config();
 
@@ -438,8 +439,21 @@ app.post('/api/eliminar_animal', (req, res) => {
   });
 });
 
+
+
+
+
+
+
+
+
+
+app.use(cors());
+app.use(express.json());
+
+
+
 // ---------------------Reportar animales---------------------
-// Ruta para obtener todos los reportes de un usuario específico
 app.get('/api/reportes_animales/:usuario_id', (req, res) => {
   const usuario_id = req.params.usuario_id;
 
@@ -455,7 +469,7 @@ app.get('/api/reportes_animales/:usuario_id', (req, res) => {
   });
 });
 
-// Ruta para actualizar un reporte de animal
+// Ruta para crear un reporte de animal
 app.post('/api/reporte_animal', upload.single('imagen'), (req, res) => {
   const {
     tipoReporte,
@@ -507,6 +521,63 @@ app.post('/api/reporte_animal', upload.single('imagen'), (req, res) => {
   });
 });
 
+// Ruta para actualizar un reporte de animal
+
+app.put('/api/reporte_animal/:id', upload.single('imagen'), (req, res) => {
+  const reporteId = req.params.id;
+  const {
+    tipoReporte,
+    nombre,
+    correo,
+    telefono,
+    direccionReportero,
+    tipoAnimal,
+    edad,
+    genero,
+    tamano,
+    raza,
+    direccionAnimal,
+    ciudad,
+    estado,
+    codigoPostal,
+    fechaAvistamiento,
+    descripcionEstado,
+    circunstancias,
+    usuario_id
+  } = req.body;
+
+  const imagen = req.file ? req.file.buffer : null;
+
+  const query = `
+    UPDATE reportes_animales
+    SET tipo_reporte = ?, nombre_reportador = ?, correo_reportador = ?, telefono_reportador = ?, direccion_reportador = ?,
+    tipo_animal = ?, edad = ?, genero = ?, tamano = ?, raza = ?,
+    direccion_animal = ?, ciudad = ?, estado_provincia = ?, codigo_postal = ?,
+    fecha_avistamiento = ?, descripcion_estado = ?, circunstancias = ?, foto_reporte = ?
+    WHERE id = ?
+  `;
+
+  const values = [
+    tipoReporte, nombre, correo, telefono, direccionReportero,
+    tipoAnimal, edad, genero, tamano, raza,
+    direccionAnimal, ciudad, estado, codigoPostal,
+    fechaAvistamiento, descripcionEstado, circunstancias, imagen,
+    reporteId
+  ];
+
+  db.query(query, values, (err, result) => {
+    if (err) {
+      console.error('Error al actualizar el reporte de animal:', err);
+      res.status(500).send({ success: false, error: 'Error al actualizar el reporte de animal' });
+    } else {
+      console.log('Reporte de animal actualizado exitosamente');
+      res.status(200).send({ success: true });
+    }
+  });
+});
+
+
+
 // Ruta para obtener el reporte de un usuario específico junto con la imagen
 app.get('/api/reporte_animal/:usuario_id', (req, res) => {
   const usuario_id = req.params.usuario_id;
@@ -526,6 +597,43 @@ app.get('/api/reporte_animal/:usuario_id', (req, res) => {
     }
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // ---------------------Inicio de sesión---------------------

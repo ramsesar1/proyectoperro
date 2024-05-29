@@ -58,6 +58,9 @@ const ReporteAnimal = () => {
     setImagenURL(null);
   };
 
+  const [isEditMode, setIsEditMode] = useState(false);
+
+
   const handleSubmit = async () => {
     const userId = localStorage.getItem('userId');
     if (!userId) {
@@ -123,8 +126,69 @@ const ReporteAnimal = () => {
     fetchReportesUsuario();
   }, []);
 
+
+
+//actualizacion de reporte
+const handleUpdate = async () => {
+  const userId = localStorage.getItem('userId');
+  if (!userId) {
+    alert('Usuario no autenticado');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('usuario_id', userId);
+  formData.append('tipoReporte', tipoReporte);
+  formData.append('nombre', nombre);
+  formData.append('correo', correo);
+  formData.append('telefono', telefono);
+  formData.append('direccionReportero', direccionReportero);
+  formData.append('tipoAnimal', tipoAnimal);
+  formData.append('edad', edad);
+  formData.append('genero', genero);
+  formData.append('tamano', tamano);
+  formData.append('raza', raza);
+  formData.append('direccionAnimal', direccionAnimal);
+  formData.append('ciudad', ciudad);
+  formData.append('estado', estado);
+  formData.append('codigoPostal', codigoPostal);
+  formData.append('fechaAvistamiento', fechaAvistamiento);
+  formData.append('descripcionEstado', descripcionEstado);
+  formData.append('circunstancias', circunstancias);
+  if (imagen) {
+    formData.append('imagen', imagen);
+  }
+
+  try {
+    const response = await axios.put(`http://localhost:3001/api/reporte_animal/${selectedReporteId}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    if (response.data.success) {
+      alert('Reporte actualizado exitosamente');
+      handleCancel();
+      setIsEditMode(false);
+    } else {
+      alert('Error al actualizar el reporte');
+    }
+  } catch (error) {
+    console.error('Error al actualizar el reporte:', error);
+  }
+};
+
+
+
+
+
+
   const handleSelectedReporteChange = (reporteId) => {
     setSelectedReporteId(reporteId);
+    if (reporteId) {
+      setIsEditMode(true);
+    } else {
+      setIsEditMode(false);
+    }
     // Obtener el reporte seleccionado
     const reporteSeleccionado = reportesUsuario.find(reporte => reporte.id === parseInt(reporteId));
     // Llenar los campos con la información del reporte seleccionado
@@ -163,6 +227,22 @@ const ReporteAnimal = () => {
       }
     }
   };
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -278,10 +358,15 @@ const ReporteAnimal = () => {
         {imagenURL && <img src={imagenURL} alt="Reporte" style={{ width: '200px', height: '200px' }} />}
       </div>
 
-      <div>
-        <button onClick={handleCancel}>Cancelar</button>
-        <button onClick={handleSubmit}>Enviar</button>
-      </div>
+   <div>
+  <button onClick={handleCancel}>Cancelar</button>
+  {isEditMode ? (
+    <button onClick={handleUpdate}>Editar</button>
+  ) : (
+    <button onClick={handleSubmit}>Enviar</button>
+  )}
+</div>
+
     </div>
   );
 };
