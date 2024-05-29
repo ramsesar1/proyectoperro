@@ -29,7 +29,11 @@ const ReporteAnimal = () => {
   const [selectedReporteId, setSelectedReporteId] = useState('');
 
   const handleFileChange = (event) => {
-    setImagen(event.target.files[0]);
+    const file = event.target.files[0];
+    setImagen(file);
+
+    const fileUrl = URL.createObjectURL(file);
+    setImagenURL(fileUrl);
   };
 
   const handleCancel = () => {
@@ -119,36 +123,59 @@ const ReporteAnimal = () => {
     fetchReportesUsuario();
   }, []);
 
-  useEffect(() => {
-    const fetchReporte = async () => {
-      const userId = localStorage.getItem('userId');
-      if (!userId || !selectedReporteId) {
-        return;
+  const handleSelectedReporteChange = (reporteId) => {
+    setSelectedReporteId(reporteId);
+    // Obtener el reporte seleccionado
+    const reporteSeleccionado = reportesUsuario.find(reporte => reporte.id === parseInt(reporteId));
+    // Llenar los campos con la información del reporte seleccionado
+    if (reporteSeleccionado) {
+      const fechaHoraAvistamiento = new Date(reporteSeleccionado.fecha_avistamiento);
+      const formattedFechaHoraAvistamiento = `${fechaHoraAvistamiento.getFullYear()}-${('0' + (fechaHoraAvistamiento.getMonth() + 1)).slice(-2)}-${('0' + fechaHoraAvistamiento.getDate()).slice(-2)}T${('0' + fechaHoraAvistamiento.getHours()).slice(-2)}:${('0' + fechaHoraAvistamiento.getMinutes()).slice(-2)}`;
+
+      setTipoReporte(reporteSeleccionado.tipo_reporte);
+      setNombre(reporteSeleccionado.nombre_reportador);
+      setCorreo(reporteSeleccionado.correo_reportador);
+      setTelefono(reporteSeleccionado.telefono_reportador);
+      setDireccionReportero(reporteSeleccionado.direccion_reportador);
+      setTipoAnimal(reporteSeleccionado.tipo_animal);
+      setEdad(reporteSeleccionado.edad);
+      setGenero(reporteSeleccionado.genero);
+      setTamano(reporteSeleccionado.tamano);
+      setRaza(reporteSeleccionado.raza);
+      setDireccionAnimal(reporteSeleccionado.direccion_animal);
+      setCiudad(reporteSeleccionado.ciudad);
+      setEstado(reporteSeleccionado.estado_provincia);
+      setCodigoPostal(reporteSeleccionado.codigo_postal);
+    //  setFechaAvistamiento(reporteSeleccionado.fecha_avistamiento);
+    setFechaAvistamiento(formattedFechaHoraAvistamiento);
+
+      setDescripcionEstado(reporteSeleccionado.descripcion_estado);
+      setCircunstancias(reporteSeleccionado.circunstancias);
+      // Si hay imagen en el reporte, establecer la URL de la imagen
+      if (reporteSeleccionado.foto_reporte) {
+        const reader = new FileReader();
+        reader.readAsDataURL(new Blob([reporteSeleccionado.foto_reporte.data]));
+        reader.onloadend = () => {
+          setImagenURL(reader.result);
+        };
+      } else {
+        setImagenURL(null);
       }
+    }
+  };
 
-      try {
-        const response = await axios.get(`http://localhost:3001/api/reporte_animal/${selectedReporteId}`);
-        // Aquí deberías establecer los valores de los estados según los datos del reporte seleccionado
-        // Por ejemplo:
-        // setTipoReporte(response.data.tipoReporte);
-        // setNombre(response.data.nombre);
-        // Y así con los demás campos...
-      } catch (error) {
-        console.error('Error al cargar el reporte:', error);
-      }
-    };
 
-    fetchReporte();
-  }, [selectedReporteId]);
 
+
+ 
   return (
     <div>
     
 
       <h2>Reporte de Animal</h2>
       <div>
-        <label>Seleccionar Reporte Existente:</label>
-        <select value={selectedReporteId} onChange={(e) => setSelectedReporteId(e.target.value)}>
+      <label>Seleccionar Reporte Existente:</label>
+        <select value={selectedReporteId} onChange={(e) => handleSelectedReporteChange(e.target.value)}>
           <option value="">Nuevo Reporte</option>
           {reportesUsuario.map((reporte) => (
             <option key={reporte.id} value={reporte.id}>
@@ -245,8 +272,9 @@ const ReporteAnimal = () => {
       </div>
 
       <div>
-        <label>Adjuntar Imágenes:</label>
+      <label>Adjuntar Imágenes:</label>
         <input type="file" onChange={handleFileChange} />
+        {/* Mostrar la imagen si está seleccionada */}
         {imagenURL && <img src={imagenURL} alt="Reporte" style={{ width: '200px', height: '200px' }} />}
       </div>
 
