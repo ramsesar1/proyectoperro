@@ -439,7 +439,24 @@ app.post('/api/eliminar_animal', (req, res) => {
 });
 
 // ---------------------Reportar animales---------------------
-app.post('/api/reporte_animal', upload.array('imagenes', 5), (req, res) => {
+// Ruta para obtener todos los reportes de un usuario específico
+app.get('/api/reportes_animales/:usuario_id', (req, res) => {
+  const usuario_id = req.params.usuario_id;
+
+  const query = `SELECT * FROM reportes_animales WHERE usuario_id = ?`;
+
+  db.query(query, [usuario_id], (err, results) => {
+    if (err) {
+      console.error('Error al obtener los reportes de animal:', err);
+      res.status(500).send({ success: false, error: 'Error al obtener los reportes de animal' });
+    } else {
+      res.status(200).send(results);
+    }
+  });
+});
+
+// Ruta para actualizar un reporte de animal
+app.post('/api/reporte_animal', upload.single('imagen'), (req, res) => {
   const {
     tipoReporte,
     nombre,
@@ -458,25 +475,25 @@ app.post('/api/reporte_animal', upload.array('imagenes', 5), (req, res) => {
     fechaAvistamiento,
     descripcionEstado,
     circunstancias,
-    usuario_id 
+    usuario_id
   } = req.body;
 
-  const imagenes = req.files ? req.files.map(file => file.buffer) : [];
+  const imagen = req.file ? req.file.buffer : null;
 
-  const query = ` 
+  const query = `
     INSERT INTO reportes_animales (
       tipo_reporte, nombre_reportador, correo_reportador, telefono_reportador, direccion_reportador, 
       tipo_animal, edad, genero, tamano, raza, 
       direccion_animal, ciudad, estado_provincia, codigo_postal, 
-      fecha_avistamiento, descripcion_estado, circunstancias, usuario_id
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      fecha_avistamiento, descripcion_estado, circunstancias, usuario_id, foto_reporte
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
   const values = [
     tipoReporte, nombre, correo, telefono, direccionReportero, 
     tipoAnimal, edad, genero, tamano, raza, 
     direccionAnimal, ciudad, estado, codigoPostal, 
-    fechaAvistamiento, descripcionEstado, circunstancias, usuario_id
+    fechaAvistamiento, descripcionEstado, circunstancias, usuario_id, imagen
   ];
 
   db.query(query, values, (err, result) => {
@@ -484,13 +501,32 @@ app.post('/api/reporte_animal', upload.array('imagenes', 5), (req, res) => {
       console.error('Error al insertar el reporte de animal:', err);
       res.status(500).send({ success: false, error: 'Error al insertar el reporte de animal' });
     } else {
-      console.log('Reporte de animal insertado exitosamente:');
+      console.log('Reporte de animal insertado exitosamente');
       res.status(200).send({ success: true });
     }
   });
-
-  //  Logica para subir fotos (aun no)
 });
+
+// Ruta para obtener el reporte de un usuario específico junto con la imagen
+app.get('/api/reporte_animal/:usuario_id', (req, res) => {
+  const usuario_id = req.params.usuario_id;
+
+  const query = `SELECT * FROM reportes_animales WHERE usuario_id = ?`;
+
+  db.query(query, [usuario_id], (err, results) => {
+    if (err) {
+      console.error('Error al obtener el reporte de animal:', err);
+      res.status(500).send({ success: false, error: 'Error al obtener el reporte de animal' });
+    } else {
+      if (results.length > 0) {
+        res.status(200).send(results[0]);
+      } else {
+        res.status(404).send({ success: false, error: 'Reporte no encontrado' });
+      }
+    }
+  });
+});
+
 
 // ---------------------Inicio de sesión---------------------
 app.post('/api/login', (req, res) => {

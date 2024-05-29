@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const ReporteAnimal = () => {
@@ -22,10 +22,14 @@ const ReporteAnimal = () => {
   const [fechaAvistamiento, setFechaAvistamiento] = useState('');
   const [descripcionEstado, setDescripcionEstado] = useState('');
   const [circunstancias, setCircunstancias] = useState('');
-  const [imagenes, setImagenes] = useState(null);
+  const [imagen, setImagen] = useState(null);
+  const [imagenURL, setImagenURL] = useState(null);
+
+  const [reportesUsuario, setReportesUsuario] = useState([]);
+  const [selectedReporteId, setSelectedReporteId] = useState('');
 
   const handleFileChange = (event) => {
-    setImagenes(event.target.files);
+    setImagen(event.target.files[0]);
   };
 
   const handleCancel = () => {
@@ -46,7 +50,8 @@ const ReporteAnimal = () => {
     setFechaAvistamiento('');
     setDescripcionEstado('');
     setCircunstancias('');
-    setImagenes(null);
+    setImagen(null);
+    setImagenURL(null);
   };
 
   const handleSubmit = async () => {
@@ -75,10 +80,8 @@ const ReporteAnimal = () => {
     formData.append('fechaAvistamiento', fechaAvistamiento);
     formData.append('descripcionEstado', descripcionEstado);
     formData.append('circunstancias', circunstancias);
-    if (imagenes) {
-      for (const file of imagenes) {
-        formData.append('imagenes', file);
-      }
+    if (imagen) {
+      formData.append('imagen', imagen);
     }
 
     try {
@@ -98,9 +101,62 @@ const ReporteAnimal = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchReportesUsuario = async () => {
+      const userId = localStorage.getItem('userId');
+      if (!userId) {
+        return;
+      }
+
+      try {
+        const response = await axios.get(`http://localhost:3001/api/reportes_animales/${userId}`);
+        setReportesUsuario(response.data);
+      } catch (error) {
+        console.error('Error al cargar los reportes del usuario:', error);
+      }
+    };
+
+    fetchReportesUsuario();
+  }, []);
+
+  useEffect(() => {
+    const fetchReporte = async () => {
+      const userId = localStorage.getItem('userId');
+      if (!userId || !selectedReporteId) {
+        return;
+      }
+
+      try {
+        const response = await axios.get(`http://localhost:3001/api/reporte_animal/${selectedReporteId}`);
+        // Aquí deberías establecer los valores de los estados según los datos del reporte seleccionado
+        // Por ejemplo:
+        // setTipoReporte(response.data.tipoReporte);
+        // setNombre(response.data.nombre);
+        // Y así con los demás campos...
+      } catch (error) {
+        console.error('Error al cargar el reporte:', error);
+      }
+    };
+
+    fetchReporte();
+  }, [selectedReporteId]);
+
   return (
     <div>
+    
+
       <h2>Reporte de Animal</h2>
+      <div>
+        <label>Seleccionar Reporte Existente:</label>
+        <select value={selectedReporteId} onChange={(e) => setSelectedReporteId(e.target.value)}>
+          <option value="">Nuevo Reporte</option>
+          {reportesUsuario.map((reporte) => (
+            <option key={reporte.id} value={reporte.id}>
+              {reporte.tipo_animal} - {reporte.ciudad} ({new Date(reporte.fecha_reporte).toLocaleDateString()})
+            </option>
+          ))}
+        </select>
+      </div>
       <div>
         <label>Tipo de Reporte:</label>
         <select value={tipoReporte} onChange={(e) => setTipoReporte(e.target.value)}>
@@ -190,7 +246,8 @@ const ReporteAnimal = () => {
 
       <div>
         <label>Adjuntar Imágenes:</label>
-        <input type="file" multiple onChange={handleFileChange} />
+        <input type="file" onChange={handleFileChange} />
+        {imagenURL && <img src={imagenURL} alt="Reporte" style={{ width: '200px', height: '200px' }} />}
       </div>
 
       <div>
