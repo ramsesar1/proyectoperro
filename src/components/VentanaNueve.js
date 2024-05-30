@@ -1,8 +1,25 @@
 // VentanaNueve.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import './VentanaNueve.css'; 
 
-function VentanaNueve() {
+const VentanaNueve = () => {
+  const [reportes, setReportes] = useState([]);
+
+  useEffect(() => {
+    const fetchReportes = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/api/reportes_animales');
+        setReportes(response.data);
+      } catch (error) {
+        console.error('Error al obtener los reportes:', error);
+      }
+    };
+
+    fetchReportes();
+  }, []);
+
   return (
     <div>
       <h2>Ventana Nueve</h2>
@@ -14,12 +31,39 @@ function VentanaNueve() {
           <li>
             <Link to="/ventana2">Ir a Ventana Secundaria</Link>
           </li>
-          {/* Agrega aquí más enlaces si es necesario */}
         </ul>
       </nav>
-      {/* Contenido de la ventana Tres */}
+
+      <div className="reportes-list">
+        {reportes.map((reporte) => (
+          <div key={reporte.id} className="reporte-card">
+            {reporte.foto_reporte && (
+              <img
+                src={`data:image/jpeg;base64,${btoa(
+                  new Uint8Array(reporte.foto_reporte.data).reduce(
+                    (data, byte) => data + String.fromCharCode(byte),
+                    ''
+                  )
+                )}`}
+                alt="Foto del reporte"
+                className="reporte-foto"
+              />
+            )}
+            <p><strong>Fecha del reporte:</strong> {new Date(reporte.fecha_reporte).toLocaleString()}</p>
+            <p><strong>Tipo de reporte:</strong> {reporte.tipo_reporte}</p>
+            <p><strong>Nombre del reportador:</strong> {reporte.nombre_reportador}</p>
+            <p><strong>Teléfono del reportador:</strong> {reporte.telefono_reportador}</p>
+            <p><strong>Tipo de animal:</strong> {reporte.tipo_animal}</p>
+            <p><strong>Edad:</strong> {reporte.edad}</p>
+            <p><strong>Género:</strong> {reporte.genero}</p>
+            <p><strong>Raza:</strong> {reporte.raza}</p>
+            <p><strong>Ciudad y estado/provincia:</strong> {reporte.ciudad}, {reporte.estado_provincia}</p>
+            <p><strong>Circunstancias:</strong> {reporte.circunstancias}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
-}
+};
 
 export default VentanaNueve;

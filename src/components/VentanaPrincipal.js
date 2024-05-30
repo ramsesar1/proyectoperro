@@ -30,7 +30,7 @@ function VentanaPrincipal() {
             <Link to="/ventana8">Ventana Reportar</Link>
           </li>
           <li>
-            <Link to="/ventana9">Ventana Nueve</Link>
+            <Link to="/ventana9">Ver Reportes</Link>
           </li>
           <li>
             <Link to="/ventana10">Ventana Diez</Link>

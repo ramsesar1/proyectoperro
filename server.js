@@ -597,6 +597,21 @@ app.get('/api/reporte_animal/:usuario_id', (req, res) => {
     }
   });
 });
+//----------------------Muestra de reportes------------------------
+// Ruta para obtener todos los reportes de animales
+app.get('/api/reportes_animales', (req, res) => {
+  const query = `SELECT * FROM reportes_animales`;
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error('Error al obtener los reportes de animal:', err);
+      res.status(500).send({ success: false, error: 'Error al obtener los reportes de animal' });
+    } else {
+      res.status(200).send(results);
+    }
+  });
+});
+
 
 
 
