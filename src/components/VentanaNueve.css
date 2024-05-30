@@ -24,3 +24,14 @@
     gap: 16px; 
   }
   
+  .search-input {
+    width: 100%;
+    max-width: 300px;
+    padding: 8px;
+    margin: 16px auto;
+    display: block;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  

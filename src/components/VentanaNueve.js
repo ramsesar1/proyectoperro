@@ -6,6 +6,7 @@ import './VentanaNueve.css';
 
 const VentanaNueve = () => {
   const [reportes, setReportes] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchReportes = async () => {
@@ -19,6 +20,17 @@ const VentanaNueve = () => {
 
     fetchReportes();
   }, []);
+
+  const filteredReportes = reportes.filter((reporte) => {
+    return (
+      reporte.tipo_animal.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      reporte.edad.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      reporte.genero.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      reporte.raza.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      reporte.tipo_reporte.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      reporte.nombre_reportador.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
 
   return (
     <div>
@@ -34,8 +46,16 @@ const VentanaNueve = () => {
         </ul>
       </nav>
 
+      <input
+        type="text"
+        placeholder="Buscar..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="search-input"
+      />
+
       <div className="reportes-list">
-        {reportes.map((reporte) => (
+        {filteredReportes.map((reporte) => (
           <div key={reporte.id} className="reporte-card">
             {reporte.foto_reporte && (
               <img
