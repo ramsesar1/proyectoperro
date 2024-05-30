@@ -597,8 +597,10 @@ app.get('/api/reporte_animal/:usuario_id', (req, res) => {
     }
   });
 });
+
+
+
 //----------------------Muestra de reportes------------------------
-// Ruta para obtener todos los reportes de animales
 app.get('/api/reportes_animales', (req, res) => {
   const query = `SELECT * FROM reportes_animales`;
 
@@ -611,6 +613,44 @@ app.get('/api/reportes_animales', (req, res) => {
     }
   });
 });
+
+
+// Ruta para crear un comentario
+app.post('/api/comentarios', (req, res) => {
+  const { reporteId, comentario } = req.body;
+  const fechaComentario = new Date().toISOString(); // Obtener la fecha actual
+
+  const query = `
+  INSERT INTO comentarios (reporte_id, comentario, fecha_comentario)
+  VALUES (?, ?, NOW())
+`;
+  db.query(query, [reporteId, comentario, fechaComentario], (err, result) => {
+    if (err) {
+      console.error('Error al añadir el comentario:', err);
+      res.status(500).send({ success: false, error: 'Error al añadir el comentario' });
+    } else {
+      console.log('Comentario añadido exitosamente');
+      res.status(200).send({ success: true });
+    }
+  });
+});
+
+
+// Ruta para obtener los comentarios de un reporte específico
+app.get('/api/comentarios/:reporteId', (req, res) => {
+  const reporteId = req.params.reporteId;
+  const query = `SELECT comentario FROM comentarios WHERE reporte_id = ?`;
+
+  db.query(query, [reporteId], (err, results) => {
+    if (err) {
+      console.error('Error al obtener los comentarios del reporte:', err);
+      res.status(500).send({ success: false, error: 'Error al obtener los comentarios del reporte' });
+    } else {
+      res.status(200).send(results.map(result => result.comentario));
+    }
+  });
+});
+
 
 
 

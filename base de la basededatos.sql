@@ -48,20 +48,32 @@ CREATE TABLE reportes_animales (
     descripcion_estado TEXT,
     circunstancias TEXT,
     usuario_id VARCHAR(255),
-    fecha_reporte TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    
+    fecha_reporte TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    foto_reporte LONGBLOB,
+    comentario VARCHAR (3000)
 );
 
 
-drop table animales;
-drop table reportes_animales;
 
+CREATE TABLE comentarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    reporte_id INT,
+    comentario TEXT NOT NULL,
+    fecha_comentario DATETIME NOT NULL,
+    FOREIGN KEY (reporte_id) REFERENCES reportes_animales(id)
+);
+
+
+
+
+drop table comentarios;
 
 ALTER TABLE usuarios MODIFY COLUMN contraseña VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL;
 
 select * from reportes_animales;
 select * from usuarios;
 select * from animales;
+select * from comentarios;
 
 
 INSERT INTO usuarios (nombre, apellido, email, contraseña, nivel_access, telefono, fecha_nacimiento, genero) 

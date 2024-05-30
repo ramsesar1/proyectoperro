@@ -1,4 +1,3 @@
-// VentanaNueve.js
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -7,12 +6,22 @@ import './VentanaNueve.css';
 const VentanaNueve = () => {
   const [reportes, setReportes] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [nuevosComentarios, setNuevosComentarios] = useState({});
 
   useEffect(() => {
     const fetchReportes = async () => {
       try {
         const response = await axios.get('http://localhost:3001/api/reportes_animales');
-        setReportes(response.data);
+        const reportesConComentarios = await Promise.all(response.data.map(async (reporte) => {
+          const comentariosResponse = await axios.get(`http://localhost:3001/api/comentarios/${reporte.id}`);
+          return { ...reporte, comentarios: comentariosResponse.data };
+        }));
+        setReportes(reportesConComentarios);
+        const initialComentarios = {};
+        reportesConComentarios.forEach(reporte => {
+          initialComentarios[reporte.id] = '';
+        });
+        setNuevosComentarios(initialComentarios);
       } catch (error) {
         console.error('Error al obtener los reportes:', error);
       }
@@ -20,6 +29,28 @@ const VentanaNueve = () => {
 
     fetchReportes();
   }, []);
+
+  const handleAddComentario = async (reporteId) => {
+    if (!nuevosComentarios[reporteId].trim()) return;
+    try {
+      await axios.post('http://localhost:3001/api/comentarios', {
+        reporteId,
+        comentario: nuevosComentarios[reporteId].trim(),
+      });
+      const comentariosResponse = await axios.get(`http://localhost:3001/api/comentarios/${reporteId}`);
+      const updatedReportes = reportes.map(reporte => {
+        if (reporte.id === reporteId) {
+          return { ...reporte, comentarios: comentariosResponse.data };
+        }
+        return reporte;
+      });
+      setReportes(updatedReportes);
+      const updatedComentarios = { ...nuevosComentarios, [reporteId]: '' };
+      setNuevosComentarios(updatedComentarios);
+    } catch (error) {
+      console.error('Error al añadir el comentario:', error);
+    }
+  };
 
   const filteredReportes = reportes.filter((reporte) => {
     return (
@@ -57,6 +88,7 @@ const VentanaNueve = () => {
       <div className="reportes-list">
         {filteredReportes.map((reporte) => (
           <div key={reporte.id} className="reporte-card">
+            {/* Mostrar imagen del reporte */}
             {reporte.foto_reporte && (
               <img
                 src={`data:image/jpeg;base64,${btoa(
@@ -69,6 +101,7 @@ const VentanaNueve = () => {
                 className="reporte-foto"
               />
             )}
+            {/* Resto de la información del reporte */}
             <p><strong>Fecha del reporte:</strong> {new Date(reporte.fecha_reporte).toLocaleString()}</p>
             <p><strong>Tipo de reporte:</strong> {reporte.tipo_reporte}</p>
             <p><strong>Nombre del reportador:</strong> {reporte.nombre_reportador}</p>
@@ -79,6 +112,27 @@ const VentanaNueve = () => {
             <p><strong>Raza:</strong> {reporte.raza}</p>
             <p><strong>Ciudad y estado/provincia:</strong> {reporte.ciudad}, {reporte.estado_provincia}</p>
             <p><strong>Circunstancias:</strong> {reporte.circunstancias}</p>
+
+            <div className="add-comentario">
+              <input
+                type="text"
+                placeholder="Añadir comentario..."
+                value={nuevosComentarios[reporte.id]}
+                onChange={(e) => {
+                  const updatedComentarios = {...nuevosComentarios};
+                  updatedComentarios[reporte.id] = e.target.value;
+                  setNuevosComentarios(updatedComentarios);
+                }}
+              />
+              <button onClick={() => handleAddComentario(reporte.id)}>Enviar</button>
+            </div>
+
+            <div className="actualizaciones-section">
+              <h3>Actualizaciones:</h3>
+              {reporte.comentarios && reporte.comentarios.map((comentario, index) => (
+                <p key={index}>{comentario}</p>
+              ))}
+            </div>
           </div>
         ))}
       </div>
