@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import './styleSheets/loginStyle.css'; // Asegúrate de importar el archivo CSS
+import './styleSheets/loginStyle.css'; // Asegúrate de importar el archivo CSS 
+
 
 const LoginComponent = () => {
   const [username, setUsername] = useState('');

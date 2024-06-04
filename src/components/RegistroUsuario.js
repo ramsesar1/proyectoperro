@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
+import './styleSheets/registroStyle.css';
 
 function RegistroUsuario() {
   const [nombre, setNombre] = useState('');
@@ -10,13 +12,25 @@ function RegistroUsuario() {
   const [fechaNacimiento, setFechaNacimiento] = useState('');
   const [genero, setGenero] = useState('');
   const [fotoPerfil, setFotoPerfil] = useState(null);
+  const [alerta, setAlerta] = useState('');
+  const [mostrarAlerta, setMostrarAlerta] = useState(false);
+
+  useEffect(() => {
+    if (alerta) {
+      setMostrarAlerta(true);
+      const timer = setTimeout(() => {
+        setMostrarAlerta(false);
+        setAlerta('');
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [alerta]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Validar que la contraseña no esté vacía
     if (!contrasena) {
-      alert('Por favor, ingresa una contraseña');
+      setAlerta('Por favor, ingresa una contraseña');
       return;
     }
 
@@ -47,8 +61,10 @@ function RegistroUsuario() {
       setFechaNacimiento('');
       setGenero('');
       setFotoPerfil(null);
+      setAlerta('Usuario registrado exitosamente');
     } catch (error) {
       console.error('Error registrando usuario:', error);
+      setAlerta('Error registrando usuario');
     }
   };
 
@@ -57,77 +73,108 @@ function RegistroUsuario() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Nombre:</label>
-        <input
-          type="text"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-          required
-        />
+    <div className="login-container">
+      <div className="login-box">
+        <div className="login-content">
+          <h2 className="login-title">Registro</h2>
+          <div className="register-link">
+            ¿Ya tienes cuenta? <Link to="/">Iniciar sesión</Link>
+          </div>
+          <form onSubmit={handleSubmit}>
+            <div className="login-field">
+              <input
+                type="text"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                placeholder="Nombre"
+                className="input-field"
+                required
+              />
+              <label className="input-label">Nombre</label>
+            </div>
+            <div className="login-field">
+              <input
+                type="text"
+                value={apellido}
+                onChange={(e) => setApellido(e.target.value)}
+                placeholder="Apellido"
+                className="input-field"
+                required
+              />
+              <label className="input-label">Apellido</label>
+            </div>
+            <div className="login-field">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
+                className="input-field"
+                required
+              />
+              <label className="input-label">Email</label>
+            </div>
+            <div className="login-field">
+              <input
+                type="password"
+                value={contrasena}
+                onChange={(e) => setContrasena(e.target.value)}
+                placeholder="Contraseña"
+                className="input-field"
+                required
+              />
+              <label className="input-label">Contraseña</label>
+            </div>
+            <div className="login-field">
+              <input
+                type="tel"
+                value={telefono}
+                onChange={(e) => setTelefono(e.target.value)}
+                placeholder="Teléfono"
+                className="input-field"
+              />
+              <label className="input-label">Teléfono</label>
+            </div>
+            <div className="login-field">
+              <input
+                type="date"
+                value={fechaNacimiento}
+                onChange={(e) => setFechaNacimiento(e.target.value)}
+                placeholder="Fecha de Nacimiento"
+                className="input-field"
+              />
+              <label className="input-label">Fecha de Nacimiento</label>
+            </div>
+            <div className="login-field">
+              <select
+                value={genero}
+                onChange={(e) => setGenero(e.target.value)}
+                className="input-field select-field"
+              >
+                <option value="">Seleccione</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+                <option value="Otro">Otro</option>
+              </select>
+              <label className="input-label">Género</label>
+            </div>
+            <div className="login-field">
+              <input
+                type="file"
+                onChange={handleFileChange}
+                className="input-field"
+              />
+              <label className="input-label">Foto de Perfil</label>
+            </div>
+            <button type="submit" className="login-button">Registrarse</button>
+          </form>
+          {mostrarAlerta && <div className="alerta">{alerta}</div>}
+        </div>
+        <div className="login-image">
+          <img src="https://www.anicura.es/cdn-cgi/image/f=auto,q=60,fit=cover,w=1440,h=1080,g=auto,sharpen=1/AdaptiveImages/powerinit/59231/Puppy%20Header.png?stamp=eedac2d7ef0f5ba3441583da00fd7add601ba375" alt="Login" />
+        </div>
       </div>
-      <div>
-        <label>Apellido:</label>
-        <input
-          type="text"
-          value={apellido}
-          onChange={(e) => setApellido(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label>Email:</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label>Contraseña:</label>
-        <input
-          type="password"
-          value={contrasena}
-          onChange={(e) => setContrasena(e.target.value)}
-          required
-        />
-      </div>
-      <div>
-        <label>Teléfono:</label>
-        <input
-          type="tel"
-          value={telefono}
-          onChange={(e) => setTelefono(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Fecha de Nacimiento:</label>
-        <input
-          type="date"
-          value={fechaNacimiento}
-          onChange={(e) => setFechaNacimiento(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Género:</label>
-        <select value={genero} onChange={(e) => setGenero(e.target.value)}>
-          <option value="">Seleccione</option>
-          <option value="Masculino">Masculino</option>
-          <option value="Femenino">Femenino</option>
-          <option value="Otro">Otro</option>
-        </select>
-      </div>
-      <div>
-        <label>Foto de Perfil:</label>
-        <input
-          type="file"
-          onChange={handleFileChange}
-        />
-      </div>
-      <button type="submit">Registrarse</button>
-    </form>
+    </div>
   );
 }
 

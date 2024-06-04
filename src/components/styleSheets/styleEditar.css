@@ -1,0 +1,62 @@
+/* styleSheets/ventanaCinco.css */
+.container {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  nav ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  nav ul li {
+    display: inline;
+    margin-right: 10px;
+  }
+  
+  .option-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .option {
+    width: 40%;
+    margin: 10px;
+    text-decoration: none;
+    color: black;
+    transition: width 0.3s ease;
+    border-radius: 15px;
+    overflow: hidden;
+  }
+  
+  .option:hover {
+    width: 60%;
+  }
+  
+  .image-container {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    overflow: hidden;
+    border-radius: 15px;
+  }
+  
+  .image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .overlay-text {
+    position: absolute;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 20px;
+  }
+  
