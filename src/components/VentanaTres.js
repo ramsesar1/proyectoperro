@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import NavBar from './NavBar';
+import './styleSheets/registroAnimalStyle.css';
 
 const VentanaTres = () => {
   const [nombre, setNombre] = useState('');
@@ -56,36 +58,44 @@ const VentanaTres = () => {
 
   return (
     <div>
-      <h2>Registrar Animal</h2>
-      <div>
-        <label>Nombre del Animal:</label>
-        <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+      <div className="navRegAni-container">
+        <NavBar title="Registrar animal" />
       </div>
-      <div>
-        <label>Especie:</label>
-        <input type="text" value={especie} onChange={(e) => setEspecie(e.target.value)} />
+      <div className="formRegAni-container">
+        <form className="register-form">
+          <div>
+            <label>Nombre del Animal:</label>
+            <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+          </div>
+          <div>
+            <label>Especie:</label>
+            <input type="text" value={especie} onChange={(e) => setEspecie(e.target.value)} />
+          </div>
+          <div>
+            <label>Raza:</label>
+            <input type="text" value={raza} onChange={(e) => setRaza(e.target.value)} />
+          </div>
+          <div>
+            <label>Edad:</label>
+            <input type="number" value={edad} onChange={(e) => setEdad(e.target.value)} />
+          </div>
+          <div>
+            <label>Peso:</label>
+            <input type="number" step="0.01" value={peso} onChange={(e) => setPeso(e.target.value)} />
+          </div>
+          <div>
+            <label>Foto:</label>
+            <input type="file" onChange={(e) => setFoto(e.target.files[0])} />
+          </div>
+          <div>
+            <label>Cartilla Foto:</label>
+            <input type="file" onChange={(e) => setCartillaFoto(e.target.files[0])} />
+          </div>
+          <div className="button-container">
+            <button type="button" onClick={handleRegisterAnimal} className="submit-button">Registrar Animal</button>
+          </div>
+        </form>
       </div>
-      <div>
-        <label>Raza:</label>
-        <input type="text" value={raza} onChange={(e) => setRaza(e.target.value)} />
-      </div>
-      <div>
-        <label>Edad:</label>
-        <input type="number" value={edad} onChange={(e) => setEdad(e.target.value)} />
-      </div>
-      <div>
-        <label>Peso:</label>
-        <input type="number" step="0.01" value={peso} onChange={(e) => setPeso(e.target.value)} />
-      </div>
-      <div>
-        <label>Foto:</label>
-        <input type="file" onChange={(e) => setFoto(e.target.files[0])} />
-      </div>
-      <div>
-        <label>Cartilla Foto:</label>
-        <input type="file" onChange={(e) => setCartillaFoto(e.target.files[0])} />
-      </div>
-      <button onClick={handleRegisterAnimal}>Registrar Animal</button>
     </div>
   );
 };

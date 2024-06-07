@@ -25,6 +25,7 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     width: 100%;
     overflow: hidden;
+    margin-top: 80px;
   }
   
   .login-content {

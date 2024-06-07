@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './styleSheets/editAnimalStyle.css';
+import NavBar from './NavBar';
 
 const VentanaEdiAnimal = () => {
   const [animales, setAnimales] = useState([]);
@@ -121,48 +123,56 @@ const VentanaEdiAnimal = () => {
 
   return (
     <div>
-      <h2>Editar Animal</h2>
-      <div>
-        <label>Seleccionar Animal:</label>
-        <select value={selectedAnimal} onChange={(e) => setSelectedAnimal(e.target.value)}>
-          <option value="">Seleccione</option>
-          {animales.map(animal => (
-            <option key={animal.id} value={animal.id}>{animal.nombre}</option>
-          ))}
-        </select>
+      <div className="nav-container">
+        <NavBar title="Página Principal" />
       </div>
-      <div>
-        <label>Nombre:</label>
-        <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+      <div className="editAnForm-container">
+        <form className="editAnForm">
+          <div>
+            <label>Seleccionar Animal:</label>
+            <select value={selectedAnimal} onChange={(e) => setSelectedAnimal(e.target.value)}>
+              <option value="">Seleccione</option>
+              {animales.map(animal => (
+                <option key={animal.id} value={animal.id}>{animal.nombre}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label>Nombre:</label>
+            <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+          </div>
+          <div>
+            <label>Especie:</label>
+            <input type="text" value={especie} onChange={(e) => setEspecie(e.target.value)} />
+          </div>
+          <div>
+            <label>Raza:</label>
+            <input type="text" value={raza} onChange={(e) => setRaza(e.target.value)} />
+          </div>
+          <div>
+            <label>Edad:</label>
+            <input type="number" value={edad} onChange={(e) => setEdad(e.target.value)} />
+          </div>
+          <div>
+            <label>Peso:</label>
+            <input type="number" value={peso} onChange={(e) => setPeso(e.target.value)} />
+          </div>
+          <div>
+            <label>Foto:</label>
+            <input type="file" onChange={(e) => handleFileChange(e, setFoto, setFotoUrl)} />
+            {fotoUrl && <img src={fotoUrl} alt="Foto del animal" className="animalImg" />}
+          </div>
+          <div>
+            <label>Cartilla Foto:</label>
+            <input type="file" onChange={(e) => handleFileChange(e, setCartillafoto, setCartillafotoUrl)} />
+            {cartillafotoUrl && <img src={cartillafotoUrl} alt="Cartilla del animal" className="animalImg" />}
+          </div>
+          <div className="button-container">
+            <button type="button" onClick={handleUpdateAnimal}>Actualizar Animal</button>
+            <button type="button" onClick={handleDeleteAnimal}>Eliminar Animal</button>
+          </div>
+        </form>
       </div>
-      <div>
-        <label>Especie:</label>
-        <input type="text" value={especie} onChange={(e) => setEspecie(e.target.value)} />
-      </div>
-      <div>
-        <label>Raza:</label>
-        <input type="text" value={raza} onChange={(e) => setRaza(e.target.value)} />
-      </div>
-      <div>
-        <label>Edad:</label>
-        <input type="number" value={edad} onChange={(e) => setEdad(e.target.value)} />
-      </div>
-      <div>
-        <label>Peso:</label>
-        <input type="number" value={peso} onChange={(e) => setPeso(e.target.value)} />
-      </div>
-      <div>
-        <label>Foto:</label>
-        <input type="file" onChange={(e) => handleFileChange(e, setFoto, setFotoUrl)} />
-        {fotoUrl && <img src={fotoUrl} alt="Foto del animal" width="100" />}
-      </div>
-      <div>
-        <label>Cartilla Foto:</label>
-        <input type="file" onChange={(e) => handleFileChange(e, setCartillafoto, setCartillafotoUrl)} />
-        {cartillafotoUrl && <img src={cartillafotoUrl} alt="Cartilla del animal" width="100" />}
-      </div>
-      <button onClick={handleUpdateAnimal}>Actualizar Animal</button>
-      <button onClick={handleDeleteAnimal}>Eliminar Animal</button>
     </div>
   );
 };

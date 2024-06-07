@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './styleSheets/editUserStyle.css';
+import NavBar from './NavBar';
 
 const EditarUsuario = () => {
   const [nombre, setNombre] = useState('');
@@ -185,77 +187,86 @@ const EditarUsuario = () => {
 
   return (
     <div>
-      <h2>Editar Usuario</h2>
-      <div>
-        <label>Nombre:</label>
-        <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+      <div className="editUser-container">
+        <NavBar title="Editar Usuario" />
       </div>
-      <div>
-        <label>Apellido:</label>
-        <input type="text" value={apellido} onChange={(e) => setApellido(e.target.value)} />
+      <div className="formUser-container">
+        <form>
+          {showComboBox && ( 
+            <div>
+              <label>Seleccionar Usuario:</label>
+              <select value={selectedUserId} onChange={handleUserChange}>
+                <option value="">Seleccione un usuario</option>
+                {usuarios.map((user) => (
+                  <option key={user.id} value={user.id}>{`${user.nombre} ${user.apellido}`}</option>
+                ))}
+              </select>
+            </div>
+          )}
+          {showAccessLevelComboBox && (
+            <div>
+              <label>Nivel de Acceso:</label>
+              <select value={newAccessLevel} onChange={handleAccessLevelChange}>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select>
+            </div>
+          )}
+          <div>
+            <label>Nombre:</label>
+            <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+          </div>
+          <div>
+            <label>Apellido:</label>
+            <input type="text" value={apellido} onChange={(e) => setApellido(e.target.value)} />
+          </div>
+          <div>
+            <label>Email:</label>
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          </div>
+          <div>
+            <label>Teléfono:</label>
+            <input type="tel" value={telefono} onChange={(e) => setTelefono(e.target.value)} />
+          </div>
+          <div>
+            <label>Fecha de Nacimiento:</label>
+            <input type="date" value={fechaNacimiento} onChange={(e) => setFechaNacimiento(e.target.value)} />
+          </div>
+          <div>
+            <label>Género:</label>
+            <select value={genero} onChange={(e) => setGenero(e.target.value)}>
+              <option value="">Seleccione</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Femenino">Femenino</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+          <div>
+            <label>Foto de Perfil:</label>
+            <input type="file" onChange={handleFileChange} />
+            {fotoPerfilUrl && <img className="userActImg" src={fotoPerfilUrl} alt="Foto de Perfil" />}
+          </div>
+          <div>
+            <label>Modificar Contraseña:</label>
+            <input type="password" value={nuevaContrasena} onChange={(e) => setNuevaContrasena(e.target.value)} disabled={passwordFieldsDisabled} />
+          </div>
+          <div>
+            <label>Confirmar Nueva Contraseña:</label>
+            <input type="password" value={confirmarNuevaContrasena} onChange={(e) => setConfirmarNuevaContrasena(e.target.value)} disabled={passwordFieldsDisabled} />
+          </div>
+          <div>
+            <label>Contraseña (Para confirmar cambios):</label>
+            <input type="password" value={contrasena} onChange={(e) => setContrasena(e.target.value)} required />
+          </div>
+          <div className="button-container">
+            <button type="button" onClick={handleUpdateUser}>Actualizar Usuario</button>
+          </div>
+        </form>
       </div>
-      <div>
-        <label>Email:</label>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      </div>
-      <div>
-        <label>Teléfono:</label>
-        <input type="tel" value={telefono} onChange={(e) => setTelefono(e.target.value)} />
-      </div>
-      <div>
-        <label>Fecha de Nacimiento:</label>
-        <input type="date" value={fechaNacimiento} onChange={(e) => setFechaNacimiento(e.target.value)} />
-      </div>
-      <div>
-        <label>Género:</label>
-        <select value={genero} onChange={(e) => setGenero(e.target.value)}>
-          <option value="">Seleccione</option>
-          <option value="Masculino">Masculino</option>
-          <option value="Femenino">Femenino</option>
-          <option value="Otro">Otro</option>
-        </select>
-      </div>
-      <div>
-        <label>Foto de Perfil:</label>
-        <input type="file" onChange={handleFileChange} />
-        {fotoPerfilUrl && <img src={fotoPerfilUrl} alt="Foto de Perfil" style={{ maxWidth: '200px', marginTop: '10px' }} />}
-      </div>
-      <div>
-        <label>Modificar Contraseña:</label>
-        <input type="password" value={nuevaContrasena} onChange={(e) => setNuevaContrasena(e.target.value)} disabled={passwordFieldsDisabled} />
-      </div>
-      <div>
-        <label>Confirmar Nueva Contraseña:</label>
-        <input type="password" value={confirmarNuevaContrasena} onChange={(e) => setConfirmarNuevaContrasena(e.target.value)} disabled={passwordFieldsDisabled} />
-      </div>
-      <div>
-        <label>Contraseña (Para confirmar cambios):</label>
-        <input type="password" value={contrasena} onChange={(e) => setContrasena(e.target.value)} required />
-      </div>
-      {showComboBox && ( 
-        <div>
-          <label>Seleccionar Usuario:</label>
-          <select value={selectedUserId} onChange={handleUserChange}>
-            <option value="">Seleccione un usuario</option>
-            {usuarios.map((user) => (
-              <option key={user.id} value={user.id}>{`${user.nombre} ${user.apellido}`}</option>
-            ))}
-          </select>
-        </div>
-      )}
-      {showAccessLevelComboBox && ( // combobox de nivel_access si el nivel es 3
-        <div>
-          <label>Nivel de Acceso:</label>
-          <select value={newAccessLevel} onChange={handleAccessLevelChange}>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-          </select>
-        </div>
-      )}
-      <button onClick={handleUpdateUser}>Actualizar Usuario</button>
     </div>
-  );
+  );  
+  
 };
 
 export default EditarUsuario;

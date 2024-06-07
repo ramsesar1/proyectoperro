@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './styleSheets/registroStyle.css';
+import NavBar from './NavBar';
 
 function RegistroUsuario() {
   const [nombre, setNombre] = useState('');
@@ -74,6 +75,9 @@ function RegistroUsuario() {
 
   return (
     <div className="login-container">
+      <div className="nav-container">
+        <NavBar title="RAMNIMALES" />
+      </div>
       <div className="login-box">
         <div className="login-content">
           <h2 className="login-title">Registro</h2>
