@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import './VentanaNueve.css'; 
+import NavBar from './NavBar';
+import './styleSheets/VentanaNueve.css'; 
 
 const VentanaNueve = () => {
   const [reportes, setReportes] = useState([]);
@@ -64,19 +65,8 @@ const VentanaNueve = () => {
   });
 
   return (
-    <div>
-      <h2>Ventana Nueve</h2>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Ir a Ventana Principal</Link>
-          </li>
-          <li>
-            <Link to="/ventana2">Ir a Ventana Secundaria</Link>
-          </li>
-        </ul>
-      </nav>
-
+    <div className="ventana-nueve-container">
+      <NavBar title="Buscar reportes" />
       <input
         type="text"
         placeholder="Buscar..."
@@ -84,11 +74,9 @@ const VentanaNueve = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         className="search-input"
       />
-
       <div className="reportes-list">
         {filteredReportes.map((reporte) => (
           <div key={reporte.id} className="reporte-card">
-            {/* Mostrar imagen del reporte */}
             {reporte.foto_reporte && (
               <img
                 src={`data:image/jpeg;base64,${btoa(
@@ -101,7 +89,6 @@ const VentanaNueve = () => {
                 className="reporte-foto"
               />
             )}
-            {/* Resto de la información del reporte */}
             <p><strong>Fecha del reporte:</strong> {new Date(reporte.fecha_reporte).toLocaleString()}</p>
             <p><strong>Tipo de reporte:</strong> {reporte.tipo_reporte}</p>
             <p><strong>Nombre del reportador:</strong> {reporte.nombre_reportador}</p>

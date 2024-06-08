@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import './styleSheets/loginStyle.css'; // Asegúrate de importar el archivo CSS 
+import './styleSheets/loginStyle.css'; 
+import NavBar from './NavBar';
 
 
 const LoginComponent = () => {
@@ -27,6 +28,9 @@ const LoginComponent = () => {
 
   return (
     <div className="login-container">
+      <div className="nav-container">
+        <NavBar title="RAMNIMALES" />
+      </div>
       <div className="login-box">
         <div className="login-content">
           <h2 className="login-title">Inicio de Sesión</h2>
