@@ -7,13 +7,13 @@ import NavBar from './NavBar';
 
 
 const LoginComponent = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:3001/api/login', { username, password });
+      const response = await axios.post('http://localhost:3001/api/login', { email, password });
       if (response.data.success) {
         localStorage.setItem('userId', response.data.userId);
         localStorage.setItem('nivelAccess', response.data.nivelAccess);
@@ -40,8 +40,8 @@ const LoginComponent = () => {
           <div className="login-field">
             <input 
               type="text" 
-              value={username} 
-              onChange={(e) => setUsername(e.target.value)} 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
               placeholder="Nombre de Usuario" 
               className="input-field"
             />

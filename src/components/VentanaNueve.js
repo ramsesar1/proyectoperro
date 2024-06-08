@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import NavBar from './NavBar';
 import './styleSheets/VentanaNueve.css'; 
 
 const VentanaNueve = () => {
@@ -53,20 +52,38 @@ const VentanaNueve = () => {
     }
   };
 
-  const filteredReportes = reportes.filter((reporte) => {
-    return (
-      reporte.tipo_animal.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      reporte.edad.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      reporte.genero.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      reporte.raza.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      reporte.tipo_reporte.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      reporte.nombre_reportador.toLowerCase().includes(searchTerm.toLowerCase())
+  const filterReportes = (reporte, searchTerm) => {
+    const terms = searchTerm.toLowerCase().split(',').map(term => term.trim());
+    return terms.every(term => 
+      reporte.tipo_animal.toLowerCase().includes(term) ||
+      reporte.edad.toLowerCase().includes(term) ||
+      reporte.genero.toLowerCase().includes(term) ||
+      reporte.raza.toLowerCase().includes(term) ||
+      reporte.tipo_reporte.toLowerCase().includes(term) ||
+      reporte.nombre_reportador.toLowerCase().includes(term) ||
+      reporte.ciudad.toLowerCase().includes(term) ||
+      reporte.estado_provincia.toLowerCase().includes(term) ||
+      reporte.circunstancias.toLowerCase().includes(term) ||
+      new Date(reporte.fecha_reporte).toLocaleDateString().includes(term)
     );
-  });
+  };
+
+  const filteredReportes = reportes.filter(reporte => filterReportes(reporte, searchTerm));
 
   return (
-    <div className="ventana-nueve-container">
-      <NavBar title="Buscar reportes" />
+    <div>
+      <h2>Ventana Nueve</h2>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/">Ir a Ventana Principal</Link>
+          </li>
+          <li>
+            <Link to="/ventana2">Ir a Ventana Secundaria</Link>
+          </li>
+        </ul>
+      </nav>
+
       <input
         type="text"
         placeholder="Buscar..."
@@ -74,6 +91,7 @@ const VentanaNueve = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         className="search-input"
       />
+
       <div className="reportes-list">
         {filteredReportes.map((reporte) => (
           <div key={reporte.id} className="reporte-card">

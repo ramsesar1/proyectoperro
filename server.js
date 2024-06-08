@@ -694,10 +694,10 @@ app.get('/api/comentarios/:reporteId', (req, res) => {
 // ---------------------Inicio de sesión---------------------
 app.post('/api/login', (req, res) => {
   console.log('Solicitud de inicio de sesión recibida:', req.body);
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  const query = 'SELECT id, nivel_access FROM usuarios WHERE nombre = ? AND contraseña = ?';
-  const values = [username, password];
+  const query = 'SELECT id, nivel_access FROM usuarios WHERE email = ? AND contraseña = ?';
+  const values = [email, password];
 
   db.query(query, values, (err, results) => {
     if (err) {
@@ -709,7 +709,7 @@ app.post('/api/login', (req, res) => {
         const nivelAccess = results[0].nivel_access;
         res.status(200).send({ success: true, userId, nivelAccess });
       } else {
-        res.status(401).send({ success: false, error: 'Nombre de usuario o contraseña incorrectos' });
+        res.status(401).send({ success: false, error: 'Email o contraseña incorrectos' });
       }
     }
   });
