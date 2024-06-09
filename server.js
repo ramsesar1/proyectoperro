@@ -12,10 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Use CORS middleware 
 app.use(cors()); 
-const PORT = process.env.PORT || 3001; 
-app.listen(PORT, () => { 
-  console.log("Server is running on port" ,$,{PORT}); 
-}); 
+
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
