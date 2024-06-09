@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './styleSheets/registroStyle.css';
 import NavBar from './NavBar';
+import { useNavigate } from 'react-router-dom';
+
 
 function RegistroUsuario() {
   const [nombre, setNombre] = useState('');
@@ -15,6 +17,8 @@ function RegistroUsuario() {
   const [fotoPerfil, setFotoPerfil] = useState(null);
   const [alerta, setAlerta] = useState('');
   const [mostrarAlerta, setMostrarAlerta] = useState(false);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     if (alerta) {
@@ -63,6 +67,7 @@ function RegistroUsuario() {
       setGenero('');
       setFotoPerfil(null);
       setAlerta('Usuario registrado exitosamente');
+      navigate('/ventana1');
     } catch (error) {
       console.error('Error registrando usuario:', error);
       setAlerta('Error registrando usuario');
