@@ -1,27 +1,34 @@
-// webpack.config.js
-
-const mode = process.env.WEBPACK_SERVE ? 'development' : 'production';
-
 module.exports = {
-  // Otras configuraciones de Webpack...
-  module: {
-    rules: [
-      {
-        test: /\.(ts|js)x?$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-react', '@babel/preset-env', '@babel/preset-typescript'],
-            plugins: [
-                // Otros plugins...
-                process.env.NODE_ENV === 'development' && new ReactRefreshWebpackPlugin(),
-              ].filter(Boolean),
+    // Otras configuraciones de Webpack...
+  
+    module: {
+      rules: [
+        // Regla para cargar archivos JS/JSX con react-refresh/babel
+        {
+          test: /\.(js|jsx)$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-react', '@babel/preset-env'],
+              plugins: ['react-refresh/babel'],
+            },
           },
         },
-      },
-      // Otras reglas...
-    ],
-  },
-  // Otras configuraciones de Webpack...
-};
+        // Segunda regla para cargar archivos JS/JSX sin react-refresh/babel
+        {
+          test: /\.(js|jsx)$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-react', '@babel/preset-env'],
+            },
+          },
+        },
+      ],
+    },
+  
+    // Otras configuraciones de Webpack...
+  };
+  
