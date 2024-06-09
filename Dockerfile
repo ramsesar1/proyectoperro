@@ -26,10 +26,10 @@ COPY backend/package.json backend/package-lock.json ./backend/
 RUN cd backend && npm install
 
 # Copiar el código del backend
-COPY backend ./backend
+COPY server ./backend
 
 # Puerto en el que se ejecutará el servidor backend (ajusta según sea necesario)
 EXPOSE 3001
 
 # Comando para iniciar el servidor backend
-CMD ["node", "backend/server.js"]
+CMD ["node", "server.js"]
