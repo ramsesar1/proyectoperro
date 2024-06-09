@@ -16,11 +16,20 @@ module.exports = {
         'stream': require.resolve('stream-browserify'),
       };
 
-      // Agregar esta configuración para permitir conexiones de cualquier host
-      webpackConfig.devServer = {
-        ...webpackConfig.devServer,
-        allowedHosts: 'all',
-      };
+      // Remove ReactRefreshPlugin in production build
+      if (env === 'production') {
+        webpackConfig.plugins = webpackConfig.plugins.filter(
+          plugin => plugin.constructor.name !== 'ReactRefreshPlugin'
+        );
+      }
+
+      // Agregar esta configuración para permitir conexiones de cualquier host en el entorno de desarrollo
+      if (env === 'development') {
+        webpackConfig.devServer = {
+          ...webpackConfig.devServer,
+          allowedHosts: 'all',
+        };
+      }
 
       return webpackConfig;
     },
