@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios from '../axiosConfig'; // Usa la instancia configurada
 import { useNavigate } from 'react-router-dom';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './styleSheets/loginStyle.css';
 import NavBar from './NavBar';
-
-const API_URL = process.env.REACT_APP_API_URL;
 
 const LoginComponent = () => {
   const [email, setEmail] = useState('');
@@ -14,7 +12,7 @@ const LoginComponent = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post(`${API_URL}/api/login`, { email, password });
+      const response = await axios.post('/api/login', { email, password });
       if (response.data.success) {
         localStorage.setItem('userId', response.data.userId);
         localStorage.setItem('nivelAccess', response.data.nivelAccess);
