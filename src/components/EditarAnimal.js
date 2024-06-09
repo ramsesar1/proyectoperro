@@ -37,7 +37,7 @@ const VentanaEdiAnimal = () => {
     const fetchAnimales = async () => {
       const userId = localStorage.getItem('userId');
       const nivelAccess = localStorage.getItem('nivelAccess');
-      const response = await axios.get(`http://localhost:3001/api/obtener_animales/${userId}?nivelAccess=${nivelAccess}`); 
+      const response = await axios.get(`http://localhost:3001/api/obtener_animales/${userId}?nivelAccess=${nivelAccess}`);
       setAnimales(response.data);
     };
     fetchAnimales();
@@ -124,7 +124,7 @@ const VentanaEdiAnimal = () => {
   return (
     <div>
       <div className="nav-container">
-        <NavBar title="Página Principal" />
+        <NavBar title="Información animales" />
       </div>
       <div className="editAnForm-container">
         <form className="editAnForm">
@@ -168,8 +168,8 @@ const VentanaEdiAnimal = () => {
             {cartillafotoUrl && <img src={cartillafotoUrl} alt="Cartilla del animal" className="animalImg" />}
           </div>
           <div className="button-container">
-            <button type="button" onClick={handleUpdateAnimal}>Actualizar Animal</button>
-            <button type="button" onClick={handleDeleteAnimal}>Eliminar Animal</button>
+            <button type="button" className="submit-button" onClick={handleUpdateAnimal}>Actualizar Animal</button>
+            <button type="button" className="cancel-button" onClick={handleDeleteAnimal}>Eliminar Animal</button>
           </div>
         </form>
       </div>

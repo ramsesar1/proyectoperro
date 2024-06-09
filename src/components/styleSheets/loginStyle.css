@@ -8,7 +8,7 @@ body {
   background: #B1C4CB;
 }
 
-.login-container {
+.loginC-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,7 +17,7 @@ body {
   color: white;
 }
 
-.login-box {
+.loginC-box {
   display: flex;
   flex-direction: row;
   background: #3A5059;
@@ -30,7 +30,9 @@ body {
 .login-content {
   flex: 0 0 35%;
   text-align: left;
-  margin: 30px;
+  margin: 50px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .login-title {
@@ -41,7 +43,7 @@ body {
 }
 
 
-/*--------------------------------------INPUTS SHIT-------------------------------------------*/
+/*--------------------------------------INPUTS STUFF-------------------------------------------*/
 
 .login-field {
   position: relative;
@@ -86,7 +88,7 @@ body {
   transition: 0.2s ease all;
 }
 
-/*----------------------------------TERMINA INPUTS SHIT---------------------------------------------*/
+/*----------------------------------TERMINA INPUTS STUFF---------------------------------------------*/
 
 .login-button {
   width: 50%;

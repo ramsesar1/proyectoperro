@@ -2,24 +2,22 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import './styleSheets/loginStyle.css'; 
-import NavBar from './NavBar';
-
+import './styleSheets/loginStyle.css'; // Asegúrate de importar el archivo CSS
 
 const LoginComponent = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:3001/api/login', { username, password });
+      const response = await axios.post('http://localhost:3001/api/login', { email, password });
       if (response.data.success) {
         localStorage.setItem('userId', response.data.userId);
         localStorage.setItem('nivelAccess', response.data.nivelAccess);
         navigate('/ventana1');
       } else {
-        alert('Nombre de usuario o contraseña incorrectos');
+        alert('Email o contraseña incorrectos');
       }
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
@@ -28,9 +26,6 @@ const LoginComponent = () => {
 
   return (
     <div className="login-container">
-      <div className="nav-container">
-        <NavBar title="RAMNIMALES" />
-      </div>
       <div className="login-box">
         <div className="login-content">
           <h2 className="login-title">Inicio de Sesión</h2>
@@ -40,12 +35,12 @@ const LoginComponent = () => {
           <div className="login-field">
             <input 
               type="text" 
-              value={username} 
-              onChange={(e) => setUsername(e.target.value)} 
-              placeholder="Nombre de Usuario" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              placeholder="Correo Electrónico" 
               className="input-field"
             />
-            <label className="input-label">Nombre de Usuario</label>
+            <label className="input-label">Correo Electrónico</label>
           </div>
           <div className="login-field">
             <input 

@@ -3,12 +3,12 @@
 body {
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Cambiar a flex-start para que el formulario no quede centrado verticalmente */
+    align-items: flex-start; 
     margin: 0;
     padding: 0;
     background-color: #f0f0f0;
     font-family: Arial, sans-serif;
-    min-height: 100vh; /* Asegura que el cuerpo ocupe toda la altura de la ventana */
+    min-height: 100vh; 
   }
   
   .form-container {
@@ -21,7 +21,7 @@ body {
     border-radius: 8px;
     box-sizing: border-box;
     margin: 20px;
-    margin-top: 850px; /* Reducir el margen superior para pantallas grandes */
+    margin-top: 850px; 
   }
   
   .report-form div {
@@ -56,7 +56,7 @@ body {
   .button-container {
     display: flex;
     justify-content: center;
-    gap: 50px; /* Espacio entre los botones */
+    gap: 50px; 
     margin-top: 20px;
   }
   
@@ -70,7 +70,7 @@ body {
   }
   
   button.cancel-button {
-    background-color: #f44336; /* Rojo */
+    background-color: #f44336; 
   }
   
   button.cancel-button:hover {
@@ -78,7 +78,7 @@ body {
   }
   
   button.submit-button {
-    background-color: #4CAF50; /* Verde */
+    background-color: #4CAF50; 
   }
   
   button.submit-button:hover {
@@ -97,7 +97,7 @@ body {
     .form-container {
       width: 90%;
       min-width: 0;
-      margin-top: 650px; /* Reducir el margen superior para pantallas medianas */
+      margin-top: 650px; 
       padding: 10px;
     }
   
@@ -127,7 +127,7 @@ body {
   
     .form-container {
       width: 100%;
-      margin-top: 550px; /* Reducir aún más el margen superior para pantallas pequeñas */
+      margin-top: 550px; 
       padding: 5px;
     }
   

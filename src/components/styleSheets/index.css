@@ -1,10 +1,21 @@
 /* styleSheets/index.css */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+}
+
 .main-container {
   padding: 20px;
-  margin-top: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .nav-container {
+  width: 100%;
+  max-width: 1200px;
   margin-bottom: 20px;
 }
 
@@ -13,6 +24,8 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
+  width: 100%;
+  max-width: 1200px;
 }
 
 .grid-item {
@@ -25,9 +38,8 @@
   color: black;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
-  width: calc(50% - 20px); /* Dos elementos por fila menos el espacio entre ellos */
-  flex: 1 1 calc(50% - 20px);
-  max-width: 500px; /* Asegúrate de que los botones no sean demasiado anchos */
+  flex: 1 1 calc(33.33% - 20px); 
+  max-width: calc(33.33% - 20px);
 }
 
 .grid-item:hover {
@@ -35,7 +47,7 @@
 }
 
 .image-container {
-  height: 450px; /* Fija una altura para las imágenes */
+  height: 300px; 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -55,12 +67,19 @@
   font-weight: bold;
 }
 
+@media (max-width: 900px) {
+  .grid-item {
+    flex: 1 1 calc(50% - 20px);
+    max-width: calc(50% - 20px);
+  }
+}
+
 @media (max-width: 600px) {
   .grid-item {
-    width: 100%; /* Un elemento por fila en pantallas pequeñas */
-    flex: 1 1 100%;
+    flex: 1 1 100%; 
+    max-width: 100%;
   }
   .main-container {
-    margin-top: 1200px;
+    margin-top: 500px;
   }
 }

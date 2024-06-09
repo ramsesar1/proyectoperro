@@ -23,7 +23,6 @@ const EditarUsuario = () => {
   const [newAccessLevel, setNewAccessLevel] = useState(''); 
   const [passwordFieldsDisabled, setPasswordFieldsDisabled] = useState(false);
 
-
   useEffect(() => {
     const fetchUserData = async () => {
       const userId = localStorage.getItem('userId');
@@ -188,14 +187,14 @@ const EditarUsuario = () => {
   return (
     <div>
       <div className="editUser-container">
-        <NavBar title="Editar Usuario" />
+        <NavBar title="Información Usuario" />
       </div>
       <div className="formUser-container">
-        <form>
+        <form className='formEditUser'>
           {showComboBox && ( 
-            <div>
-              <label>Seleccionar Usuario:</label>
-              <select value={selectedUserId} onChange={handleUserChange}>
+            <div className="formEditUser-group">
+              <label className="formEditUser-label">Seleccionar Usuario:</label>
+              <select value={selectedUserId} onChange={handleUserChange} className="formEditUser-input">
                 <option value="">Seleccione un usuario</option>
                 {usuarios.map((user) => (
                   <option key={user.id} value={user.id}>{`${user.nombre} ${user.apellido}`}</option>
@@ -204,69 +203,68 @@ const EditarUsuario = () => {
             </div>
           )}
           {showAccessLevelComboBox && (
-            <div>
-              <label>Nivel de Acceso:</label>
-              <select value={newAccessLevel} onChange={handleAccessLevelChange}>
+            <div className="formEditUser-group">
+              <label className="formEditUser-label">Nivel de Acceso:</label>
+              <select value={newAccessLevel} onChange={handleAccessLevelChange} className="formEditUser-input">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
               </select>
             </div>
           )}
-          <div>
-            <label>Nombre:</label>
-            <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+          <div className="formEditUser-group">
+            <label className="formEditUser-label">Nombre:</label>
+            <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} className="formEditUser-input" />
           </div>
-          <div>
-            <label>Apellido:</label>
-            <input type="text" value={apellido} onChange={(e) => setApellido(e.target.value)} />
+          <div className="formEditUser-group">
+            <label className="formEditUser-label">Apellido:</label>
+            <input type="text" value={apellido} onChange={(e) => setApellido(e.target.value)} className="formEditUser-input" />
           </div>
-          <div>
-            <label>Email:</label>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <div className="formEditUser-group">
+            <label className="formEditUser-label">Email:</label>
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="formEditUser-input" />
           </div>
-          <div>
-            <label>Teléfono:</label>
-            <input type="tel" value={telefono} onChange={(e) => setTelefono(e.target.value)} />
+          <div className="formEditUser-group">
+            <label className="formEditUser-label">Teléfono:</label>
+            <input type="tel" value={telefono} onChange={(e) => setTelefono(e.target.value)} className="formEditUser-input" />
           </div>
-          <div>
-            <label>Fecha de Nacimiento:</label>
-            <input type="date" value={fechaNacimiento} onChange={(e) => setFechaNacimiento(e.target.value)} />
+          <div className="formEditUser-group">
+            <label className="formEditUser-label">Fecha de Nacimiento:</label>
+            <input type="date" value={fechaNacimiento} onChange={(e) => setFechaNacimiento(e.target.value)} className="formEditUser-input" />
           </div>
-          <div>
-            <label>Género:</label>
-            <select value={genero} onChange={(e) => setGenero(e.target.value)}>
+          <div className="formEditUser-group">
+            <label className="formEditUser-label">Género:</label>
+            <select value={genero} onChange={(e) => setGenero(e.target.value)} className="formEditUser-input">
               <option value="">Seleccione</option>
               <option value="Masculino">Masculino</option>
               <option value="Femenino">Femenino</option>
               <option value="Otro">Otro</option>
             </select>
           </div>
-          <div>
-            <label>Foto de Perfil:</label>
-            <input type="file" onChange={handleFileChange} />
-            {fotoPerfilUrl && <img className="userActImg" src={fotoPerfilUrl} alt="Foto de Perfil" />}
+          <div className="formEditUser-group">
+            <label className="formEditUser-label">Foto de Perfil:</label>
+            <input type="file" onChange={handleFileChange} className="formEditUser-input" />
+            {fotoPerfilUrl && <img className="formEditUser-img" src={fotoPerfilUrl} alt="Foto de Perfil" />}
           </div>
-          <div>
-            <label>Modificar Contraseña:</label>
-            <input type="password" value={nuevaContrasena} onChange={(e) => setNuevaContrasena(e.target.value)} disabled={passwordFieldsDisabled} />
+          <div className="formEditUser-group">
+            <label className="formEditUser-label">Modificar Contraseña:</label>
+            <input type="password" value={nuevaContrasena} onChange={(e) => setNuevaContrasena(e.target.value)} className="formEditUser-input" disabled={passwordFieldsDisabled} />
           </div>
-          <div>
-            <label>Confirmar Nueva Contraseña:</label>
-            <input type="password" value={confirmarNuevaContrasena} onChange={(e) => setConfirmarNuevaContrasena(e.target.value)} disabled={passwordFieldsDisabled} />
+          <div className="formEditUser-group">
+            <label className="formEditUser-label">Confirmar Nueva Contraseña:</label>
+            <input type="password" value={confirmarNuevaContrasena} onChange={(e) => setConfirmarNuevaContrasena(e.target.value)} className="formEditUser-input" disabled={passwordFieldsDisabled} />
           </div>
-          <div>
-            <label>Contraseña (Para confirmar cambios):</label>
-            <input type="password" value={contrasena} onChange={(e) => setContrasena(e.target.value)} required />
+          <div className="formEditUser-group">
+            <label className="formEditUser-label">Contraseña (Para confirmar cambios):</label>
+            <input type="password" value={contrasena} onChange={(e) => setContrasena(e.target.value)} className="formEditUser-input" required />
           </div>
-          <div className="button-container">
-            <button type="button" onClick={handleUpdateUser}>Actualizar Usuario</button>
+          <div className="formEditUser-button-container">
+            <button type="button" onClick={handleUpdateUser} className="formEditUser-button">Actualizar Usuario</button>
           </div>
         </form>
       </div>
     </div>
   );  
-  
 };
 
 export default EditarUsuario;

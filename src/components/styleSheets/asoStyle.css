@@ -38,7 +38,7 @@ body {
 .contact-column {
     flex: 1;
     margin: 10px;
-    min-width: 250px; /* Ensures columns have a minimum width for better layout on small screens */
+    min-width: 250px; 
 }
 
 .contact-column h3 {

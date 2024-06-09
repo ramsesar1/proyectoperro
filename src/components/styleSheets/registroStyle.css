@@ -1,12 +1,13 @@
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    font-family: 'Arial', sans-serif;
-    background: #B1C4CB;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background: #B1C4CB;
+}
+
   
   .login-container {
     display: flex;
@@ -25,7 +26,6 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     width: 100%;
     overflow: hidden;
-    margin-top: 80px;
   }
   
   .login-content {
@@ -66,7 +66,7 @@ body {
     width: 100%;
     padding: 10px 0 5px 0;
     border: none;
-    border-bottom: 2px solid #fff;
+    border-bottom: 2px solid white;
     background: none;
     color: #fff;
     font-size: 16px;
@@ -75,12 +75,12 @@ body {
   }
   
   .select-field option {
-    color: black; /* Color negro para las opciones del selector */
+    color: black; 
     background-color: #aaa;
   }
   
   .input-field::placeholder {
-    color: #aaa; /* Color gris para los placeholders */
+    color: #aaa;
   }
   
   .input-field:focus::placeholder {
@@ -116,7 +116,8 @@ body {
     transition: background 0.3s;
     display: block;
     margin: 0 auto;
-    margin-top: 80px;
+    margin-top: 60px;
+    margin-bottom: 30px;
   }
   
   .login-button:hover {

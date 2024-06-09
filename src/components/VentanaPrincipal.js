@@ -7,7 +7,7 @@ function VentanaPrincipal() {
   return (
     <div className="main-container">
       <div className="nav-container">
-        <NavBar title="Página Principal" />
+        <NavBar title="RAMNIMALES" />
       </div>
       <div className="grid-container">
         <Link to="/ventana3" className="grid-item">
@@ -16,14 +16,6 @@ function VentanaPrincipal() {
           </div>
           <div className="text-container">
             REGISTRAR ANIMAL
-          </div>
-        </Link>
-        <Link to="/ventana5" className="grid-item">
-          <div className="image-container">
-            <img src="https://static5.depositphotos.com/1046751/518/i/450/depositphotos_5184243-stock-photo-close-up-of-business-person.jpg" alt="Ventana 5" />
-          </div>
-          <div className="text-container">
-            EDITAR
           </div>
         </Link>
         <Link to="/ventana8" className="grid-item">

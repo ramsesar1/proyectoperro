@@ -1,4 +1,3 @@
-// NavBar.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './styleSheets/navBar.css';
@@ -28,10 +27,10 @@ function NavBar({ title }) {
         <div className="side-menu-title">Menú de Opciones</div>
         <ul>
           <li>
-            <Link to="/usuario" onClick={toggleMenu}>Usuario</Link>
+            <Link to="/ventana5" onClick={toggleMenu}>Usuario</Link>
           </li>
           <li>
-            <Link to="/" onClick={toggleMenu}>Iniciar sesión</Link>
+            <Link to="/" onClick={toggleMenu}>Cambiar de cuenta</Link>
           </li>
           <li>
             <Link to="/ventana4" onClick={toggleMenu}>Ayuda</Link>

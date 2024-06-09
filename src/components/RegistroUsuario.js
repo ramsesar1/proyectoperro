@@ -75,16 +75,14 @@ function RegistroUsuario() {
 
   return (
     <div className="login-container">
-      <div className="nav-container">
-        <NavBar title="RAMNIMALES" />
-      </div>
+      
       <div className="login-box">
         <div className="login-content">
           <h2 className="login-title">Registro</h2>
           <div className="register-link">
             ¿Ya tienes cuenta? <Link to="/">Iniciar sesión</Link>
           </div>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className='formRegister'>
             <div className="login-field">
               <input
                 type="text"

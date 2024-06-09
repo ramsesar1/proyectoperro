@@ -6,7 +6,6 @@ body {
   padding: 0;
   background-color: #f0f0f0;
   font-family: Arial, sans-serif;
-  min-height: 100vh;
 }
 
 .nav-container {
@@ -22,8 +21,14 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   box-sizing: border-box;
-  margin: 20px;
-  margin-top: 90px;
+  margin: 20px 0;
+  margin-top: 200px;
+  min-height: 150px;
+}
+
+.editAnForm {
+  display: flex;
+  flex-direction: column;
 }
 
 .editAnForm div {
@@ -47,7 +52,7 @@ body {
 
 .editAnForm input::placeholder,
 .editAnForm select::placeholder {
-  color: #ccc; /* Color más visible para los placeholders */
+  color: #ccc;
 }
 
 .editAnForm input[type="file"] {
@@ -57,7 +62,9 @@ body {
 .editAnForm img {
   margin-top: 10px;
   display: block;
-  max-width: 100%;
+  max-width: 100px;
+  max-height: 100px;
+  width: auto;
   height: auto;
 }
 
@@ -69,14 +76,12 @@ body {
   flex-wrap: wrap;
 }
 
-button {
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bolder;
-  width: auto;
+button.submit-button {
+  background-color: #4CAF50;
+}
+
+button.submit-button:hover {
+  background-color: #45a049;
 }
 
 button.cancel-button {
@@ -87,12 +92,15 @@ button.cancel-button:hover {
   background-color: #e53935;
 }
 
-button.submit-button {
-  background-color: #4CAF50;
-}
-
-button.submit-button:hover {
-  background-color: #45a049;
+button.submit-button,
+button.cancel-button {
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bolder;
+  width: auto;
 }
 
 h3 {
@@ -104,10 +112,13 @@ h3 {
 /* Media Queries for responsiveness */
 
 @media (max-width: 768px) {
+  body {
+    min-height: 100vh;
+  }
+
   .editAnForm-container {
     width: 95%;
     padding: 15px;
-    margin-top: 100px;
   }
 
   .editAnForm input,
@@ -122,20 +133,19 @@ h3 {
     gap: 10px;
   }
 
-  button {
+  button.submit-button,
+  button.cancel-button {
     width: 80%;
   }
 }
 
 @media (max-width: 480px) {
   body {
-    margin-top: 0;
-    padding-top: 100px;
+    min-height: 80vh;
   }
 
   .editAnForm-container {
     width: 100%;
-    margin-top: 20px;
     padding: 10px;
   }
 
@@ -149,7 +159,8 @@ h3 {
     gap: 5px;
   }
 
-  button {
+  button.submit-button,
+  button.cancel-button {
     width: 90%;
   }
 }

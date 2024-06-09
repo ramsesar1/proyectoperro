@@ -1,92 +1,93 @@
-/* Archivo: VentanaNueve.css */
-
 body {
+  background-color: #f0f0f0;
   font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f4f4f9;
 }
 
-.ventana-nueve-container {
-  padding-top: 0px; /* Espacio para asegurar que la búsqueda no quede debajo de la navbar */
-  padding-left: 20px;
-  padding-right: 20px;
-  text-align: center; /* Centrar el contenido horizontalmente */
+.editUser-container {
+  margin-bottom: 10px; /* Reducir espacio entre nav y búsqueda */
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px; /* Ajuste menor del espacio */
 }
 
 .search-input {
-  width: 33.33vw; /* 1/3 del ancho del viewport */
+  width: 33.33vw; /* 1/3 del ancho de la pantalla, usando viewport width para asegurar que se mantenga consistente */
   padding: 10px;
-  margin: 20px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-  display: inline-block;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .reportes-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding: 20px;
+  gap: 20px;
 }
 
 .reporte-card {
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  margin: 10px;
-  padding: 20px;
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 16px;
+  margin: 10px; /* Ajuste menor del margen */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   max-width: 300px;
   flex: 1 1 300px;
   box-sizing: border-box;
-  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .reporte-foto {
-  max-width: 100%;
-  height: auto;
-  border-radius: 5px;
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
   margin-bottom: 10px;
 }
 
 .add-comentario {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   margin-top: 10px;
 }
 
 .add-comentario input {
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  flex-grow: 1;
+  padding: 5px;
+  margin-right: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
 .add-comentario button {
-  padding: 10px;
-  background-color: #007bff;
-  color: #fff;
+  padding: 5px 10px;
+  background-color: #4CAF50;
+  color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
 }
 
 .add-comentario button:hover {
-  background-color: #0056b3;
+  background-color: #45a049;
 }
 
 .actualizaciones-section {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
-@media (max-width: 600px) {
-  .reporte-card {
-    max-width: 100%;
-    flex: 1 1 100%;
-  }
-  .search-input {
-    width: 90vw; /* Más ancho en pantallas pequeñas */
-  }
+.actualizaciones-section h3 {
+  margin-bottom: 5px;
+}
+
+.actualizaciones-section p {
+  background-color: #f9f9f9;
+  padding: 5px;
+  border-radius: 4px;
+  margin-bottom: 5px;
 }

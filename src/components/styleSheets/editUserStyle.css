@@ -14,7 +14,7 @@ body {
   min-height: calc(100vh - 70px); 
 }
 
-form {
+.formEditUser {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
@@ -23,12 +23,12 @@ form {
   background-color: #f9f9f9;
 }
 
-form div {
+.formEditUser-group {
   margin-bottom: 25px; 
   position: relative;
 }
 
-form label {
+.formEditUser-label {
   position: absolute;
   top: -10px; 
   left: 10px;
@@ -39,8 +39,7 @@ form label {
   transition: all 0.2s ease;
 }
 
-form input,
-form select {
+.formEditUser-input {
   width: 100%;
   padding: 15px;
   font-size: 16px;
@@ -49,28 +48,24 @@ form select {
   color: #333;
 }
 
-form input:focus,
-form input:not(:placeholder-shown),
-form select:focus,
-form select:not(:placeholder-shown) {
+.formEditUser-input:focus,
+.formEditUser-input:not(:placeholder-shown) {
   border-color: #007bff; 
 }
 
-form input:focus + label,
-form input:not(:placeholder-shown) + label,
-form select:focus + label,
-form select:not(:placeholder-shown) + label {
+.formEditUser-input:focus + .formEditUser-label,
+.formEditUser-input:not(:placeholder-shown) + .formEditUser-label {
   top: -30px; 
   left: 10px;
   font-size: 14px;
   color: #007bff;
 }
 
-.button-container {
+.formEditUser-button-container {
   text-align: center; 
 }
 
-form button {
+.formEditUser-button {
   padding: 10px 20px;
   background-color: #007bff;
   color: white;
@@ -79,11 +74,11 @@ form button {
   cursor: pointer;
 }
 
-form button:hover {
+.formEditUser-button:hover {
   background-color: #0056b3;
 }
 
-.userActImg {
+.formEditUser-img {
   display: block;
   max-width: 200px;
   margin-top: 10px;
