@@ -463,12 +463,6 @@ app.post('/api/eliminar_animal', (req, res) => {
 
 
 
-
-app.use(cors());
-app.use(express.json());
-
-
-
 // ---------------------Reportar animales---------------------
 app.get('/api/reportes_animales/:usuario_id', (req, res) => {
   const usuario_id = req.params.usuario_id;
