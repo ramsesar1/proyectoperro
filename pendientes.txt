@@ -23,4 +23,4 @@
 ---modo dueño permita asignar level access YA
 
 --pagina que muestre reportes existentes, y un boton para editarlos AUN NO 
---selector de reportes existentes de un usuario y editarlos (combobox en la existente) YA b
+--selector de reportes existentes de un usuario y editarlos (combobox en la existente) YA

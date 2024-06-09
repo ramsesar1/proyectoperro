@@ -8,12 +8,6 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
-app.use(cors({
-  origin: 'https://proyectoperro-production.up.railway.app', // Ajusta esto según sea necesario
-  credentials: true,
-}));
-
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -700,10 +694,10 @@ app.get('/api/comentarios/:reporteId', (req, res) => {
 // ---------------------Inicio de sesión---------------------
 app.post('/api/login', (req, res) => {
   console.log('Solicitud de inicio de sesión recibida:', req.body);
-  const { email, password } = req.body;
+  const { username, password } = req.body;
 
-  const query = 'SELECT id, nivel_access FROM usuarios WHERE email = ? AND contraseña = ?';
-  const values = [email, password];
+  const query = 'SELECT id, nivel_access FROM usuarios WHERE nombre = ? AND contraseña = ?';
+  const values = [username, password];
 
   db.query(query, values, (err, results) => {
     if (err) {
@@ -715,7 +709,7 @@ app.post('/api/login', (req, res) => {
         const nivelAccess = results[0].nivel_access;
         res.status(200).send({ success: true, userId, nivelAccess });
       } else {
-        res.status(401).send({ success: false, error: 'Email o contraseña incorrectos' });
+        res.status(401).send({ success: false, error: 'Nombre de usuario o contraseña incorrectos' });
       }
     }
   });

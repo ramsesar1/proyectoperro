@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
-import axios from '../axiosConfig'; // Usa la instancia configurada
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { HashRouter  as Router, Routes, Route, Link } from 'react-router-dom';
-import './styleSheets/loginStyle.css';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import './styleSheets/loginStyle.css'; 
 import NavBar from './NavBar';
 
+
 const LoginComponent = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('/api/login', { email, password });
+      const response = await axios.post('http://localhost:3001/api/login', { username, password });
       if (response.data.success) {
         localStorage.setItem('userId', response.data.userId);
         localStorage.setItem('nivelAccess', response.data.nivelAccess);
@@ -39,12 +40,12 @@ const LoginComponent = () => {
           <div className="login-field">
             <input 
               type="text" 
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
-              placeholder="Email" 
+              value={username} 
+              onChange={(e) => setUsername(e.target.value)} 
+              placeholder="Nombre de Usuario" 
               className="input-field"
             />
-            <label className="input-label">Email</label>
+            <label className="input-label">Nombre de Usuario</label>
           </div>
           <div className="login-field">
             <input 
