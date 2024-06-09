@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from '../axiosConfig'; // Usa la instancia configurada
 import { useNavigate } from 'react-router-dom';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { HashRouter  as Router, Routes, Route, Link } from 'react-router-dom';
 import './styleSheets/loginStyle.css';
 import NavBar from './NavBar';
 
