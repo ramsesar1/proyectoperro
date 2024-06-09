@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import './styleSheets/loginStyle.css'; 
+import './styleSheets/loginStyle.css';
 import NavBar from './NavBar';
 
+const API_URL = process.env.REACT_APP_API_URL;
 
 const LoginComponent = () => {
   const [email, setEmail] = useState('');
@@ -13,7 +14,7 @@ const LoginComponent = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://localhost:3001/api/login', { email, password });
+      const response = await axios.post(`${API_URL}/api/login`, { email, password });
       if (response.data.success) {
         localStorage.setItem('userId', response.data.userId);
         localStorage.setItem('nivelAccess', response.data.nivelAccess);
@@ -42,10 +43,10 @@ const LoginComponent = () => {
               type="text" 
               value={email} 
               onChange={(e) => setEmail(e.target.value)} 
-              placeholder="Nombre de Usuario" 
+              placeholder="Email" 
               className="input-field"
             />
-            <label className="input-label">Nombre de Usuario</label>
+            <label className="input-label">Email</label>
           </div>
           <div className="login-field">
             <input 
