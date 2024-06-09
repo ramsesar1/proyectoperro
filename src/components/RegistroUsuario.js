@@ -67,7 +67,7 @@ function RegistroUsuario() {
       setGenero('');
       setFotoPerfil(null);
       setAlerta('Usuario registrado exitosamente');
-      navigate('/ventana1');
+      navigate('/');
     } catch (error) {
       console.error('Error registrando usuario:', error);
       setAlerta('Error registrando usuario');
