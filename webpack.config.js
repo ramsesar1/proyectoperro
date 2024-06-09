@@ -14,9 +14,9 @@ module.exports = {
           options: {
             presets: ['@babel/preset-react', '@babel/preset-env', '@babel/preset-typescript'],
             plugins: [
-              '@babel/plugin-transform-runtime', 
-              mode !== 'production' && require.resolve('react-refresh/babel')
-            ].filter(Boolean),
+                // Otros plugins...
+                process.env.NODE_ENV === 'development' && new ReactRefreshWebpackPlugin(),
+              ].filter(Boolean),
           },
         },
       },
