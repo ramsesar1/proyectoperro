@@ -12,9 +12,9 @@ const VentanaNueve = () => {
   useEffect(() => {
     const fetchReportes = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/api/reportes_animales');
+        const response = await axios.get('http://api.ramsseseses.com/api/reportes_animales');
         const reportesConComentarios = await Promise.all(response.data.map(async (reporte) => {
-          const comentariosResponse = await axios.get(`http://localhost:3001/api/comentarios/${reporte.id}`);
+          const comentariosResponse = await axios.get(`http://api.ramsseseses.com/api/comentarios/${reporte.id}`);
           return { ...reporte, comentarios: comentariosResponse.data };
         }));
         setReportes(reportesConComentarios);
@@ -34,11 +34,11 @@ const VentanaNueve = () => {
   const handleAddComentario = async (reporteId) => {
     if (!nuevosComentarios[reporteId].trim()) return;
     try {
-      await axios.post('http://localhost:3001/api/comentarios', {
+      await axios.post('http://api.ramsseseses.com/api/comentarios', {
         reporteId,
         comentario: nuevosComentarios[reporteId].trim(),
       });
-      const comentariosResponse = await axios.get(`http://localhost:3001/api/comentarios/${reporteId}`);
+      const comentariosResponse = await axios.get(`http://api.ramsseseses.com/api/comentarios/${reporteId}`);
       const updatedReportes = reportes.map(reporte => {
         if (reporte.id === reporteId) {
           return { ...reporte, comentarios: comentariosResponse.data };

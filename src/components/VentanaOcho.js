@@ -94,7 +94,7 @@ const ReporteAnimal = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:3001/api/reporte_animal', formData, {
+      const response = await axios.post('http://api.ramsseseses.com/api/reporte_animal', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -118,7 +118,7 @@ const ReporteAnimal = () => {
       }
 
       try {
-        const response = await axios.get(`http://localhost:3001/api/reportes_animales/${userId}`);
+        const response = await axios.get(`http://api.ramsseseses.com/api/reportes_animales/${userId}`);
         setReportesUsuario(response.data);
       } catch (error) {
         console.error('Error al cargar los reportes del usuario:', error);
@@ -159,7 +159,7 @@ const ReporteAnimal = () => {
     }
 
     try {
-      const response = await axios.put(`http://localhost:3001/api/reporte_animal/${selectedReporteId}`, formData, {
+      const response = await axios.put(`http://api.ramsseseses.com/api/reporte_animal/${selectedReporteId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
