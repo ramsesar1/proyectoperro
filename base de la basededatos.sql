@@ -64,6 +64,40 @@ CREATE TABLE comentarios (
 );
 
 
+CREATE TABLE vacunas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombrevacuna VARCHAR(255) NOT NULL,
+    fechavacuna DATE NOT NULL,
+    fecha_siguiente_dosis DATE NOT NULL,
+    dosis_cantidad INT NOT NULL,
+    animal_id INT,
+    FOREIGN KEY (animal_id) REFERENCES animales(id) 
+);
+
+CREATE TABLE contactos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    categoria VARCHAR(255),
+    nombre VARCHAR(255),
+    numero_contacto VARCHAR(20),
+    notas TEXT
+);
+
+INSERT INTO contactos (categoria, nombre, numero_contacto, notas) VALUES
+('Veterinarios', 'Veterinaria Ramírez', '6121684331', NULL),
+('Veterinarios', 'Veterinaria Michigan', '6121699331', NULL),
+('Asociaciones civiles', 'Protección animal', '2911', NULL),
+('Asociaciones civiles', 'Denuncia anónima Protección animal', '3011', NULL),
+('Asociaciones civiles', 'Rescate de vida silvestre', '3111', NULL),
+('Asociaciones civiles', 'Rescate de vida marina', '3211', NULL),
+('Asociaciones civiles', 'Control de plagas', '6122899999', NULL),
+('Asociaciones civiles', 'Esterilización y castración', '6129885963', NULL);
+
+
+
+CREATE USER 'ramses'@'localhost' IDENTIFIED BY 'ramses';
+GRANT ALL PRIVILEGES ON * . * TO 'ramses'@'localhost';
+FLUSH PRIVILEGES;
+
 
 
 drop table comentarios;
@@ -74,7 +108,8 @@ select * from reportes_animales;
 select * from usuarios;
 select * from animales;
 select * from comentarios;
-
+select * from vacunas;
+select * from contactos;
 
 INSERT INTO usuarios (nombre, apellido, email, contraseña, nivel_access, telefono, fecha_nacimiento, genero) 
 VALUES 

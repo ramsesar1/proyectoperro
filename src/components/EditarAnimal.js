@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import './styleSheets/editAnimalStyle.css';
 import NavBar from './NavBar';
 
@@ -15,6 +16,7 @@ const VentanaEdiAnimal = () => {
   const [cartillafoto, setCartillafoto] = useState(null);
   const [fotoUrl, setFotoUrl] = useState('');
   const [cartillafotoUrl, setCartillafotoUrl] = useState('');
+  const navigate = useNavigate(); // Hook de navegación
 
   useEffect(() => {
     const selectedAnimalData = animales.find(animal => animal.id === parseInt(selectedAnimal));
@@ -121,6 +123,10 @@ const VentanaEdiAnimal = () => {
     }
   };
 
+  const handleCartillaElectronica = () => {
+    navigate('/vacuna'); // Redirecciona a la página de cartilla electrónica (vacunas)
+  };
+
   return (
     <div>
       <div className="nav-container">
@@ -154,10 +160,6 @@ const VentanaEdiAnimal = () => {
             <input type="number" value={edad} onChange={(e) => setEdad(e.target.value)} />
           </div>
           <div>
-            <label>Peso:</label>
-            <input type="number" value={peso} onChange={(e) => setPeso(e.target.value)} />
-          </div>
-          <div>
             <label>Foto:</label>
             <input type="file" onChange={(e) => handleFileChange(e, setFoto, setFotoUrl)} />
             {fotoUrl && <img src={fotoUrl} alt="Foto del animal" className="animalImg" />}
@@ -167,9 +169,14 @@ const VentanaEdiAnimal = () => {
             <input type="file" onChange={(e) => handleFileChange(e, setCartillafoto, setCartillafotoUrl)} />
             {cartillafotoUrl && <img src={cartillafotoUrl} alt="Cartilla del animal" className="animalImg" />}
           </div>
+          <div>
+            <label>Peso:</label>
+            <input type="number" value={peso} onChange={(e) => setPeso(e.target.value)} />
+          </div>
           <div className="button-container">
             <button type="button" className="submit-button" onClick={handleUpdateAnimal}>Actualizar Animal</button>
             <button type="button" className="cancel-button" onClick={handleDeleteAnimal}>Eliminar Animal</button>
+            <button type="button" className="cartilla-button" onClick={handleCartillaElectronica}>Cartilla Electrónica</button>
           </div>
         </form>
       </div>

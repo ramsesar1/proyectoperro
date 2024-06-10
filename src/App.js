@@ -10,6 +10,7 @@ import VentanaNueve from './components/VentanaNueve';
 import VentanaEdiAnim from './components/EditarAnimal';
 import VentanaEdiUsuar from './components/EditarUsuario';
 import RegistroUsuario from './components/RegistroUsuario';
+import VacunasVentana from './components/Vacunas';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/ventanaEdiUsu" element={<VentanaEdiUsuar />} />
         <Route path="/ventanaEdiAni" element={<VentanaEdiAnim />} />
         <Route path="/registro" element={<RegistroUsuario />} />
+        <Route path="/vacuna" element={<VacunasVentana />} />
       </Routes>
     </Router>
   );

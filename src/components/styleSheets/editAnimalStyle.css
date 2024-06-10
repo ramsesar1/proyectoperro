@@ -164,3 +164,11 @@ h3 {
     width: 90%;
   }
 }
+
+.cartilla-button {
+  background-color: #2196F3; /* Color azul */
+}
+
+.cartilla-button:hover {
+  background-color: #1E88E5; /* Azul más oscuro al pasar el ratón */
+}

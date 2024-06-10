@@ -6,6 +6,7 @@ require('dotenv').config();
 
 
 
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -456,6 +457,73 @@ app.post('/api/eliminar_animal', (req, res) => {
     res.status(200).send({ success: true });
   });
 });
+
+
+//-------------------VACUNAS animales -----------
+
+// Crear vacuna
+app.post('/api/crear_vacuna', (req, res) => {
+  const { animalId, nombrevacuna, fechavacuna, fecha_siguiente_dosis, dosis_cantidad } = req.body;
+  const query = 'INSERT INTO vacunas (nombrevacuna, fechavacuna, fecha_siguiente_dosis, dosis_cantidad, animal_id) VALUES (?, ?, ?, ?, ?)';
+  db.query(query, [nombrevacuna, fechavacuna, fecha_siguiente_dosis, dosis_cantidad, animalId], (err, result) => {
+    if (err) {
+      console.error('Error al crear la vacuna:', err);
+      return res.status(500).send({ success: false, error: 'Error al crear la vacuna' });
+    }
+    res.status(200).send({ success: true });
+  });
+});
+
+// Actualizar vacuna
+app.post('/api/actualizar_vacuna', (req, res) => {
+  const { id, nombrevacuna, fechavacuna, fecha_siguiente_dosis, dosis_cantidad } = req.body;
+  const query = 'UPDATE vacunas SET nombrevacuna = ?, fechavacuna = ?, fecha_siguiente_dosis = ?, dosis_cantidad = ? WHERE id = ?';
+  db.query(query, [nombrevacuna, fechavacuna, fecha_siguiente_dosis, dosis_cantidad, id], (err, result) => {
+    if (err) {
+      console.error('Error al actualizar la vacuna:', err);
+      return res.status(500).send({ success: false, error: 'Error al actualizar la vacuna' });
+    }
+    res.status(200).send({ success: true });
+  });
+});
+
+// Eliminar vacuna
+app.post('/api/eliminar_vacuna', (req, res) => {
+  const { vacunaId } = req.body;
+  const query = 'DELETE FROM vacunas WHERE id = ?';
+  db.query(query, [vacunaId], (err, result) => {
+    if (err) {
+      console.error('Error al eliminar la vacuna:', err);
+      return res.status(500).send({ success: false, error: 'Error al eliminar la vacuna' });
+    }
+    res.status(200).send({ success: true });
+  });
+});
+
+// Obtener vacunas por animal
+app.get('/api/obtener_vacunas/:animalId', (req, res) => {
+  const { animalId } = req.params;
+  const query = 'SELECT * FROM vacunas WHERE animal_id = ?';
+  db.query(query, [animalId], (err, result) => {
+    if (err) {
+      console.error('Error al obtener las vacunas:', err);
+      return res.status(500).send({ success: false, error: 'Error al obtener las vacunas' });
+    }
+    res.status(200).send(result);
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

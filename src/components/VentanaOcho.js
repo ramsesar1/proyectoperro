@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import NavBar from './NavBar';
 import './styleSheets/ReporteStyle.css';
+import { useNavigate } from 'react-router-dom';
+
 
 const ReporteAnimal = () => {
   const [tipoReporte, setTipoReporte] = useState('perdido');
@@ -30,6 +32,8 @@ const ReporteAnimal = () => {
 
   const [reportesUsuario, setReportesUsuario] = useState([]);
   const [selectedReporteId, setSelectedReporteId] = useState('');
+  const navigate = useNavigate();
+
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -59,6 +63,8 @@ const ReporteAnimal = () => {
     setCircunstancias('');
     setImagen(null);
     setImagenURL(null);
+    navigate('/ventana1');
+
   };
 
   const [isEditMode, setIsEditMode] = useState(false);
@@ -101,6 +107,8 @@ const ReporteAnimal = () => {
       });
       if (response.data.success) {
         alert('Reporte enviado exitosamente');
+
+        
         handleCancel();
       } else {
         alert('Error al enviar el reporte');
