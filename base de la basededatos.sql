@@ -82,6 +82,7 @@ CREATE TABLE contactos (
     notas TEXT
 );
 
+-- Insertar registros en la tabla contactos
 INSERT INTO contactos (categoria, nombre, numero_contacto, notas) VALUES
 ('Veterinarios', 'Veterinaria Ramírez', '6121684331', NULL),
 ('Veterinarios', 'Veterinaria Michigan', '6121699331', NULL),
