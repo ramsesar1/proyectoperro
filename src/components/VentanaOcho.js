@@ -234,7 +234,7 @@ const ReporteAnimal = () => {
         <NavBar title="Reporte de Animal" />
       </div>
       <div className="form-container">
-        <form className="report-form">
+        <form className="report-form"onSubmit={(e)=>e.preventDefault()}>
           <div>
             <label>Seleccionar Reporte Existente:</label>
             <select value={selectedReporteId} onChange={(e) => handleSelectedReporteChange(e.target.value)}>
