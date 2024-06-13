@@ -72,7 +72,7 @@ const VentanaNueve = () => {
   const filteredReportes = reportes.filter(reporte => filterReportes(reporte, searchTerm));
 
   return (
-    <div>
+    <div classname="nueve"> 
       <div className="editUser-container">
         <NavBar title="Buscar reportes" />
       </div>

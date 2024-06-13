@@ -28,7 +28,7 @@ function VentanaCuatro() {
           <p>Esterilización y castración: 6129885963</p>
         </div>
         <div className="contact-column">
-          <h3>Desas ayudarnos? Contactanos</h3>
+          <h3>Deseas ayudarnos? Contactanos</h3>
           <p>Celular: 6123456789</p>
           <p>Correo: ayudas@centro.com</p>
         </div>
