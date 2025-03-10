@@ -39,7 +39,7 @@ const VentanaEdiAnimal = () => {
     const fetchAnimales = async () => {
       const userId = localStorage.getItem('userId');
       const nivelAccess = localStorage.getItem('nivelAccess');
-      const response = await axios.get(`http://api.ramsseseses.com/api/obtener_animales/${userId}?nivelAccess=${nivelAccess}`);
+      const response = await axios.get(`http://localhost:3001/api/obtener_animales/${userId}?nivelAccess=${nivelAccess}`);
       setAnimales(response.data);
     };
     fetchAnimales();
@@ -62,7 +62,7 @@ const VentanaEdiAnimal = () => {
     if (cartillafoto) formData.append('cartillafoto', cartillafoto);
 
     try {
-      const response = await axios.post('http://api.ramsseseses.com/api/actualizar_animal', formData, {
+      const response = await axios.post('http://localhost:3001/api/actualizar_animal', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -101,7 +101,7 @@ const VentanaEdiAnimal = () => {
     }
 
     try {
-      const response = await axios.post('http://api.ramsseseses.com/api/eliminar_animal', { animalId: selectedAnimal });
+      const response = await axios.post('http://localhost:3001/api/eliminar_animal', { animalId: selectedAnimal });
       if (response.data.success) {
         alert('Animal eliminado exitosamente');
         setAnimales(animales.filter(animal => animal.id !== parseInt(selectedAnimal)));

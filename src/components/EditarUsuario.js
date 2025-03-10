@@ -32,7 +32,7 @@ const EditarUsuario = () => {
       }
   
       try {
-        const response = await axios.get(`http://api.ramsseseses.com/api/obtener_usuario/${userId}`);
+        const response = await axios.get(`http://localhost:3001/api/obtener_usuario/${userId}`);
         if (response.data.success) {
           const userData = response.data.data;
           setNombre(userData.nombre);
@@ -72,7 +72,7 @@ const EditarUsuario = () => {
       if (!selectedUserId) return;
   
       try {
-        const response = await axios.get(`http://api.ramsseseses.com/api/obtener_usuario/${selectedUserId}`);
+        const response = await axios.get(`http://localhost:3001/api/obtener_usuario/${selectedUserId}`);
         if (response.data.success) {
           const userData = response.data.data;
           setNombre(userData.nombre);
@@ -141,7 +141,7 @@ const EditarUsuario = () => {
     formData.append('newAccessLevel', newAccessLevel); // Agregar newAccessLevel al formData
   
     try {
-      const response = await axios.post('http://api.ramsseseses.com/api/actualizar_usuario', formData, {
+      const response = await axios.post('http://localhost:3001/api/actualizar_usuario', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

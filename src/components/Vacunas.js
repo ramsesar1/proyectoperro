@@ -19,7 +19,7 @@ const Vacunas = () => {
     const fetchAnimales = async () => {
       const userId = localStorage.getItem('userId');
       const nivelAccess = localStorage.getItem('nivelAccess');
-      const response = await axios.get(`http://api.ramsseseses.com/api/obtener_animales/${userId}?nivelAccess=${nivelAccess}`);
+      const response = await axios.get(`http://localhost:3001/api/obtener_animales/${userId}?nivelAccess=${nivelAccess}`);
       setAnimales(response.data || []);
     };
     fetchAnimales();
@@ -28,7 +28,7 @@ const Vacunas = () => {
   useEffect(() => {
     if (selectedAnimal) {
       const fetchVacunas = async () => {
-        const response = await axios.get(`http://api.ramsseseses.com/api/obtener_vacunas/${selectedAnimal}`);
+        const response = await axios.get(`http://localhost:3001/api/obtener_vacunas/${selectedAnimal}`);
         setVacunas(response.data || []);
       };
       fetchVacunas();
@@ -79,14 +79,14 @@ const Vacunas = () => {
       let response;
       if (selectedVacuna) {
         vacunaData.id = selectedVacuna;
-        response = await axios.post('http://api.ramsseseses.com/api/actualizar_vacuna', vacunaData);
+        response = await axios.post('http://localhost:3001/api/actualizar_vacuna', vacunaData);
       } else {
-        response = await axios.post('http://api.ramsseseses.com/api/crear_vacuna', vacunaData);
+        response = await axios.post('http://localhost:3001/api/crear_vacuna', vacunaData);
       }
 
       if (response.data.success) {
         alert('Vacuna registrada/actualizada exitosamente');
-        const updatedVacunas = await axios.get(`http://api.ramsseseses.com/api/obtener_vacunas/${selectedAnimal}`);
+        const updatedVacunas = await axios.get(`http://localhost:3001/api/obtener_vacunas/${selectedAnimal}`);
         setVacunas(updatedVacunas.data || []);
         setSelectedVacuna('');
       } else {
@@ -104,7 +104,7 @@ const Vacunas = () => {
     }
 
     try {
-      const response = await axios.post('http://api.ramsseseses.com/api/eliminar_vacuna', { vacunaId: selectedVacuna });
+      const response = await axios.post('http://localhost:3001/api/eliminar_vacuna', { vacunaId: selectedVacuna });
       if (response.data.success) {
         alert('Vacuna eliminada exitosamente');
         setVacunas(vacunas.filter(vacuna => vacuna.id !== parseInt(selectedVacuna)));

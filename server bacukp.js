@@ -4,15 +4,41 @@ const cors = require('cors');
 const db = require('./src/db');
 require('dotenv').config();
 
+
+
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Use CORS middleware 
+app.use(cors()); 
+app.use(express.json());
+//app.use(express.static(path.join(__dirname, 'build')));
+
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+
+
+/*
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+*/
+
+// Maneja todas las rutas y responde con el archivo "index.html"
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
+
+
+
+
 
 const storage = multer.memoryStorage(); 
 const upload = multer({ storage: storage });
@@ -501,8 +527,16 @@ app.get('/api/obtener_vacunas/:animalId', (req, res) => {
 
 
 
-app.use(cors());
-app.use(express.json());
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -747,10 +781,10 @@ app.get('/api/comentarios/:reporteId', (req, res) => {
 // ---------------------Inicio de sesión---------------------
 app.post('/api/login', (req, res) => {
   console.log('Solicitud de inicio de sesión recibida:', req.body);
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  const query = 'SELECT id, nivel_access FROM usuarios WHERE nombre = ? AND contraseña = ?';
-  const values = [username, password];
+  const query = 'SELECT id, nivel_access FROM usuarios WHERE email = ? AND contraseña = ?';
+  const values = [email, password];
 
   db.query(query, values, (err, results) => {
     if (err) {
@@ -762,11 +796,12 @@ app.post('/api/login', (req, res) => {
         const nivelAccess = results[0].nivel_access;
         res.status(200).send({ success: true, userId, nivelAccess });
       } else {
-        res.status(401).send({ success: false, error: 'Nombre de usuario o contraseña incorrectos' });
+        res.status(401).send({ success: false, error: 'Email o contraseña incorrectos' });
       }
     }
   });
 });
+
 
 
 app.get('/api/test-connection', (req, res) => {

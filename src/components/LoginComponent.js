@@ -5,19 +5,19 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './styleSheets/loginStyle.css'; // Asegúrate de importar el archivo CSS
 
 const LoginComponent = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('http://api.ramsseseses.com/api/login', { email, password });
+      const response = await axios.post('http://localhost:3001/api/login', { username, password });
       if (response.data.success) {
         localStorage.setItem('userId', response.data.userId);
         localStorage.setItem('nivelAccess', response.data.nivelAccess);
         navigate('/ventana1');
       } else {
-        alert('Email o contraseña incorrectos');
+        alert('Nombre de usuario o contraseña incorrectos');
       }
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
@@ -35,12 +35,12 @@ const LoginComponent = () => {
           <div className="login-field">
             <input 
               type="text" 
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
-              placeholder="Correo Electrónico" 
+              value={username} 
+              onChange={(e) => setUsername(e.target.value)} 
+              placeholder="Nombre de Usuario" 
               className="input-field"
             />
-            <label className="input-label">Correo Electrónico</label>
+            <label className="input-label">Nombre de Usuario</label>
           </div>
           <div className="login-field">
             <input 

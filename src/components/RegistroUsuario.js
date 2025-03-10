@@ -52,7 +52,7 @@ function RegistroUsuario() {
     }
 
     try {
-      const response = await axios.post('http://api.ramsseseses.com/api/registro_usuario', formData, {
+      const response = await axios.post('http://localhost:3001/api/registro_usuario', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

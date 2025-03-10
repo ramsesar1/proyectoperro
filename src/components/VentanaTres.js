@@ -34,7 +34,7 @@ const VentanaTres = () => {
     }
 
     try {
-      const response = await axios.post('http://api.ramsseseses.com/api/registro_animal', formData, {
+      const response = await axios.post('http://localhost:3001/api/registro_animal', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
