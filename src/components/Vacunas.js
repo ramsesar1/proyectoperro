@@ -161,7 +161,7 @@ const Vacunas = () => {
             <input type="date" value={fechaSiguienteDosis} onChange={(e) => setFechaSiguienteDosis(e.target.value)} />
           </div>
           <div>
-            <label>Cantidad de Dosis:</label>
+            <label>Cantidad de Dosis (ml/mg):</label>
             <input type="number" value={dosisCantidad} onChange={(e) => setDosisCantidad(e.target.value)} />
           </div>
           <div className="button-container">

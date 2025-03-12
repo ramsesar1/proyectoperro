@@ -58,16 +58,22 @@ function RegistroUsuario() {
         }
       });
       console.log('Usuario registrado:', response.data);
-      setNombre('');
-      setApellido('');
-      setEmail('');
-      setContrasena('');
-      setTelefono('');
-      setFechaNacimiento('');
-      setGenero('');
-      setFotoPerfil(null);
       setAlerta('Usuario registrado exitosamente');
-      navigate('/');
+      setMostrarAlerta(true);
+      
+      setTimeout(() => {
+        setNombre('');
+        setApellido('');
+        setEmail('');
+        setContrasena('');
+        setTelefono('');
+        setFechaNacimiento('');
+        setGenero('');
+        setFotoPerfil(null);
+        setMostrarAlerta(false);
+        navigate('/');
+      }, 3000);
+      
     } catch (error) {
       console.error('Error registrando usuario:', error);
       setAlerta('Error registrando usuario');
