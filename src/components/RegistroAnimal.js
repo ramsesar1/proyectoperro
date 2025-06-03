@@ -19,6 +19,27 @@ const VentanaTres = () => {
       return;
     }
 
+    // Validaciones
+    if (!nombre.trim() || !especie.trim() || !raza.trim() || !edad || !peso) {
+      alert('Por favor complete todos los campos obligatorios.');
+      return;
+    }
+
+    if (isNaN(edad) || parseInt(edad) <= 0) {
+      alert('La edad debe ser un número mayor que 0.');
+      return;
+    }
+
+    if (isNaN(peso) || parseFloat(peso) <= 0) {
+      alert('El peso debe ser un número mayor que 0.');
+      return;
+    }
+
+    if (!foto) {
+      alert('Debe subir una foto del animal.');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('usuario_id', userId);
     formData.append('nombre', nombre);
@@ -26,9 +47,7 @@ const VentanaTres = () => {
     formData.append('raza', raza);
     formData.append('edad', edad);
     formData.append('peso', peso);
-    if (foto) {
-      formData.append('foto', foto);
-    }
+    formData.append('foto', foto);
     if (cartillaFoto) {
       formData.append('cartillaFoto', cartillaFoto);
     }
@@ -39,6 +58,7 @@ const VentanaTres = () => {
           'Content-Type': 'multipart/form-data'
         }
       });
+
       if (response.data.success) {
         alert('Animal registrado exitosamente');
         setNombre('');
@@ -53,6 +73,7 @@ const VentanaTres = () => {
       }
     } catch (error) {
       console.error('Error al registrar el animal:', error);
+      alert('Ocurrió un error al registrar el animal.');
     }
   };
 

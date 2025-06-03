@@ -14,7 +14,7 @@ function NavBar({ title }) {
     <>
       <div className="nav-bar">
         <div className="logo">
-          <Link to="/ventana1">
+          <Link to="/Menu">
             <img src={logo} alt="Logo" />
           </Link>
         </div>
@@ -27,13 +27,13 @@ function NavBar({ title }) {
         <div className="side-menu-title">Menú de Opciones</div>
         <ul>
           <li>
-            <Link to="/ventana5" onClick={toggleMenu}>Usuario</Link>
+            <Link to="/Usuario" onClick={toggleMenu}>Usuario</Link>
           </li>
           <li>
             <Link to="/" onClick={toggleMenu}>Cambiar de cuenta</Link>
           </li>
           <li>
-            <Link to="/ventana4" onClick={toggleMenu}>Ayuda</Link>
+            <Link to="/Ayuda" onClick={toggleMenu}>Ayuda</Link>
           </li>
         </ul>
       </div>

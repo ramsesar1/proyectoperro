@@ -34,6 +34,34 @@ function RegistroUsuario() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    if (!nombre || !apellido || !email || !contrasena) {
+      setAlerta('Por favor, completa todos los campos obligatorios.');
+      return;
+    }
+
+    const nombreApellidoRegex = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+
+    if (!nombreApellidoRegex.test(nombre)) {
+      setAlerta('El nombre solo puede contener letras.');
+      return;
+    }
+
+    if (!nombreApellidoRegex.test(apellido)) {
+      setAlerta('El apellido solo puede contener letras.');
+      return;
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setAlerta('Ingresa un correo electrónico válido.');
+      return;
+    }
+
+    if (telefono && !/^\d+$/.test(telefono)) {
+      setAlerta('El número de teléfono debe contener solo números.');
+      return;
+    }
+
     if (!contrasena) {
       setAlerta('Por favor, ingresa una contraseña');
       return;
@@ -67,7 +95,7 @@ function RegistroUsuario() {
       setGenero('');
       setFotoPerfil(null);
       setAlerta('Usuario registrado exitosamente');
-      navigate('/');
+      // navigate('/');
     } catch (error) {
       console.error('Error registrando usuario:', error);
       setAlerta('Error registrando usuario');

@@ -103,6 +103,9 @@ const Vacunas = () => {
       return;
     }
 
+    const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar esta vacuna? Esta acción no se puede deshacer.');
+    if (!confirmDelete) return;
+
     try {
       const response = await axios.post('http://localhost:3001/api/eliminar_vacuna', { vacunaId: selectedVacuna });
       if (response.data.success) {
@@ -120,6 +123,7 @@ const Vacunas = () => {
       console.error('Error al eliminar la vacuna:', error);
     }
   };
+
 
   return (
     <div>

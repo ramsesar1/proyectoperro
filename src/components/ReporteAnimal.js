@@ -63,11 +63,37 @@ const ReporteAnimal = () => {
     setCircunstancias('');
     setImagen(null);
     setImagenURL(null);
-    navigate('/ventana1');
+    navigate('/Menu');
 
   };
 
   const [isEditMode, setIsEditMode] = useState(false);
+
+  const validarFormulario = () => {
+    const errores = [];
+
+    if (!nombre.trim()) errores.push("Nombre es requerido.");
+    if (!correo.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) errores.push("Correo electrónico no válido.");
+    if (!telefono.trim() || !/^\d{10}$/.test(telefono)) errores.push("Número telefónico debe tener 10 dígitos.");
+    if (!direccionReportero.trim()) errores.push("Dirección del reportador es requerida.");
+
+    if (!tipoAnimal.trim()) errores.push("Tipo de animal es requerido.");
+    if (!edad.trim() || isNaN(edad)) errores.push("Edad debe ser un número.");
+    if (!genero) errores.push("Género es requerido.");
+    if (!tamano.trim()) errores.push("Tamaño es requerido.");
+    if (!raza.trim()) errores.push("Raza es requerida.");
+
+    if (!direccionAnimal.trim()) errores.push("Dirección del animal es requerida.");
+    if (!ciudad.trim()) errores.push("Ciudad es requerida.");
+    if (!estado.trim()) errores.push("Estado es requerido.");
+    if (!codigoPostal.trim() || !/^\d{5}$/.test(codigoPostal)) errores.push("Código postal debe tener 5 dígitos.");
+
+    if (!fechaAvistamiento) errores.push("Fecha de avistamiento es requerida.");
+    if (!descripcionEstado.trim()) errores.push("Descripción del estado del animal es requerida.");
+    if (!circunstancias.trim()) errores.push("Circunstancias del hallazgo son requeridas.");
+
+    return errores;
+  };
 
   const handleSubmit = async () => {
     const userId = localStorage.getItem('userId');
@@ -75,6 +101,24 @@ const ReporteAnimal = () => {
       alert('Usuario no autenticado');
       return;
     }
+
+    if (!nombre.trim()) return alert('El nombre del reportador es obligatorio');
+    if (!correo.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/)) return alert('Correo inválido');
+    if (!telefono.match(/^[0-9]{10}$/)) return alert('Teléfono inválido (deben ser 10 dígitos)');
+    if (!direccionReportero.trim()) return alert('Dirección del reportador es obligatoria');
+
+    if (!tipoAnimal.trim()) return alert('Tipo de animal es obligatorio');
+    if (!edad.trim() || isNaN(edad)) return alert('Edad inválida (debe ser numérica)');
+    if (!genero) return alert('Debe seleccionar un género');
+    if (!tamano.trim()) return alert('Tamaño es obligatorio');
+    if (!direccionAnimal.trim()) return alert('Dirección del animal es obligatoria');
+    if (!ciudad.trim()) return alert('Ciudad es obligatoria');
+    if (!estado.trim()) return alert('Estado/Provincia es obligatorio');
+    if (!codigoPostal.match(/^\d{5}$/)) return alert('Código postal inválido (deben ser 5 dígitos)');
+    if (!fechaAvistamiento) return alert('Debe seleccionar fecha y hora del avistamiento');
+    if (!descripcionEstado.trim()) return alert('Debe describir el estado del animal');
+    if (!circunstancias.trim()) return alert('Debe indicar las circunstancias del hallazgo');
+    if (!imagen && !isEditMode) return alert('Debe adjuntar una imagen');
 
     const formData = new FormData();
     formData.append('usuario_id', userId);
@@ -142,6 +186,24 @@ const ReporteAnimal = () => {
       alert('Usuario no autenticado');
       return;
     }
+
+    if (!nombre.trim()) return alert('El nombre del reportador es obligatorio');
+    if (!correo.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/)) return alert('Correo inválido');
+    if (!telefono.match(/^[0-9]{10}$/)) return alert('Teléfono inválido (deben ser 10 dígitos)');
+    if (!direccionReportero.trim()) return alert('Dirección del reportador es obligatoria');
+
+    if (!tipoAnimal.trim()) return alert('Tipo de animal es obligatorio');
+    if (!edad.trim() || isNaN(edad)) return alert('Edad inválida (debe ser numérica)');
+    if (!genero) return alert('Debe seleccionar un género');
+    if (!tamano.trim()) return alert('Tamaño es obligatorio');
+    if (!direccionAnimal.trim()) return alert('Dirección del animal es obligatoria');
+    if (!ciudad.trim()) return alert('Ciudad es obligatoria');
+    if (!estado.trim()) return alert('Estado/Provincia es obligatorio');
+    if (!codigoPostal.match(/^\d{5}$/)) return alert('Código postal inválido (deben ser 5 dígitos)');
+    if (!fechaAvistamiento) return alert('Debe seleccionar fecha y hora del avistamiento');
+    if (!descripcionEstado.trim()) return alert('Debe describir el estado del animal');
+    if (!circunstancias.trim()) return alert('Debe indicar las circunstancias del hallazgo');
+    if (!imagen && !isEditMode) return alert('Debe adjuntar una imagen');
 
     const formData = new FormData();
     formData.append('usuario_id', userId);

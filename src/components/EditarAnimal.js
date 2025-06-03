@@ -100,28 +100,32 @@ const VentanaEdiAnimal = () => {
       return;
     }
 
-    try {
-      const response = await axios.post('http://localhost:3001/api/eliminar_animal', { animalId: selectedAnimal });
-      if (response.data.success) {
-        alert('Animal eliminado exitosamente');
-        setAnimales(animales.filter(animal => animal.id !== parseInt(selectedAnimal)));
-        setSelectedAnimal('');
-        setNombre('');
-        setEspecie('');
-        setRaza('');
-        setEdad('');
-        setPeso('');
-        setFoto(null);
-        setCartillafoto(null);
-        setFotoUrl('');
-        setCartillafotoUrl('');
-      } else {
-        alert('Error al eliminar el animal');
+    const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar este animal? Esta acción no se puede deshacer.');
+      if (!confirmDelete) return;
+
+      try {
+        const response = await axios.post('http://localhost:3001/api/eliminar_animal', { animalId: selectedAnimal });
+        if (response.data.success) {
+          alert('Animal eliminado exitosamente');
+          setAnimales(animales.filter(animal => animal.id !== parseInt(selectedAnimal)));
+          setSelectedAnimal('');
+          setNombre('');
+          setEspecie('');
+          setRaza('');
+          setEdad('');
+          setPeso('');
+          setFoto(null);
+          setCartillafoto(null);
+          setFotoUrl('');
+          setCartillafotoUrl('');
+        } else {
+          alert('Error al eliminar el animal');
+        }
+      } catch (error) {
+        console.error('Error al eliminar el animal:', error);
       }
-    } catch (error) {
-      console.error('Error al eliminar el animal:', error);
-    }
-  };
+    };
+
 
   const handleCartillaElectronica = () => {
     navigate('/vacuna'); // Redirecciona a la página de cartilla electrónica (vacunas)

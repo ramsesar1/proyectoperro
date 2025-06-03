@@ -5,7 +5,7 @@ import NavBar from './NavBar';
 
 function VentanaCuatro() {
   return (
-    <div>
+    <div className="main-container">
       <div className="info-container">
         <NavBar title="Asociaciones civiles" />
       </div>

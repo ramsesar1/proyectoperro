@@ -9,8 +9,10 @@ body {
     min-height: 100vh;
 }
 
-.info-container {
-    width: 100%;
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* ← centrado horizontal */
 }
 
 .title-container {
