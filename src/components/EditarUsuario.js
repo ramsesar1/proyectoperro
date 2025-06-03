@@ -22,6 +22,7 @@ const EditarUsuario = () => {
   const [showAccessLevelComboBox, setShowAccessLevelComboBox] = useState(false); 
   const [newAccessLevel, setNewAccessLevel] = useState(''); 
   const [passwordFieldsDisabled, setPasswordFieldsDisabled] = useState(false);
+  const [mostrarCamposContrasena, setMostrarCamposContrasena] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -184,6 +185,10 @@ const EditarUsuario = () => {
     setNewAccessLevel(event.target.value);
   }; 
 
+  const toggleCamposContrasena = () => {
+    setMostrarCamposContrasena(!mostrarCamposContrasena);
+  };
+
   return (
     <div>
       <div className="editUser-container">
@@ -247,13 +252,26 @@ const EditarUsuario = () => {
             {fotoPerfilUrl && <img className="formEditUser-img" src={fotoPerfilUrl} alt="Foto de Perfil" />}
           </div>
           <div className="formEditUser-group">
-            <label className="formEditUser-label">Modificar Contraseña:</label>
-            <input type="password" value={nuevaContrasena} onChange={(e) => setNuevaContrasena(e.target.value)} className="formEditUser-input" disabled={passwordFieldsDisabled} />
-          </div>
-          <div className="formEditUser-group">
-            <label className="formEditUser-label">Confirmar Nueva Contraseña:</label>
-            <input type="password" value={confirmarNuevaContrasena} onChange={(e) => setConfirmarNuevaContrasena(e.target.value)} className="formEditUser-input" disabled={passwordFieldsDisabled} />
-          </div>
+            <label className="formEditUser-label"></label>
+
+              <button type="button" onClick={toggleCamposContrasena} className="formEditUser-button-toggle">
+                {mostrarCamposContrasena ? "Cancelar Cambio de Contraseña" : "Modificar Contraseña"}
+              </button>
+            </div>
+            {mostrarCamposContrasena && (
+              <>
+                <div className="formEditUser-group">
+                  <label className="formEditUser-label">Nueva Contraseña:</label>
+                  <input type="password" value={nuevaContrasena} onChange={(e) => setNuevaContrasena(e.target.value)} className="formEditUser-input" />
+                </div>
+                <div className="formEditUser-group">
+                  <label className="formEditUser-label">Confirmar Nueva Contraseña:</label>
+                  <input type="password" value={confirmarNuevaContrasena} onChange={(e) => setConfirmarNuevaContrasena(e.target.value)} className="formEditUser-input" />
+                </div>
+              </>
+            )}
+
+
           <div className="formEditUser-group">
             <label className="formEditUser-label">Contraseña (Para confirmar cambios):</label>
             <input type="password" value={contrasena} onChange={(e) => setContrasena(e.target.value)} className="formEditUser-input" required />

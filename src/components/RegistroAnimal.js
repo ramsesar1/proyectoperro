@@ -97,11 +97,11 @@ const VentanaTres = () => {
             <input type="text" value={raza} onChange={(e) => setRaza(e.target.value)} />
           </div>
           <div>
-            <label>Edad:</label>
+            <label>Edad (años):</label>
             <input type="number" value={edad} onChange={(e) => setEdad(e.target.value)} />
           </div>
           <div>
-            <label>Peso:</label>
+            <label>Peso (kg):</label>
             <input type="number" step="0.01" value={peso} onChange={(e) => setPeso(e.target.value)} />
           </div>
           <div>

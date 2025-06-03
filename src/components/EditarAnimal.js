@@ -160,7 +160,7 @@ const VentanaEdiAnimal = () => {
             <input type="text" value={raza} onChange={(e) => setRaza(e.target.value)} />
           </div>
           <div>
-            <label>Edad:</label>
+            <label>Edad (años):</label>
             <input type="number" value={edad} onChange={(e) => setEdad(e.target.value)} />
           </div>
           <div>
@@ -174,7 +174,7 @@ const VentanaEdiAnimal = () => {
             {cartillafotoUrl && <img src={cartillafotoUrl} alt="Cartilla del animal" className="animalImg" />}
           </div>
           <div>
-            <label>Peso:</label>
+            <label>Peso (kg):</label>
             <input type="number" value={peso} onChange={(e) => setPeso(e.target.value)} />
           </div>
           <div className="button-container">
